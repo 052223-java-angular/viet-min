@@ -21,7 +21,7 @@ create table users{
 
 create table reviews{
     id varchar primary key,
-    rating int not null,
+    rating integer not null,
     comment varchar not null,
     user_id varchar not null,
     product_id varchar not null,
@@ -33,7 +33,7 @@ create table reviews{
 create table products{
     id varchar primary key,
     name varchar not null,
-    price double not null,
+    price double precision not null,
     category varchar not null,
 };
 
@@ -41,9 +41,9 @@ create table orders{
     id varchar primary key,
     user_id varchar not null,
     product_id varchar not null,
-    quantity int not null,
-    unit_price double not null,
-    
+    quantity integer not null,
+    unit_price double precision not null,
+
     foreign key {user_id} users {id},
     foreign key {product_id} products {id}
 };
