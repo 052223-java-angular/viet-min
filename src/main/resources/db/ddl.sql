@@ -47,3 +47,6 @@ create table orders{
     foreign key {user_id} users {id},
     foreign key {product_id} products {id}
 };
+
+
+
