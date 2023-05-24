@@ -2,6 +2,7 @@ package com.revature.app.services;
 
 import java.util.Scanner;
 
+import com.revature.app.daos.UserDAO;
 import com.revature.app.screens.HomeScreen;
 import com.revature.app.screens.RegisterScreen;
 
@@ -14,7 +15,7 @@ public class RouterServices {
             case "/login":
                 break;
             case "/register":
-                new RegisterScreen(this).start(scan);
+                new RegisterScreen(this, getUserService()).start(scan);
                 break;
             case "/review":
                 break;
@@ -22,4 +23,9 @@ public class RouterServices {
                 break;
         }
     }
+
+    private UserService getUserService() {
+        return new UserService(new UserDAO());
+    }
+
 }

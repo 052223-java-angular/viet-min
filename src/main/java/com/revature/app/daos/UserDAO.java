@@ -22,10 +22,10 @@ public class UserDAO implements CrudDAO<User>{
             String sql = "insert into users (id, username, password, role_id) values (?, ?, ?, ?)";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
-                ps.setString(0, sql);
-                ps.setString(1, sql);
-                ps.setString(2, sql);
-                ps.setString(3, sql);
+                ps.setString(1, Object.getId());
+                ps.setString(2, Object.getUsername());
+                ps.setString(3, Object.getPassword());
+                ps.setString(4, Object.getRoleId());
                 ps.executeUpdate();
             }
         }catch (SQLException e) {
