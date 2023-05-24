@@ -15,6 +15,6 @@ import lombok.ToString;
 public class Product {
     private String id;
     private String name;
-    private double password;
-    private String roleId;
+    private double price;
+    private String category;
 }
