@@ -11,6 +11,7 @@ public class eShop {
     Scanner scan = new Scanner(System.in);
 
     RouterServices route = new RouterServices();
-    route.navigate("/home", scan);
+    route.navigate("/register", scan);
+    scan.close();
   }
 }

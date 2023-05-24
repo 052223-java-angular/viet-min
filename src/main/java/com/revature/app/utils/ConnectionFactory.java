@@ -7,20 +7,24 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class ConnectionPostgres {
-    private static ConnectionPostgres instance;
+public class ConnectionFactory {
+    private static ConnectionFactory instance;
     private Connection connection;
 
-    private ConnectionPostgres() throws IOException, SQLException, ClassNotFoundException {
+    private ConnectionFactory() throws ClassNotFoundException, IOException, SQLException {
         Class.forName("org.postgresql.Driver");
         Properties props = getProperties();
-        connection = DriverManager.getConnection(props.getProperty("url"), props.getProperty("username"),
+        connection = DriverManager.getConnection(
+                props.getProperty("url"),
+                props.getProperty("username"),
                 props.getProperty("password"));
     }
 
-    public static ConnectionPostgres getInstance() throws ClassNotFoundException, IOException, SQLException {
+    /* ----------------- Methods ----------------- */
+
+    public static ConnectionFactory getInstance() throws SQLException, ClassNotFoundException, IOException {
         if (instance == null || instance.getConnection().isClosed()) {
-            instance = new ConnectionPostgres();
+            instance = new ConnectionFactory();
         }
         return instance;
     }
@@ -29,16 +33,16 @@ public class ConnectionPostgres {
         return connection;
     }
 
+    /* ----------------- Helper Methods ----------------- */
+
     private Properties getProperties() throws IOException {
         Properties props = new Properties();
-
-        try (InputStream iStream = getClass().getClassLoader().getResourceAsStream("application.properties")) {
-            if (iStream == null) {
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream("application.properties")) {
+            if (input == null) {
                 throw new IOException("Unable to find application.properties");
             }
-            props.load(iStream);
+            props.load(input);
         }
-
         return props;
     }
 }
