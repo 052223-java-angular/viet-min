@@ -18,7 +18,11 @@ public class HomeScreen implements IScreen {
             System.out.println("\n[1] Login screen");
             System.out.println("[2] register screen");
             System.out.println("[x] Exit");
-            break;
+
+            input = scan.nextLine();
+            if(input.equals("x")){
+                break;
+            }
         }
     }
     
