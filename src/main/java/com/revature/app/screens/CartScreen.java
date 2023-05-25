@@ -2,6 +2,7 @@ package com.revature.app.screens;
 
 import java.util.Scanner;
 
+import com.revature.app.services.CartService;
 import com.revature.app.services.RouterServices;
 
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CartScreen implements IScreen{
     private final RouterServices router;
+    private final CartService cart;
 
     @Override
     public void start(Scanner scan) {
