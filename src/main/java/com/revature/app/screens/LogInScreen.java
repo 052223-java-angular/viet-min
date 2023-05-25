@@ -51,7 +51,9 @@ public class LogInScreen implements IScreen{
             }else{
                 System.out.println("\nSuccess!!!");
             }
-
+            
+            //to-do:
+            //go to screen thats available after log-in
             break;
             
         }
@@ -59,42 +61,20 @@ public class LogInScreen implements IScreen{
 
     public String getUsername(Scanner scan){
         String username = "";
-        while(true){
-            System.out.println("\nEnter your username: ");
-            username = scan.nextLine();
 
-            if(username.equalsIgnoreCase("x")){
-                return "x";
-            }
+        System.out.println("\nEnter your username: ");
+        username = scan.nextLine();
 
-            if(username.equalsIgnoreCase("b")){
-                return "b";
-            }
-
-            break;
-        }
-        return username;
+        return username.equalsIgnoreCase("x") ? "x" : username.equalsIgnoreCase("b") ? "b" : username;
     }
 
     public String getPassword(Scanner scan){
         String password = "";
-        String confirmPassword = "";
         
-        while(true){
-            System.out.println("\nEnter your password: ");
-            password = scan.nextLine();
+        System.out.println("\nEnter your password: ");
+        password = scan.nextLine();
 
-            if(password.equalsIgnoreCase("x")){
-                return "x";
-            }
-
-            if(password.equalsIgnoreCase("b")){
-                return "b";
-            }
-
-            break;
-        }
-        return password;
+        return password.equalsIgnoreCase("x") ? "x" : password.equalsIgnoreCase("b") ? "b" : password;
     }
     
 }
