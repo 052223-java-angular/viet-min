@@ -15,7 +15,8 @@ public class CartScreen implements IScreen{
     @Override
     public void start(Scanner scan) {
         String input = "";
-
+        String item = "";
+        String amount = "";
         while(true){
             System.out.println("[1] Continue shopping");
             System.out.println("[2] Remove item");
@@ -32,16 +33,22 @@ public class CartScreen implements IScreen{
                
                 case "1":
                     System.out.println("go shop some more");
+                    //router.navigate("/home", scan);
                     break;
                 case "2":
                     System.out.println("chose the item you want to delete");
+                    item = scan.nextLine();
+                    cart.remove(item);
                     break;
                 case "3":
                     System.out.println("choose item you want to modify");
+                    item = scan.nextLine();
                     System.out.println("change amount to:");
+                    amount = scan.nextLine();
+                    cart.modify(item, amount);
                     break;
                 case "4":
-                    System.out.println("Your total will be:");
+                    System.out.println("Your total will be: ");
                     break;
                 case "x":
                     break;
