@@ -11,10 +11,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-
-public class Order {
+public class OrderItem {
     private String id;
-    private String user_id;
-    private String payment_id;
-    private double total;
+    private String order_id;
+    private String product_id;
+    private int quantity;
 }
