@@ -48,6 +48,8 @@ public class RegisterScreen implements IScreen {
 
             userService.register(username, password);
 
+            //to-do:
+            //go to screen thats available after log-in
             break;
             
         }

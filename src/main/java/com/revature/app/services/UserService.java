@@ -1,5 +1,7 @@
 package com.revature.app.services;
 
+import java.util.Optional;
+
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.revature.app.daos.UserDAO;
@@ -45,4 +47,15 @@ public class UserService {
     public boolean isSamePassword(String password, String confirmPassword) {
         return password.equals(confirmPassword);
     }
+
+    public boolean login(String username, String password) {
+        Optional<User> user = userDAO.findByUsername(username);
+        if(user.isEmpty()){
+            return false;
+        }
+        System.out.println(user.get().getPassword());
+        return BCrypt.checkpw(password, user.get().getPassword());
+
+    }
+
 }
