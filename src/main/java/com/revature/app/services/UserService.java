@@ -53,7 +53,6 @@ public class UserService {
         if(user.isEmpty()){
             return false;
         }
-        System.out.println(user.get().getPassword());
         return BCrypt.checkpw(password, user.get().getPassword());
 
     }
