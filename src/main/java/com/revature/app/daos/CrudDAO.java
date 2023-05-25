@@ -6,7 +6,7 @@ public interface CrudDAO<T> {
     void save(T Object);
 
     void update(String id);
-    
+
     void delete(String id);
 
     T findById(String id);
