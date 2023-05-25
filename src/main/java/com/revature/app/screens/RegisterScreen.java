@@ -16,12 +16,12 @@ public class RegisterScreen implements IScreen {
 
     @Override
     public void start(Scanner scan) {
-        String input = "";
         String username = "";
         String password = "";
 
         while(true){
-            System.out.println("Register an account!");
+            System.out.println("Register an account");
+            System.out.println("[b] Back to main menu");
             System.out.println("[x] Exit");
 
             username = getUsername(scan);
@@ -30,13 +30,23 @@ public class RegisterScreen implements IScreen {
                 break;
             }
 
-            password = getPassword(scan);
-
-            if(username.equals("x")){
+            if(username.equals("b")){
+                router.navigate("/home", scan);
                 break;
             }
 
-            User createdUser = userService.register(username, password);
+            password = getPassword(scan);
+
+            if(password.equals("x")){
+                break;
+            }
+
+            if(password.equals("b")){
+                router.navigate("/home", scan);
+                break;
+            }
+
+            userService.register(username, password);
 
             break;
             
@@ -44,12 +54,81 @@ public class RegisterScreen implements IScreen {
     }
 
     public String getUsername(Scanner scan){
-        String username = "testusername";
+        String username = "";
+        while(true){
+            System.out.println("\nEnter a username: ");
+            username = scan.nextLine();
+
+            if(username.equalsIgnoreCase("x")){
+                return "x";
+            }
+
+            if(username.equalsIgnoreCase("b")){
+                return "b";
+            }
+            if (!userService.isValidUserName(username)) {
+                System.out.println("Username needs to be 8-20 characters long.");
+                System.out.print("\nPress enter to continue...");
+                scan.nextLine();
+                continue;
+            }
+
+            if (!userService.isUniqueUserName(username)) {
+                System.out.println("Username already in use!");
+                System.out.print("\nPress enter to continue...");
+                scan.nextLine();
+                continue;
+            }
+
+            break;
+        }
         return username;
     }
 
     public String getPassword(Scanner scan){
-        String password = "testpassword";
+        String password = "";
+        String confirmPassword = "";
+        
+        while(true){
+            System.out.println("\nEnter a password: ");
+            password = scan.nextLine();
+
+            if(password.equalsIgnoreCase("x")){
+                return "x";
+            }
+
+            if(password.equalsIgnoreCase("b")){
+                return "b";
+            }
+
+            if (!userService.isValidPassword(password)) {
+                System.out.println("Password needs to be minimum 8 characters, at least 1 letter and 1 number");
+                System.out.print("\nPress enter to continue...");
+                scan.nextLine();
+                continue;
+            }
+
+            System.out.println("\nPlease confirm password: ");
+            confirmPassword = scan.nextLine();
+
+            if (confirmPassword.equalsIgnoreCase("x")) {
+                return "x";
+            }
+
+            if(confirmPassword.equalsIgnoreCase("b")){
+                return "b";
+            }
+
+            if (!userService.isSamePassword(password, confirmPassword)) {
+                System.out.println("Passwords do not match");
+                System.out.print("\nPress enter to continue...");
+                scan.nextLine();
+                continue;
+            }
+
+
+            break;
+        }
         return password;
     }
     

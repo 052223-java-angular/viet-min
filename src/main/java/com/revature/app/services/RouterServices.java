@@ -2,6 +2,7 @@ package com.revature.app.services;
 
 import java.util.Scanner;
 
+import com.revature.app.daos.RoleDAO;
 import com.revature.app.daos.UserDAO;
 import com.revature.app.screens.HomeScreen;
 import com.revature.app.screens.RegisterScreen;
@@ -25,7 +26,11 @@ public class RouterServices {
     }
 
     private UserService getUserService() {
-        return new UserService(new UserDAO());
+        return new UserService(new UserDAO(), getRoleService());
+    }
+
+    private RoleService getRoleService() {
+        return new RoleService(new RoleDAO());
     }
 
 }
