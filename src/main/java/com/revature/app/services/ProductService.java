@@ -1,31 +1,34 @@
 package com.revature.app.services;
 
 import java.util.List;
+import java.util.Optional;
 
-import com.revature.app.daos.ProductDao;
+import com.revature.app.daos.ProductDAO;
 import com.revature.app.models.Product;
+import com.revature.app.utils.custom_exceptions.ProductNotFoundException;
 
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class ProductService {
-    private final ProductDao productDao;
-    public List<Product> products = allProducts();
+    private final ProductDAO productDao;
 
     public List<Product> allProducts() {
 
         return productDao.findAll();
     }
 
-    public List<Product> byName(String name) {
-        return products.stream().filter(prod -> prod.getName().contains(name)).toList();
+    public List<Product> byName(String name) throws ProductNotFoundException {
+        Optional<Product> prodOpt = productDao.findByName(name);
+
+        return (List<Product>)prodOpt.orElseThrow(ProductNotFoundException::new);
     }
 
-    public List<Product> byCategory(String category) {
-        return products.stream().filter(prod -> prod.getCategory().equals(category)).toList();
+    public List<Product> byCategory(int category) {
+        return productDao.findByCategory(category);
     }
 
     public List<Product> byPrice(double minPrice, double maxPrice) {
-        return products.stream().filter(prod -> prod.getPrice() > minPrice && prod.getPrice() < maxPrice).toList();
+        return productDao.findByPriceRange(minPrice, maxPrice);
     }
 }

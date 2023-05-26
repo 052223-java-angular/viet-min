@@ -2,7 +2,7 @@ package com.revature.app.daos;
 
 import java.util.List;
 
-public class OrderDao implements CrudDAO{
+public class OrderDAO implements CrudDAO{
 
     @Override
     public void save(Object obj) {

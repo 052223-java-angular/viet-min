@@ -11,7 +11,7 @@ import java.util.List;
 import com.revature.app.models.Review;
 import com.revature.app.utils.ConnectionFactory;
 
-public class ReviewDao implements CrudDAO<Review>{
+public class ReviewDAO implements CrudDAO<Review>{
 
     @Override
     public void save(Review obj) {

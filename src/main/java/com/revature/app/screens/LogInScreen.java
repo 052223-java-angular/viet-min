@@ -8,32 +8,73 @@ import com.revature.app.services.UserService;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class LoginScreen implements IScreen {
-    private final UserService userService;
+public class LogInScreen implements IScreen{
     private final RouterServices router;
-    
+    private final UserService userService;
+
     @Override
-    public void start(Scanner san) {
-        exit: {
-            while(true){
-            //     System.out.println("Welcome to YOLP!");
-            //     System.out.println("\n[1] Login screen");
-            //     System.out.println("[2] register screen");
-            //     System.out.println("[x] Exit");
-            //     break;
-            // }
-            clearScreen();
-            System.out.println("Hello Darkness my new friend");
-            //break;
+    public void start(Scanner scan) {
+        String username = "";
+        String password = "";
+
+        while(true){
+            System.out.println("Sign in here");
+            System.out.println("[b] Back to main menu");
+            System.out.println("[x] Exit");
+
+            username = getUsername(scan);
+
+            if(username.equals("x")){
+                break;
             }
+
+            if(username.equals("b")){
+                router.navigate("/home", scan);
+                break;
+            }
+
+            password = getPassword(scan);
+
+            if(password.equals("x")){
+                break;
+            }
+
+            if(password.equals("b")){
+                router.navigate("/home", scan);
+                break;
+            }
+
+            if(!userService.login(username, password)){
+                System.out.println("\nNo user found with that combination of username and password found");
+                System.out.println("\nTry again...");
+                continue;
+            }else{
+                System.out.println("\nSuccess!!!");
+            }
+            
+            //to-do:
+            //go to screen thats available after log-in
+            break;
+            
         }
     }
 
-    //Helper methods
+    public String getUsername(Scanner scan){
+        String username = "";
 
-    private void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        System.out.println("\nEnter your username: ");
+        username = scan.nextLine();
+
+        return username.equalsIgnoreCase("x") ? "x" : username.equalsIgnoreCase("b") ? "b" : username;
+    }
+
+    public String getPassword(Scanner scan){
+        String password = "";
+        
+        System.out.println("\nEnter your password: ");
+        password = scan.nextLine();
+
+        return password.equalsIgnoreCase("x") ? "x" : password.equalsIgnoreCase("b") ? "b" : password;
     }
     
 }

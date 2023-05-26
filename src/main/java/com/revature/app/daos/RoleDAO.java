@@ -12,7 +12,7 @@ import com.revature.app.models.Role;
 import com.revature.app.models.User;
 import com.revature.app.utils.ConnectionFactory;
 
-public class RoleDao implements CrudDAO{
+public class RoleDAO implements CrudDAO{
 
     @Override
     public void save(Object obj) {
