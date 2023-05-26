@@ -12,9 +12,7 @@ import lombok.ToString;
 @Setter
 @ToString
 
-public class Order {
+public class Payment {
     private String id;
-    private String user_id;
-    private String payment_id;
-    private double total;
+    private int payment_num; //cc info
 }
