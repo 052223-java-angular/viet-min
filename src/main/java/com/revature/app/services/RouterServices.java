@@ -59,10 +59,10 @@ public class RouterServices {
     }
 
     private CartService getCartService(){
-        return new CartService(new CartDAO(), getCartItemService());
+        return new CartService(new CartDAO(), getCartItemService(), getUserService());
     }
 
     private CartItemService getCartItemService(){
-        return new CartItemService(new CartItemDAO());
+        return new CartItemService(new CartItemDAO() ,getProductService());
     }
 }

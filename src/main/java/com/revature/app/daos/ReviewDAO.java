@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.revature.app.models.Review;
 import com.revature.app.utils.ConnectionFactory;
@@ -51,7 +52,7 @@ public class ReviewDAO implements CrudDAO<Review>{
     }
 
     @Override
-    public Review findById(String id) {
+    public Optional<Review> findById(String id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }

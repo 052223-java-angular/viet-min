@@ -34,7 +34,7 @@ public class ProductDAO implements CrudDAO {
     }
 
     @Override
-    public Object findById(String id) {
+    public Optional findById(String id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }

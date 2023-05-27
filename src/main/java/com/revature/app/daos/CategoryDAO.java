@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.revature.app.models.Category;
 import com.revature.app.utils.ConnectionFactory;
@@ -31,7 +32,7 @@ public class CategoryDAO implements CrudDAO {
     }
 
     @Override
-    public Object findById(String id) {
+    public Optional findById(String id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }

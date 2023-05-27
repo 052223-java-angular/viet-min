@@ -79,7 +79,6 @@ create table order_items(
 create TABLE cart(
     id varchar primary key,
     user_id varchar not null,
-    total decimal NOT NULL,
 
     foreign key (user_id) references users (id)
 );

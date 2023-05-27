@@ -57,4 +57,12 @@ public class UserService {
 
     }
 
+    public Optional<User> findByName(String username) {
+        return null;
+    }
+
+    public Optional<User> findById(String user_id) {
+        return null;
+    }
+
 }

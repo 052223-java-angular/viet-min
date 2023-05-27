@@ -4,7 +4,9 @@ import java.util.Optional;
 import java.util.Scanner;
 
 import com.revature.app.daos.CartItemDAO;
+import com.revature.app.models.Cart;
 import com.revature.app.models.CartItem;
+import com.revature.app.models.Product;
 
 import lombok.AllArgsConstructor;
 
@@ -12,33 +14,36 @@ import lombok.AllArgsConstructor;
 public class CartItemService {
 
     private final CartItemDAO cartItemDAO;
-    //private final ProductService productService;
-    public void add(String item, String amount) {
-        //find cart if exist
-            //create cart if not exist
-        //find product if exist
-            //throw error if not exist
-        //check if selected product exist in the cart
-            //update if exist
-            //add if not
+    private final ProductService productService;
+
+    public void add(String product_id, int count, Cart cart) {
+        Optional<Product> productOpt = productService.getById(product_id);
+        if (productOpt.isEmpty()) {
+            System.out.println("Product not found");
+            //need to add custom exceptions
+        }
+
+        for(CartItem cartItem : cart.getItems()){
+            if(cartItem.getProduct_id() == product_id){
+                count += cartItem.getQuantity();
+            }
+        }
+
+        cartItemDAO.save(product_id);
+
     }
     
 
-    public void modify(String item, String amount) {
-        //change quantity
+    public void modify(String item, int count) {
+        cartItemDAO.update(item);
     }
 
     public void remove(String item) {
-        //delete product from cart
+        cartItemDAO.delete(item);
     }
 
     public void getCartItemById(String id){
 
-    }
-
-
-    public CartService start(Scanner scan) {
-        return null;
     }
     
 }

@@ -80,7 +80,7 @@ public class UserDAO implements CrudDAO<User>{
     }
 
     @Override
-    public User findById(String id) {
+    public Optional<User> findById(String id) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
             String sql = "select * from users where id = ?";
 
@@ -89,11 +89,11 @@ public class UserDAO implements CrudDAO<User>{
                 try(ResultSet rs = ps.executeQuery()){
                     if(rs.next()){
                         User user = new User();
-                        user.setId("id");
-                        user.setUsername("username");
-                        user.setPassword("password");
-                        user.setRoleId("role_id");
-                        return user;
+                        user.setId(rs.getString("id"));
+                        user.setUsername(rs.getString("username"));
+                        user.setPassword(rs.getString("password"));
+                        user.setRoleId(rs.getString("role_id"));
+                        return Optional.of(user);
                     }
                 }
             }
@@ -106,7 +106,7 @@ public class UserDAO implements CrudDAO<User>{
         } catch (Exception e){
             throw new RuntimeException(e);
         }
-        return new User();
+        return  Optional.empty();
     }
 
     @Override
@@ -122,7 +122,7 @@ public class UserDAO implements CrudDAO<User>{
                         user.setUsername("username");
                         user.setPassword("password");
                         user.setRoleId("role_id");
-                        users.add(0, user);
+                        users.add(user);
                     }
                 }
             }

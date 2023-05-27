@@ -1,6 +1,7 @@
 package com.revature.app.daos;
 
 import java.util.List;
+import java.util.Optional;
 
 public class OrderDAO implements CrudDAO{
 
@@ -23,7 +24,7 @@ public class OrderDAO implements CrudDAO{
     }
 
     @Override
-    public Object findById(String id) {
+    public Optional findById(String id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }

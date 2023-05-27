@@ -2,7 +2,6 @@ package com.revature.app.screens;
 
 import java.util.Scanner;
 
-import com.revature.app.services.CartItemService;
 import com.revature.app.services.CartService;
 import com.revature.app.services.RouterServices;
 
@@ -18,7 +17,7 @@ public class CartScreen implements IScreen{
     public void start(Scanner scan) {
         String input = "";
         String item = "";
-        String amount = "";
+        int amount = 0;
         while(true){
             System.out.println("[1] Continue shopping");
             System.out.println("[2] Remove item");
@@ -46,7 +45,7 @@ public class CartScreen implements IScreen{
                     System.out.println("choose item you want to modify");
                     item = scan.nextLine();
                     System.out.println("change amount to:");
-                    amount = scan.nextLine();
+                    amount = Integer.parseInt(scan.nextLine());
                     cart.modify(item, amount);
                     break;
                 case "4":
