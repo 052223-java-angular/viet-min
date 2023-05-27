@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import com.revature.app.daos.RoleDAO;
 import com.revature.app.models.Role;
-import com.revature.app.utils.custom_exceptions.RoleNotFoundException;
+import com.revature.app.utils.customException.RoleNotExist;
 
 import lombok.AllArgsConstructor;
 
@@ -12,13 +12,10 @@ import lombok.AllArgsConstructor;
 public class RoleService {
     private final RoleDAO roleDao;
 
-    public Role findByName(String name) {
+    public Role findByName(String name) throws RoleNotExist {
         Optional<Role> roleOpt = roleDao.findByName(name);
 
-        if (roleOpt.isEmpty()) {
-            throw new RoleNotFoundException();
-        }
-
-        return roleOpt.get();
+        return roleOpt.orElseThrow(RoleNotExist::new);
     }
+
 }

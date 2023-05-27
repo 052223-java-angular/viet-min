@@ -14,6 +14,5 @@ import lombok.ToString;
 
 public class Payment {
     private String id;
-    private String order_id;
     private int payment_num; //cc info
 }
