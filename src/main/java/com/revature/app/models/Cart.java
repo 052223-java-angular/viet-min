@@ -1,5 +1,7 @@
 package com.revature.app.models;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,4 +17,5 @@ public class Cart {
     private String id;
     private String user_id;
     private String total;
+    private List<CartItems> items;
 }

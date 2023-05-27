@@ -15,5 +15,6 @@ public class CartItems {
     private String id;
     private String session_id;
     private String product_id;
+    private double price;
     private int quantity;
 }

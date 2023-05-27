@@ -2,6 +2,7 @@ package com.revature.app.screens;
 
 import java.util.Scanner;
 
+import com.revature.app.services.CartItemService;
 import com.revature.app.services.CartService;
 import com.revature.app.services.RouterServices;
 
@@ -11,6 +12,7 @@ import lombok.AllArgsConstructor;
 public class CartScreen implements IScreen{
     private final RouterServices router;
     private final CartService cart;
+    private final CartItemService cartItem;
 
     @Override
     public void start(Scanner scan) {
@@ -38,14 +40,14 @@ public class CartScreen implements IScreen{
                 case "2":
                     System.out.println("chose the item you want to delete");
                     item = scan.nextLine();
-                    cart.remove(item);
+                    cartItem.remove(item);
                     break;
                 case "3":
                     System.out.println("choose item you want to modify");
                     item = scan.nextLine();
                     System.out.println("change amount to:");
                     amount = scan.nextLine();
-                    cart.modify(item, amount);
+                    cartItem.modify(item, amount);
                     break;
                 case "4":
                     System.out.println("Your total will be: ");
