@@ -37,15 +37,7 @@ create table products(
     foreign key (category) REFERENCES category (id)
 );
 
-create table cart_items(
-    id varchar primary key,
-    session_id varchar not null,
-    product_id varchar not null,
-    quantity int not null,
 
-    foreign key (session_id) references cart (id),
-    foreign key (product_id) references products (id)
-);
 
 create table reviews(
     id varchar primary key,

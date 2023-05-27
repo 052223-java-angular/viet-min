@@ -1,7 +1,6 @@
 package com.revature.app.daos;
 
 import java.util.List;
-package com.revature.app.daos;
 
 import java.io.IOException;
 import java.sql.Connection;

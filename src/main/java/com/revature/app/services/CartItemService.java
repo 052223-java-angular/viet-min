@@ -1,14 +1,17 @@
 package com.revature.app.services;
 
 import java.util.Optional;
+import java.util.Scanner;
 
+import com.revature.app.daos.CartItemDAO;
 import com.revature.app.models.CartItem;
 
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class CartItemService {
-    private final CartService cartService;
+
+    private final CartItemDAO cartItemDAO;
     //private final ProductService productService;
     public void add(String item, String amount) {
         //find cart if exist
@@ -31,6 +34,11 @@ public class CartItemService {
 
     public void getCartItemById(String id){
 
+    }
+
+
+    public CartService start(Scanner scan) {
+        return null;
     }
     
 }

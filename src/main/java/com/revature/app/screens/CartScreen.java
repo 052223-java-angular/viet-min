@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 public class CartScreen implements IScreen{
     private final RouterServices router;
     private final CartService cart;
-    private final CartItemService cartItem;
+
 
     @Override
     public void start(Scanner scan) {
@@ -40,14 +40,14 @@ public class CartScreen implements IScreen{
                 case "2":
                     System.out.println("chose the item you want to delete");
                     item = scan.nextLine();
-                    cartItem.remove(item);
+                    cart.remove(item);
                     break;
                 case "3":
                     System.out.println("choose item you want to modify");
                     item = scan.nextLine();
                     System.out.println("change amount to:");
                     amount = scan.nextLine();
-                    cartItem.modify(item, amount);
+                    cart.modify(item, amount);
                     break;
                 case "4":
                     System.out.println("Your total will be: ");
