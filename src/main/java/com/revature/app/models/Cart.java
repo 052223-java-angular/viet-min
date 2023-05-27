@@ -17,5 +17,5 @@ public class Cart {
     private String id;
     private String user_id;
     private String total;
-    private List<CartItems> items;
+    private List<CartItem> items;
 }

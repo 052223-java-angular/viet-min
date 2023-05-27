@@ -2,7 +2,7 @@ package com.revature.app.services;
 
 import java.util.Optional;
 
-import com.revature.app.models.CartItems;
+import com.revature.app.models.CartItem;
 
 import lombok.AllArgsConstructor;
 
