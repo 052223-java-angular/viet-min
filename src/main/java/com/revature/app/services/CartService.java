@@ -1,9 +1,11 @@
 package com.revature.app.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.revature.app.daos.CartDAO;
 import com.revature.app.models.Cart;
+import com.revature.app.models.CartItem;
 import com.revature.app.models.User;
 
 import lombok.AllArgsConstructor;
@@ -39,6 +41,10 @@ public class CartService {
     }    
     
     public Optional<Cart> getCartByUserId(String user_id) {
-        return cartDAO.findByUserId(user_id);
+        Optional<Cart> cart = cartDAO.findByUserId(user_id);
+        if(!cart.isEmpty()){
+            cart.get().setItems(cartItemService.getCartItemByCartId(cart.get().getId())); 
+        }
+        return cart;
     }
 }

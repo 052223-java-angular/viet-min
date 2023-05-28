@@ -7,18 +7,18 @@ import com.revature.app.daos.CartItemDAO;
 import com.revature.app.daos.ProductDAO;
 import com.revature.app.daos.RoleDAO;
 import com.revature.app.daos.UserDAO;
-import com.revature.app.models.Session;
 import com.revature.app.screens.BrowseProductScreen;
 import com.revature.app.screens.CartScreen;
 import com.revature.app.screens.HomeScreen;
 import com.revature.app.screens.LogInScreen;
 import com.revature.app.screens.RegisterScreen;
+import com.revature.app.utils.SessionUtil;
 import com.revature.app.screens.LogInScreen;
 
 
 
 public class RouterServices {
-    private Session session;
+    private SessionUtil session;
     public void navigate(String path, Scanner scan) {
         switch (path) {
             case "/home":
@@ -28,7 +28,7 @@ public class RouterServices {
                 new LogInScreen(this, getUserService()).start(scan);
                 break;
             case "/register":
-                new RegisterScreen(this, getUserService()).start(scan);
+                new RegisterScreen(this, getUserService(), session).start(scan);
                 break;
             case "/review":
                 //new 

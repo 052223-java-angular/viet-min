@@ -119,8 +119,37 @@ public class CartItemDAO implements CrudDAO<CartItem> {
     public List<CartItem> findAll() {
         List<CartItem> cartItems = new ArrayList<>();
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "select * from users";
+            String sql = "select * from cart_items";
             try(PreparedStatement ps = conn.prepareStatement(sql)){
+                try(ResultSet rs = ps.executeQuery()){
+                    while(rs.next()){
+                        CartItem cartItem = new CartItem();
+                        cartItem.setId(rs.getString("id"));
+                        cartItem.setCart_id(rs.getString("cart_id"));
+                        cartItem.setProduct_id(rs.getString("product_id"));
+                        cartItem.setQuantity(rs.getInt("quantity"));
+                        cartItems.add(cartItem);
+                    }
+                }
+            }
+        }catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db \n" + e);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties \n" + e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc \n" + e);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        return cartItems;
+    }
+
+    public List<CartItem> findByCartId(String cart_id) {
+        List<CartItem> cartItems = new ArrayList<>();
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+            String sql = "select * from cart_items where cart_id = ?";
+            try(PreparedStatement ps = conn.prepareStatement(sql)){
+                ps.setString(1, cart_id);
                 try(ResultSet rs = ps.executeQuery()){
                     while(rs.next()){
                         CartItem cartItem = new CartItem();

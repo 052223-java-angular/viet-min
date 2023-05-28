@@ -1,5 +1,6 @@
 package com.revature.app.services;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -17,20 +18,20 @@ public class CartItemService {
     private final ProductService productService;
 
     public void add(String product_id, int count, Cart cart) {
-        Optional<Product> productOpt = productService.getById(product_id);
-        if (productOpt.isEmpty()) {
-            System.out.println("Product not found");
-            //need to add custom exceptions
-        }
+        // Optional<Product> productOpt = productService.getById(product_id);
+        // if (productOpt.isEmpty()) {
+        //     System.out.println("Product not found");
+        //     //need to add custom exceptions
+        // }
 
         for(CartItem cartItem : cart.getItems()){
             if(cartItem.getProduct_id() == product_id){
-                count += cartItem.getQuantity();
+                cartItemDAO.update(product_id, cartItem.getQuantity() + count);
+                return;
             }
         }
-
-        cartItemDAO.save(product_id);
-
+        CartItem cartItem = new CartItem(cart.getId(), product_id, count);
+        cartItemDAO.save(cartItem);
     }
     
 
@@ -44,6 +45,11 @@ public class CartItemService {
 
     public void getCartItemById(String id){
 
+    }
+
+
+    public List<CartItem> getCartItemByCartId(String cart_id) {
+        return cartItemDAO.findByCartId(cart_id);
     }
     
 }

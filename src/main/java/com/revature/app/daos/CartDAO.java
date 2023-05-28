@@ -63,12 +63,11 @@ public class CartDAO implements CrudDAO<Cart>{
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
 
-    public Optional<Cart> findByUserId(String id) {
+    public Optional<Cart> findByUserId(String user_id) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "select * from cart where id = ?";
-
+            String sql = "select * from cart where user_id = ?";
             try(PreparedStatement ps = conn.prepareStatement(sql)){
-                ps.setString(1, id);
+                ps.setString(1, user_id);
                 try(ResultSet rs = ps.executeQuery()){
                     if(rs.next()){
                         Cart cart = new Cart();
