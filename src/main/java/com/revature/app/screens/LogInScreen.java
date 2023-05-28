@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import com.revature.app.services.RouterServices;
 import com.revature.app.services.UserService;
+import com.revature.app.utils.SessionUtil;
 
 import lombok.AllArgsConstructor;
 
@@ -11,6 +12,7 @@ import lombok.AllArgsConstructor;
 public class LogInScreen implements IScreen{
     private final RouterServices router;
     private final UserService userService;
+    private SessionUtil session;
 
     @Override
     public void start(Scanner scan) {
