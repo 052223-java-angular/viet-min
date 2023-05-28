@@ -153,4 +153,34 @@ public class ProductDAO implements CrudDAO {
             throw new RuntimeException("Unable to load jdbc \n" + e);
         }
     }
+
+    public Optional<Product> getProduct(String id) {
+        // gets product from id
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+            String sql = MessageFormat.format("SELECT * FROM products WHERE id = {0}", id);
+
+            try(PreparedStatement ps = conn.prepareStatement(sql)){
+                try(ResultSet rs = ps.executeQuery()){
+                    Product product = new Product();
+                    if(rs.next()){
+                        product.setId(rs.getString("id"));
+                        product.setName(rs.getString("name"));
+                        product.setDescription(rs.getString("description"));
+                        product.setPrice(rs.getDouble("price"));
+                        product.setCategory(rs.getInt("category"));
+                        product.setStock(rs.getInt("stock"));
+                        return Optional.of(product);
+                    }
+                    
+                }
+            }
+        }catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db \n" + e);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties \n" + e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc \n" + e);
+        }
+        return Optional.empty();
+    }
 }

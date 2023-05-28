@@ -47,7 +47,7 @@ public class CartItemDAO implements CrudDAO<CartItem> {
 
     public void update(String id, int quantity) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "update cart_items set quantity='?' where id = '?'";
+            String sql = "update cart_items set quantity = ? where id = ?";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
                 ps.setInt(1, quantity);

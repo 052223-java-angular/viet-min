@@ -38,7 +38,7 @@ public class RouterServices {
                 //new 
                 break;
             case "/cart":
-                new CartScreen(this, getCartService()).start(scan);;
+                new CartScreen(this, getCartService(), session).start(scan);;
                 //new 
                 break;
             case "/menu":

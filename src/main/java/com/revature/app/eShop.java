@@ -12,7 +12,7 @@ public class eShop {
     Scanner scan = new Scanner(System.in);
 
     RouterServices route = new RouterServices(new SessionUtil());
-    route.navigate("/cart", scan);
+    route.navigate("/home", scan);
     scan.close();
   }
 }

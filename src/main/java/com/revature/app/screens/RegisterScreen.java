@@ -1,5 +1,6 @@
 package com.revature.app.screens;
 
+import java.util.Optional;
 import java.util.Scanner;
 
 import com.revature.app.services.RouterServices;
@@ -49,7 +50,9 @@ public class RegisterScreen implements IScreen {
             }
 
             userService.register(username, password);
-
+            Optional<User> user = userService.login(username, password);
+            session.setSession(user.get());
+            router.navigate("/browse", scan);
             //to-do:
             //go to screen thats available after log-in
             break;

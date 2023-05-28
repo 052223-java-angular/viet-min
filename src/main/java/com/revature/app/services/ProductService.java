@@ -31,4 +31,9 @@ public class ProductService {
     public List<Product> byPrice(double minPrice, double maxPrice) {
         return productDao.findByPriceRange(minPrice, maxPrice);
     }
+
+    public Optional<Product> getProd(String id) {
+        return productDao.getProduct(id);
+    }
+
 }

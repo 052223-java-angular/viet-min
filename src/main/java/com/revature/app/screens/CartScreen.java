@@ -1,14 +1,19 @@
 package com.revature.app.screens;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
+
+import org.apache.logging.log4j.core.net.ssl.SslConfiguration;
 
 import com.revature.app.models.Cart;
 import com.revature.app.models.CartItem;
 import com.revature.app.services.CartService;
 import com.revature.app.services.ProductService;
 import com.revature.app.services.RouterServices;
+import com.revature.app.utils.SessionUtil;
 
 import lombok.AllArgsConstructor;
 
@@ -16,6 +21,7 @@ import lombok.AllArgsConstructor;
 public class CartScreen implements IScreen{
     private final RouterServices router;
     private final CartService cart;
+    private SessionUtil session;
 
 
     @Override
@@ -24,6 +30,7 @@ public class CartScreen implements IScreen{
         String item = "";
         int amount = 0;
         while(true){
+            System.out.println("[1] Continue shopping " + session.getUsername());
             System.out.println("[1] Continue shopping");
             System.out.println("[2] Remove item");
             System.out.println("[3] Modify item");
@@ -32,9 +39,10 @@ public class CartScreen implements IScreen{
             System.out.println("[x] Exit");
             Optional<Cart> ct = cart.getCartByUserId("38d853d5-8235-4d05-b285-d51f0b11ca6b");
             List<CartItem> ci = ct.get().getItems();
-            
-            for(CartItem c : ci){
-                System.out.println(c.getProduct_id() + " " + c.getQuantity());
+            Map<String, String> idMap = new HashMap<>();
+            for(int i = 0; i < ci.size(); i++){
+                idMap.put("p" + i, ci.get(i).getProduct_id());
+                System.out.println("[p" + i + "]: " + ci.get(i).getProduct_id() + " stock: " + ci.get(i).getQuantity());
             }
 
             input = scan.nextLine();
@@ -50,14 +58,14 @@ public class CartScreen implements IScreen{
                 case "2":
                     System.out.println("chose the item you want to delete");
                     item = scan.nextLine();
-                    cart.remove(item);
+                    cart.remove(idMap.get(item));
                     break;
                 case "3":
                     System.out.println("choose item you want to modify");
                     item = scan.nextLine();
                     System.out.println("change amount to:");
                     amount = Integer.parseInt(scan.nextLine());
-                    cart.modify(item, amount);
+                    cart.modify(idMap.get(item), amount);
                     break;
                 case "4":
                     System.out.println("Your total will be: ");

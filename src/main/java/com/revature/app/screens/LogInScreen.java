@@ -1,7 +1,9 @@
 package com.revature.app.screens;
 
+import java.util.Optional;
 import java.util.Scanner;
 
+import com.revature.app.models.User;
 import com.revature.app.services.RouterServices;
 import com.revature.app.services.UserService;
 import com.revature.app.utils.SessionUtil;
@@ -45,13 +47,15 @@ public class LogInScreen implements IScreen{
                 router.navigate("/home", scan);
                 break;
             }
-
-            if(!userService.login(username, password)){
+            Optional<User> user = userService.login(username, password);
+            if(user.isEmpty()){
                 System.out.println("\nNo user found with that combination of username and password found");
                 System.out.println("\nTry again...");
                 continue;
             }else{
-                System.out.println("\nSuccess!!!");
+                session.setSession(user.get());
+                System.out.println("success!");
+                router.navigate("/browse", scan);
             }
             
             //to-do:

@@ -18,11 +18,10 @@ public class CartItemService {
     private final ProductService productService;
 
     public void add(String product_id, int count, Cart cart) {
-        // Optional<Product> productOpt = productService.getById(product_id);
-        // if (productOpt.isEmpty()) {
-        //     System.out.println("Product not found");
-        //     //need to add custom exceptions
-        // }
+        Optional<Product> productOpt = productService.getProd(product_id);
+        if (productOpt.isEmpty()) {
+            System.out.println("Product not found");
+        }
 
         for(CartItem cartItem : cart.getItems()){
             if(cartItem.getProduct_id() == product_id){
@@ -36,7 +35,7 @@ public class CartItemService {
     
 
     public void modify(String item, int count) {
-        cartItemDAO.update(item);
+        cartItemDAO.update(item, count);
     }
 
     public void remove(String item) {
