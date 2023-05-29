@@ -34,8 +34,8 @@ public class CartService {
         cartItemService.remove(item_id);
     }
 
-    public String modify(String item, String cart_id, int amount) {
-        return cartItemService.modify(item, cart_id, amount);
+    public String modify(String product_id, String cartItem_id, int amount) {
+        return cartItemService.modify(product_id, cartItem_id, amount);
     }    
     
     public Optional<Cart> getCartByUserId(String user_id) {

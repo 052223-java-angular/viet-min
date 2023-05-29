@@ -45,14 +45,13 @@ public class CartItemDAO implements CrudDAO<CartItem> {
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 
-    public void update(String product_id, String cart_id, int quantity) {
+    public void update(String id, int quantity) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "update cart_items set quantity = ? where product_id = ? and cart_id = ?";
+            String sql = "update cart_items set quantity = ? where id = ?";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
                 ps.setInt(1, quantity);
-                ps.setString(2, product_id);
-                ps.setString(3, cart_id);
+                ps.setString(2, id);
                 ps.executeUpdate();
             }
         }catch (SQLException e) {

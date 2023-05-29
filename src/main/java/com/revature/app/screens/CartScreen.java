@@ -39,7 +39,7 @@ public class CartScreen implements IScreen{
                 clearScreen();
                 
                 Optional<Cart> cartOpt = cart.getCartByUserId(session.getId());
-                Map<String, String> itemMap = new HashMap<>();
+                Map<String, CartItem> itemMap = new HashMap<>();
                 double total = 0;
 
                 displayItems(cartOpt, itemMap, total);
@@ -63,7 +63,7 @@ public class CartScreen implements IScreen{
                             continue;
                         }else{
                             item = getItem(itemMap, scan);
-                            cart.remove(itemMap.get(item));
+                            cart.remove(itemMap.get(item).getId());
                             continue;
                         }
                     case "3":
@@ -74,7 +74,7 @@ public class CartScreen implements IScreen{
                             item = getItem(itemMap, scan);
                             System.out.println("change amount to:");
                             amount = Integer.parseInt(scan.nextLine());
-                            System.out.println(cart.modify(itemMap.get(item), cartOpt.get().getId(), amount));
+                            System.out.println(cart.modify(itemMap.get(item).getProduct_id(), itemMap.get(item).getId(), amount));
                             System.out.print("\nPress enter to continue...");
                             scan.nextLine();
                             continue;
@@ -233,13 +233,13 @@ securityCode = scan.nextLine();
         return item;
     }
 
-    private void displayItems(Optional<Cart> cartOpt, Map<String, String> itemMap, double total){
+    private void displayItems(Optional<Cart> cartOpt, Map<String, CartItem> itemMap, double total){
 
         if(cartOpt.isPresent()){
             List<CartItem> cartItemList = cartOpt.get().getItems();
             
             for(int i = 0; i < cartItemList.size(); i++){
-                itemMap.put("p" + i, cartItemList.get(i).getProduct_id());
+                itemMap.put("p" + i, cartItemList.get(i));
                 System.out.println(
                     String.format("%-60s","[p" + i + "]: " + cartItemList.get(i).getName())  + 
                     String.format("%-20s","(" + cartItemList.get(i).getQuantity() + ")*" + cartItemList.get(i).getPrice()) + 

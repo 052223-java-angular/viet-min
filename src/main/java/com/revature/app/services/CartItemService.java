@@ -24,9 +24,8 @@ public class CartItemService {
             
         }
         for(CartItem cartItem : cart.getItems()){
-            System.out.println(cartItem);
             if(cartItem.getProduct_id().equals(product_id) ){
-                return modify(product_id, cartItem.getCart_id(), cartItem.getQuantity() + count);
+                return modify(product_id, cartItem.getId(), cartItem.getQuantity() + count);
             }
         }
         if(productOpt.get().getStock() < count){
@@ -40,7 +39,7 @@ public class CartItemService {
     }
     
 
-    public String modify(String product_id, String cart_id, int count) {
+    public String modify(String product_id, String id, int count) {
         Optional<Product> productOpt = productService.getProd(product_id);
         if (productOpt.isEmpty()) {
             System.out.println("Product not found");
@@ -50,7 +49,7 @@ public class CartItemService {
         }else if(count < 0){
             return "cannot be negative, please enter a number between 0 and " + productOpt.get().getStock();
         }
-        cartItemDAO.update(product_id, cart_id, count);
+        cartItemDAO.update(id, count);
         return "quantity updated";
     }
 
