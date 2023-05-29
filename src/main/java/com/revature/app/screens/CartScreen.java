@@ -15,6 +15,7 @@ import com.revature.app.services.PaymentService;
 import com.revature.app.services.ProductService;
 import com.revature.app.services.RouterServices;
 import com.revature.app.utils.SessionUtil;
+import java.text.DecimalFormat;
 
 import lombok.AllArgsConstructor;
 
@@ -23,40 +24,42 @@ public class CartScreen implements IScreen{
     private final RouterServices router;
     private final CartService cart;
     private SessionUtil session;
-
+    private final DecimalFormat df = new DecimalFormat("0.00");
 
     @Override
     public void start(Scanner scan) {
         String input = "";
         String item = "";
         int amount = 0;
-        double total = 0;
+        
         String cardNumber = "";
         String expirtionDate = "";
         String securityCode = "";
         exit:{
             while(true){
                 clearScreen();
-                System.out.println("[1] Continue shopping");
-                System.out.println("[2] Remove item");
-                System.out.println("[3] Modify item");
-                System.out.println("[4] Checkout");
-                System.out.println("[b] Back");
-                System.out.println("[x] back to menu");
-                Optional<Cart> ct = cart.getCartByUserId("38d853d5-8235-4d05-b285-d51f0b11ca6b");
+                
+                Optional<Cart> cartOpt = cart.getCartByUserId(session.getId());
                 Map<String, String> idMap = new HashMap<>();
-                
-                if(ct.isPresent()){
-                    List<CartItem> ci = ct.get().getItems();
+                double total = 0;
+                if(cartOpt.isPresent()){
+                    List<CartItem> cartItemList = cartOpt.get().getItems();
                     
-                    for(int i = 0; i < ci.size(); i++){
-                        idMap.put("p" + i, ci.get(i).getProduct_id());
-                        System.out.println("[p" + i + "]: " + ci.get(i).getName() + "----------[" + ci.get(i).getQuantity() + "]*" + ci.get(i).getPrice() + "----------" + ci.get(i).getPrice() * ci.get(i).getQuantity());
-                        total += ci.get(i).getPrice() * ci.get(i).getQuantity();
+                    for(int i = 0; i < cartItemList.size(); i++){
+                        idMap.put("p" + i, cartItemList.get(i).getProduct_id());
+                        System.out.println(
+                            String.format("%-60s","[p" + i + "]: " + cartItemList.get(i).getName())  + 
+                            String.format("%-20s","(" + cartItemList.get(i).getQuantity() + ")*" + cartItemList.get(i).getPrice()) + 
+                            "[" + df.format(cartItemList.get(i).getPrice() * cartItemList.get(i).getQuantity()) + "]"
+                        );
+                        total += cartItemList.get(i).getPrice() * cartItemList.get(i).getQuantity();
                     }
-                    System.out.println(total);
+                    System.out.println(String.format("%88s","total: " + df.format(total)));
+                }else{
+                    System.out.println("Cart is Empty");
                 }
-                
+
+                System.out.println("[1] Continue shopping | [2] Remove item | [3] Modify item | [4] Checkout | [b] Back | [x] back to menu");
     
                 input = scan.nextLine();
                 switch(input){
@@ -103,7 +106,7 @@ public class CartScreen implements IScreen{
                                 System.out.println("Thank you for your purchase!");
                                 //need order service to be implemented
                                 //orderService.add(cart);
-                                cart.clear(ct.get().getId());
+                                cart.clear(cartOpt.get().getId());
                                 //add to order history
                             }else{
                                 System.out.println("Try again!");
