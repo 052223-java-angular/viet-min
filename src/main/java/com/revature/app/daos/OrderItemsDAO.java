@@ -9,21 +9,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.revature.app.models.Order;
+import com.revature.app.models.OrderItems;
 import com.revature.app.utils.ConnectionFactory;
 
-public class OrderDAO implements CrudDAO<Order>{
+public class OrderItemsDAO implements CrudDAO<OrderItems>{
 
     @Override
-    public void save(Order obj) {
+    public void save(OrderItems obj) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "insert into orders (id, user_id, payment_id, total) values (?, ?, ?, ?)";
+            String sql = "insert into order_items (id, order_id, product_id, quantity) values (?, ?, ?, ?)";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
                 ps.setString(1, obj.getId());
-                ps.setString(2, obj.getUser_id());
-                ps.setString(3, obj.getPayment_id());
-                ps.setDouble(4, obj.getTotal());
+                ps.setString(2, obj.getOrder_id());
+                ps.setString(3, obj.getProduct_id());
+                ps.setInt(4, obj.getQuantity());
 
                 ps.executeUpdate();
             }
@@ -38,6 +38,7 @@ public class OrderDAO implements CrudDAO<Order>{
             throw new RuntimeException(e);
         }
     }
+    
 
     @Override
     public void update(String id) {
@@ -52,7 +53,7 @@ public class OrderDAO implements CrudDAO<Order>{
     }
 
     @Override
-    public Optional<Order> findById(String id) {
+    public Optional findById(String id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
@@ -60,24 +61,24 @@ public class OrderDAO implements CrudDAO<Order>{
     @Override
     public List findAll() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
     
-    public List<Order> findAllByUser(String id) {
-        // Displays all orders made by user
+    public List<OrderItems> findbyOrderId(String id) {
+        // Displays all order items on an order
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "SELECT * FROM orders WHERE user_id = ?";
+            String sql = "SELECT * FROM order_items WHERE order_id = ?";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
                 ps.setString(1, id);
                 try(ResultSet rs = ps.executeQuery()){
-                    List<Order> orders = new ArrayList<>();
+                    List<OrderItems> orders = new ArrayList<>();
                     while(rs.next()){
-                        Order order = new Order();
+                        OrderItems order = new OrderItems();
                         order.setId(rs.getString("id"));
-                        order.setUser_id(rs.getString("user_id"));
-                        order.setPayment_id(rs.getString("payment_id"));
-                        order.setTotal(rs.getDouble("total"));
+                        order.setOrder_id(rs.getString("order_id"));
+                        order.setProduct_id(rs.getString("product_id"));
+                        order.setQuantity(rs.getInt("quantity"));
                         
                         orders.add(order);
                     }

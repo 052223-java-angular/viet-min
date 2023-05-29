@@ -105,7 +105,7 @@ public class ProductDAO implements CrudDAO {
     public Optional<Product> findByName(String prodName) {
         // Displays products that match name search
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "SELECT * FROM products WHERE = ?";
+            String sql = "SELECT * FROM products WHERE name = ?";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
                 ps.setString(1, prodName);
@@ -195,5 +195,26 @@ public class ProductDAO implements CrudDAO {
             throw new RuntimeException("Unable to load jdbc \n" + e);
         }
         return Optional.empty();
+    }
+
+    private void setStock(String id, int quantity) {
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+            String sql = "UPDATE products (stock) VALUES (?) WHERE id = ?";
+
+            try(PreparedStatement ps = conn.prepareStatement(sql)){
+                ps.setInt(1, quantity);
+                ps.setString(2, id);
+                ps.executeUpdate();
+            }
+
+        }catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db \n" + e);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties \n" + e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc \n" + e);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
 }

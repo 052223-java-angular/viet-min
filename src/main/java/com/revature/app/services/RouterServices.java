@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 import com.revature.app.daos.CartDAO;
 import com.revature.app.daos.CartItemDAO;
+import com.revature.app.daos.OrderDAO;
+import com.revature.app.daos.OrderItemsDAO;
 import com.revature.app.daos.ProductDAO;
 import com.revature.app.daos.ReviewDAO;
 import com.revature.app.daos.RoleDAO;
@@ -21,6 +23,7 @@ import lombok.AllArgsConstructor;
 
 import com.revature.app.screens.ReviewScreen;
 import com.revature.app.screens.MainMenuScreen;
+import com.revature.app.screens.OrderHistoryScreen;
 import com.revature.app.screens.ProductDetailScreen;
 
 
@@ -41,21 +44,22 @@ public class RouterServices {
                 new RegisterScreen(this, getUserService(), session).start(scan);
                 break;
             case "/review":
-                new ReviewScreen(this, product, session, getReviewService(), getUserService()).start(scan);;
+                new ReviewScreen(this, product, session, getReviewService(), getUserService()).start(scan);
                 break;
             case "/cart":
-                new CartScreen(this, getCartService(), session).start(scan);;
-                //new 
+                new CartScreen(this, getCartService(), session).start(scan);
                 break;
             case "/menu":
-                //new MainMenuScreen(this);
+                new MainMenuScreen(this, session);
                 break;
             case "/browse":
-                new BrowseProductScreen(this, getProductService(),session).start(scan);
+                new BrowseProductScreen(this, getProductService(), session).start(scan);
                 break;
             case "/detail":
                 new ProductDetailScreen(this, getCartService(), session, product).start(scan);
                 break;
+            case "/history":
+                new OrderHistoryScreen(this, session, getOrderService(), getOrderItemService());
             default:
                 break;
         }
@@ -86,6 +90,14 @@ public class RouterServices {
     }
 
     public void setProduct(Product prod) {
-        product = prod;
+        this.product = prod;
+    }
+
+    private OrderService getOrderService(){
+        return new OrderService(new OrderDAO());
+    }
+
+    private OrderItemService getOrderItemService(){
+        return new OrderItemService(new OrderItemsDAO());
     }
 }

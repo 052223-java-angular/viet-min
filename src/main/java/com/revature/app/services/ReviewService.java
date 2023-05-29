@@ -28,6 +28,10 @@ public class ReviewService {
         reviewDAO.save(review);
     }
 
+    public void update(Review review) {
+        reviewDAO.update(review);
+    }
+
     public Optional<Review> findReview(String userId, String productId) {
         return reviewDAO.findById(userId, productId);
     }

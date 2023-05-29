@@ -17,14 +17,14 @@ public class ReviewDAO implements CrudDAO<Review>{
     @Override
     public void save(Review obj) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "INSERT INTO review (id, rating, comment, user_id, product_id) VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO reviews (id, rating, comment, user_id, product_id) VALUES (?, ?, ?, ?, ?)";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
                 ps.setString(1, obj.getId());
                 ps.setInt(2, obj.getRating());
                 ps.setString(3, obj.getComment());
                 ps.setString(4, obj.getUser_id());
-                ps.setString(4, obj.getProduct_id());
+                ps.setString(5, obj.getProduct_id());
                 ps.executeUpdate();
             }
 

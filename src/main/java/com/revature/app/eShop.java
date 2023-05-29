@@ -3,10 +3,13 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import com.revature.app.models.Product;
 import com.revature.app.services.RouterServices;
 import com.revature.app.utils.SessionUtil;
 
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public class eShop {
   public static void main(String args[]) throws ClassNotFoundException, IOException, SQLException {
     Scanner scan = new Scanner(System.in);
