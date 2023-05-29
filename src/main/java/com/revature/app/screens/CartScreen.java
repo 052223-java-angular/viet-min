@@ -101,6 +101,7 @@ public class CartScreen implements IScreen{
                             securityCode = getSecurityCode(scan);
                             if(PaymentService.pay(cardNumber, expirtionDate, securityCode)){
                                 System.out.println("Thank you for your purchase!");
+                                //need order service to be implemented
                                 //orderService.add(cart);
                                 cart.clear(ct.get().getId());
                                 //add to order history
