@@ -89,15 +89,16 @@ public class CartScreen implements IScreen{
                             cardNumber = getCardNumber(scan);
                             expirationDate = getExpirationDate(scan);
                             securityCode = getSecurityCode(scan);
-                            if(paymentService.pay(cardNumber, expirationDate, securityCode, cartOpt)){
+                            String message = paymentService.pay(cardNumber, expirationDate, securityCode, cartOpt);
+                            if(message.equals("Thank you for your purchase!")){
                                 //add to order history
                                 //need order service to be implemented
                                 //orderService.add(cart);
                                 cart.clear(cartOpt.get().getId());
                                 
-                                System.out.println("Thank you for your purchase!");
+                                System.out.println(message);
                             }else{
-                                System.out.println("Payment failed!");
+                                System.out.println(message);
                             }
                         }
                         break;

@@ -7,6 +7,7 @@ import java.util.Optional;
 import com.revature.app.models.Cart;
 import com.revature.app.models.CartItem;
 import com.revature.app.models.Product;
+import com.revature.app.utils.custom_datastucture.Pair;
 
 import lombok.AllArgsConstructor;
 
@@ -14,18 +15,24 @@ import lombok.AllArgsConstructor;
 public class PaymentService {
     private final ProductService productService;
     
-    public boolean pay(String cardNumber, String expirtionDate, String securityCode, Optional<Cart> cartOpt) {
+    public String pay(String cardNumber, String expirtionDate, String securityCode, Optional<Cart> cartOpt) {
         List<CartItem> cartItemList = cartOpt.get().getItems();
-        List<String[]> purchased = new ArrayList<>();
+        List<Pair> purchased = new ArrayList<>();
         for(CartItem cartItem : cartItemList){
             Optional<Product> product = productService.getProd(cartItem.getProduct_id());
-            String[] pInfo = new String[2];
-            purchased.add(pInfo);
+            
             if(product.get().getStock() < cartItem.getQuantity()){
-                return false;
+                for(Pair pair : purchased){
+                    productService.setStock(pair.getId(), product.get().getStock() - pair.getCount());
+                }
+                return "We do not have enough " + product.get().getName() + " in stock! Change quantity to " + product.get().getStock() + " or lower.";
+            }else{
+                productService.setStock(product.get().getId(), product.get().getStock() - cartItem.getQuantity());
+                Pair pInfo = new Pair(product.get().getId(), cartItem.getQuantity());
+                purchased.add(pInfo);
             }
         }
-        return true;
+        return "Thank you for your purchase!";
     }
 
     public boolean isValidCardNumber(String cardNumber) {
