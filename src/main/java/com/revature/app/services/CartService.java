@@ -28,7 +28,7 @@ public class CartService {
     public void add(String user_id, String item_id, int count) {
         Optional<Cart> cartOpt = cartDAO.findByUserId(user_id);
         if(cartOpt.isEmpty()){
-            createCart(item_id);
+            createCart(user_id);
         }
         cartItemService.add(item_id, count, cartOpt.get());
     }

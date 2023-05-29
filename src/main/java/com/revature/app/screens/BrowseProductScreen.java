@@ -27,6 +27,7 @@ public class BrowseProductScreen implements IScreen{
             System.out.println("[2] Search product by name");
             System.out.println("[3] Search product by category");
             System.out.println("[4] Search product by price");
+            System.out.println("[5] Go to cart");
             System.out.println("[b] Return to previous menu");
             System.out.println("[x] Exit");
 
@@ -51,6 +52,9 @@ public class BrowseProductScreen implements IScreen{
                 //     break;
                 case "1", "2", "3", "4":
                     searchProducts(input, scan);
+                    break;
+                case "5":
+                    router.navigate("/cart", scan);
                     break;
                 default:
                     clearScreen();

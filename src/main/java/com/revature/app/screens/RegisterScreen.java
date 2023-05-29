@@ -23,6 +23,7 @@ public class RegisterScreen implements IScreen {
         String password = "";
 
         while(true){
+            clearScreen();
             System.out.println("Register an account");
             System.out.println("[b] Back to main menu");
             System.out.println("[x] Exit");
@@ -53,8 +54,6 @@ public class RegisterScreen implements IScreen {
             Optional<User> user = userService.login(username, password);
             session.setSession(user.get());
             router.navigate("/browse", scan);
-            //to-do:
-            //go to screen thats available after log-in
             break;
             
         }
@@ -63,6 +62,7 @@ public class RegisterScreen implements IScreen {
     public String getUsername(Scanner scan){
         String username = "";
         while(true){
+            clearScreen();
             System.out.println("\nEnter a username: ");
             username = scan.nextLine();
 
@@ -74,6 +74,7 @@ public class RegisterScreen implements IScreen {
                 return "b";
             }
             if (!userService.isValidUserName(username)) {
+                clearScreen();
                 System.out.println("Username needs to be 8-20 characters long.");
                 System.out.print("\nPress enter to continue...");
                 scan.nextLine();
@@ -81,6 +82,7 @@ public class RegisterScreen implements IScreen {
             }
 
             if (!userService.isUniqueUserName(username)) {
+                clearScreen();
                 System.out.println("Username already in use!");
                 System.out.print("\nPress enter to continue...");
                 scan.nextLine();
@@ -98,6 +100,7 @@ public class RegisterScreen implements IScreen {
         String confirmPassword = "";
         
         while(true){
+            clearScreen();
             System.out.println("\nEnter a password: ");
             password = scan.nextLine();
 
@@ -110,6 +113,7 @@ public class RegisterScreen implements IScreen {
             }
 
             if (!userService.isValidPassword(password)) {
+                clearScreen();
                 System.out.println("Password needs to be minimum 8 characters, at least 1 letter and 1 number");
                 System.out.print("\nPress enter to continue...");
                 scan.nextLine();
@@ -128,6 +132,7 @@ public class RegisterScreen implements IScreen {
             }
 
             if (!userService.isSamePassword(password, confirmPassword)) {
+                clearScreen();
                 System.out.println("Passwords do not match");
                 System.out.print("\nPress enter to continue...");
                 scan.nextLine();
@@ -138,6 +143,11 @@ public class RegisterScreen implements IScreen {
             break;
         }
         return password;
+    }
+
+    private void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
     
 }

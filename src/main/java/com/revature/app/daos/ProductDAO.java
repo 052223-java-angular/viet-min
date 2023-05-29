@@ -157,9 +157,10 @@ public class ProductDAO implements CrudDAO {
     public Optional<Product> getProduct(String id) {
         // gets product from id
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = MessageFormat.format("SELECT * FROM products WHERE id = {0}", id);
+            String sql = "SELECT * FROM products WHERE id = ?";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
+                ps.setString(1, id);
                 try(ResultSet rs = ps.executeQuery()){
                     Product product = new Product();
                     if(rs.next()){

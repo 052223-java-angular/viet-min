@@ -22,6 +22,7 @@ public class LogInScreen implements IScreen{
         String password = "";
 
         while(true){
+            clearScreen();
             System.out.println("Sign in here");
             System.out.println("[b] Back to main menu");
             System.out.println("[x] Exit");
@@ -49,8 +50,10 @@ public class LogInScreen implements IScreen{
             }
             Optional<User> user = userService.login(username, password);
             if(user.isEmpty()){
+                clearScreen();
                 System.out.println("\nNo user found with that combination of username and password found");
-                System.out.println("\nTry again...");
+                System.out.print("\nPress enter to continue...");
+                scan.nextLine();
                 continue;
             }else{
                 session.setSession(user.get());
@@ -81,6 +84,11 @@ public class LogInScreen implements IScreen{
         password = scan.nextLine();
 
         return password.equalsIgnoreCase("x") ? "x" : password.equalsIgnoreCase("b") ? "b" : password;
+    }
+
+    private void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
     
 }

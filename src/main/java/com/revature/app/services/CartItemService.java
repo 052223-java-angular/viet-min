@@ -29,7 +29,7 @@ public class CartItemService {
                 return;
             }
         }
-        CartItem cartItem = new CartItem(cart.getId(), product_id, count);
+        CartItem cartItem = new CartItem(productOpt.get().getName(), cart.getId(), product_id, count, productOpt.get().getPrice());
         cartItemDAO.save(cartItem);
     }
     

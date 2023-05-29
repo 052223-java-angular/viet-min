@@ -119,15 +119,17 @@ public class CartItemDAO implements CrudDAO<CartItem> {
     public List<CartItem> findAll() {
         List<CartItem> cartItems = new ArrayList<>();
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "select * from cart_items";
+            String sql = "SELECT c.id, c.quantity, c.cart_id, c.product_id, p.name, p.price FROM cart_items c INNER JOIN products p ON c.product_id = p.id";
             try(PreparedStatement ps = conn.prepareStatement(sql)){
                 try(ResultSet rs = ps.executeQuery()){
                     while(rs.next()){
                         CartItem cartItem = new CartItem();
                         cartItem.setId(rs.getString("id"));
+                        cartItem.setName(rs.getString("name"));
                         cartItem.setCart_id(rs.getString("cart_id"));
                         cartItem.setProduct_id(rs.getString("product_id"));
                         cartItem.setQuantity(rs.getInt("quantity"));
+                        cartItem.setPrice(rs.getDouble("price"));
                         cartItems.add(cartItem);
                     }
                 }
@@ -147,16 +149,18 @@ public class CartItemDAO implements CrudDAO<CartItem> {
     public List<CartItem> findByCartId(String cart_id) {
         List<CartItem> cartItems = new ArrayList<>();
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "select * from cart_items where cart_id = ?";
+            String sql = "SELECT c.id, c.quantity, c.cart_id, c.product_id, p.name, p.price FROM cart_items c INNER JOIN products p ON c.product_id = p.id AND c.cart_id = ?";
             try(PreparedStatement ps = conn.prepareStatement(sql)){
                 ps.setString(1, cart_id);
                 try(ResultSet rs = ps.executeQuery()){
                     while(rs.next()){
                         CartItem cartItem = new CartItem();
                         cartItem.setId(rs.getString("id"));
+                        cartItem.setName(rs.getString("name"));
                         cartItem.setCart_id(rs.getString("cart_id"));
                         cartItem.setProduct_id(rs.getString("product_id"));
                         cartItem.setQuantity(rs.getInt("quantity"));
+                        cartItem.setPrice(rs.getDouble("price"));
                         cartItems.add(cartItem);
                     }
                 }
