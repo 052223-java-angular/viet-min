@@ -1,5 +1,7 @@
 package com.revature.app.utils;
 
+import java.util.Stack;
+
 import com.revature.app.models.User;
 
 import lombok.AllArgsConstructor;
@@ -17,6 +19,7 @@ public class SessionUtil {
     private String id;
     private String username;
     private String roleId;
+    private Stack<String> screenHistory = new Stack<>();
 
     public void setSession(User user) {
         this.id = user.getId();

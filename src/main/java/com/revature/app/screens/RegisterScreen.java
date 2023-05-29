@@ -25,34 +25,38 @@ public class RegisterScreen implements IScreen {
         while(true){
             clearScreen();
             System.out.println("Register an account");
-            System.out.println("[b] Back to main menu");
-            System.out.println("[x] Exit");
+            System.out.println("[b] Back ");
+            System.out.println("[x] Back to main menu");
 
             username = getUsername(scan);
 
             if(username.equals("x")){
+                router.navigate("/home", scan);
                 break;
             }
 
             if(username.equals("b")){
-                router.navigate("/home", scan);
+                router.navigate(session.getScreenHistory().pop(), scan);
                 break;
             }
 
             password = getPassword(scan);
 
             if(password.equals("x")){
+                router.navigate("/home", scan);
                 break;
             }
 
             if(password.equals("b")){
-                router.navigate("/home", scan);
+                router.navigate(session.getScreenHistory().pop(), scan);
+                
                 break;
             }
 
             userService.register(username, password);
             Optional<User> user = userService.login(username, password);
             session.setSession(user.get());
+            session.getScreenHistory().push("/register");
             router.navigate("/browse", scan);
             break;
             

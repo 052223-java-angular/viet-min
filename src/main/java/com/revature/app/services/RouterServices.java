@@ -26,7 +26,7 @@ public class RouterServices {
     public void navigate(String path, Scanner scan) {
         switch (path) {
             case "/home":
-                new HomeScreen(this).start(scan);
+                new HomeScreen(this, session).start(scan);
                 break;
             case "/login":
                 new LogInScreen(this, getUserService(), session).start(scan);
@@ -44,7 +44,7 @@ public class RouterServices {
             case "/menu":
                 break;
             case "/browse":
-                new BrowseProductScreen(this, getProductService()).start(scan);
+                new BrowseProductScreen(this, getProductService(), session).start(scan);
             default:
                 break;
         }

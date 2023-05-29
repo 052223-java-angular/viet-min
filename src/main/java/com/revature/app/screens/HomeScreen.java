@@ -3,12 +3,14 @@ package com.revature.app.screens;
 import java.util.Scanner;
 
 import com.revature.app.services.RouterServices;
+import com.revature.app.utils.SessionUtil;
 
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class HomeScreen implements IScreen {
     private final RouterServices router;
+    private SessionUtil session;
 
     @Override
     public void start(Scanner scan) {
@@ -27,11 +29,13 @@ public class HomeScreen implements IScreen {
 
                 switch (input.toLowerCase()) {
                 case "1":
+                    session.getScreenHistory().push("/home");
                     router.navigate("/login", scan);
-                    break;
+                    break exit;
                 case "2":
+                    session.getScreenHistory().push("/home");
                     router.navigate("/register", scan);
-                    break;
+                    break exit;
                 case "x":
                     System.out.println("\nSee you next time!");
                     break exit;

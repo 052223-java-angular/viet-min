@@ -10,6 +10,7 @@ import com.revature.app.models.Product;
 import com.revature.app.services.CategoryService;
 import com.revature.app.services.ProductService;
 import com.revature.app.services.RouterServices;
+import com.revature.app.utils.SessionUtil;
 
 import lombok.AllArgsConstructor;
 
@@ -17,53 +18,58 @@ import lombok.AllArgsConstructor;
 public class BrowseProductScreen implements IScreen{
     private final RouterServices router;
     private final ProductService productService;
+    private SessionUtil session;
 
     public void start(Scanner scan) {
         String input ="";
-        while(true){
-            clearScreen();
-            System.out.println("Welcome to Paimon's Bargains! What would you like to do?");
-            System.out.println("\n[1] Browse all products");
-            System.out.println("[2] Search product by name");
-            System.out.println("[3] Search product by category");
-            System.out.println("[4] Search product by price");
-            System.out.println("[5] Go to cart");
-            System.out.println("[b] Return to previous menu");
-            System.out.println("[x] Exit");
-
-            input = scan.nextLine().toLowerCase();
-
-            if (input.equals("x")) {
-                System.out.println("Goodbye!");
-                break;
-            }
-
-            if (input.equals("b")) {
-                router.navigate("/register", scan);
-                break;
-            }
-
-            switch(input) {
-                // case "x":
-                //     System.out.println("Goodbye!");
-                //     break;
-                // case "b":
-                //     router.navigate("/menu", scan);
-                //     break;
-                case "1", "2", "3", "4":
-                    searchProducts(input, scan);
+        exit:{
+            while(true){
+                clearScreen();
+                System.out.println("Welcome to Paimon's Bargains! What would you like to do?");
+                System.out.println("\n[1] Browse all products");
+                System.out.println("[2] Search product by name");
+                System.out.println("[3] Search product by category");
+                System.out.println("[4] Search product by price");
+                System.out.println("[5] Go to cart");
+                System.out.println("[b] back");
+                System.out.println("[x] Exit");
+    
+                input = scan.nextLine().toLowerCase();
+    
+                if (input.equals("x")) {
+                    System.out.println("Goodbye!");
                     break;
-                case "5":
-                    router.navigate("/cart", scan);
+                }
+    
+                if (input.equals("b")) {
+                    router.navigate(session.getScreenHistory().pop(), scan);
                     break;
-                default:
-                    clearScreen();
-                    System.out.println("Invalid option!");
-                    System.out.print("\nPress enter to continue...");
-                    scan.nextLine();
-                    break;
+                }
+    
+                switch(input) {
+                    // case "x":
+                    //     System.out.println("Goodbye!");
+                    //     break;
+                    // case "b":
+                    //     router.navigate("/menu", scan);
+                    //     break;
+                    case "1", "2", "3", "4":
+                        searchProducts(input, scan);
+                        break;
+                    case "5":
+                        session.getScreenHistory().push("/browse");
+                        router.navigate("/cart", scan);
+                        break exit;
+                    default:
+                        clearScreen();
+                        System.out.println("Invalid option!");
+                        System.out.print("\nPress enter to continue...");
+                        scan.nextLine();
+                        break;
+                }
             }
         }
+        
     }
 
     public void searchProducts(String input, Scanner scan) {

@@ -24,28 +24,30 @@ public class LogInScreen implements IScreen{
         while(true){
             clearScreen();
             System.out.println("Sign in here");
-            System.out.println("[b] Back to main menu");
-            System.out.println("[x] Exit");
+            System.out.println("[b] back");
+            System.out.println("[x] Back to main menu");
 
             username = getUsername(scan);
 
             if(username.equals("x")){
+                router.navigate("/home", scan);
                 break;
             }
 
             if(username.equals("b")){
-                router.navigate("/home", scan);
+                router.navigate(session.getScreenHistory().pop(), scan);
                 break;
             }
 
             password = getPassword(scan);
 
             if(password.equals("x")){
+                router.navigate("/home", scan);
                 break;
             }
 
             if(password.equals("b")){
-                router.navigate("/home", scan);
+                router.navigate(session.getScreenHistory().pop(), scan);
                 break;
             }
             Optional<User> user = userService.login(username, password);
@@ -58,12 +60,10 @@ public class LogInScreen implements IScreen{
             }else{
                 session.setSession(user.get());
                 System.out.println("success!");
+                session.getScreenHistory().push("/login");
                 router.navigate("/browse", scan);
+                break;
             }
-            
-            //to-do:
-            //go to screen thats available after log-in
-            break;
             
         }
     }
