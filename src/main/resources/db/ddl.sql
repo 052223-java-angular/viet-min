@@ -50,20 +50,13 @@ create table reviews(
     foreign key (product_id) references products (id)
 );
 
-create table payment(
-    id varchar primary key,
-    order_id varchar not NULL,
-    payment_num int NOT NULL
-);
 
 create table orders(
     id varchar primary key,
     user_id varchar not null,
-    payment_id varchar not null,
     total decimal NOT NULL,
 
     foreign key (user_id) references users (id),
-    foreign key (payment_id) references payment (id)
 );
 
 create table order_items(

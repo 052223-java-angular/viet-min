@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class PaymentService {
     public static boolean pay(String cardNumber, String expirtionDate, String securityCode) {
+        //check if there is enough in stock
         return true;
     }
 
