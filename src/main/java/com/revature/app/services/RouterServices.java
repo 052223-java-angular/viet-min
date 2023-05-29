@@ -5,8 +5,11 @@ import java.util.Scanner;
 import com.revature.app.daos.CartDAO;
 import com.revature.app.daos.CartItemDAO;
 import com.revature.app.daos.ProductDAO;
+import com.revature.app.daos.ReviewDAO;
 import com.revature.app.daos.RoleDAO;
 import com.revature.app.daos.UserDAO;
+import com.revature.app.models.Cart;
+import com.revature.app.models.Product;
 import com.revature.app.screens.BrowseProductScreen;
 import com.revature.app.screens.CartScreen;
 import com.revature.app.screens.HomeScreen;
@@ -16,13 +19,16 @@ import com.revature.app.utils.SessionUtil;
 
 import lombok.AllArgsConstructor;
 
-import com.revature.app.screens.LogInScreen;
+import com.revature.app.screens.ReviewScreen;
+import com.revature.app.screens.MainMenuScreen;
+import com.revature.app.screens.ProductDetailScreen;
 
 
 @AllArgsConstructor
 public class RouterServices {
     private SessionUtil session;
-
+    private Product product;
+    private Cart cart;
     public void navigate(String path, Scanner scan) {
         switch (path) {
             case "/home":
@@ -35,16 +41,21 @@ public class RouterServices {
                 new RegisterScreen(this, getUserService(), session).start(scan);
                 break;
             case "/review":
-                //new 
+                new ReviewScreen(this, product, session, getReviewService(), getUserService()).start(scan);;
                 break;
             case "/cart":
                 new CartScreen(this, getCartService(), session).start(scan);;
                 //new 
                 break;
             case "/menu":
+                //new MainMenuScreen(this);
                 break;
             case "/browse":
-                new BrowseProductScreen(this, getProductService(), session).start(scan);
+                new BrowseProductScreen(this, getProductService(),session).start(scan);
+                break;
+            case "/detail":
+                new ProductDetailScreen(session, this, product, cart).start(scan);
+                break;
             default:
                 break;
         }
@@ -68,5 +79,13 @@ public class RouterServices {
 
     private CartItemService getCartItemService(){
         return new CartItemService(new CartItemDAO() ,getProductService());
+    }
+
+    private ReviewService getReviewService(){
+        return new ReviewService(new ReviewDAO());
+    }
+
+    public void setProduct(Product prod) {
+        product = prod;
     }
 }

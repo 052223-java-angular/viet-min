@@ -2,9 +2,14 @@ package com.revature.app.screens;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
+import javax.sound.midi.SysexMessage;
+
 import com.revature.app.daos.CategoryDAO;
+import com.revature.app.models.Cart;
+import com.revature.app.models.CartItem;
 import com.revature.app.models.Category;
 import com.revature.app.models.Product;
 import com.revature.app.services.CategoryService;
@@ -74,65 +79,158 @@ public class BrowseProductScreen implements IScreen{
 
     public void searchProducts(String input, Scanner scan) {
         List<Product> prod;
-        while(true) {
-            clearScreen();
-            prod = new ArrayList<Product>();
-            switch(input) {
-                case "1":
-                    prod = productService.allProducts();
-                    printProducts(prod, scan);
-                    break;
-                case "2":
-                    prod = findByName(scan);
-                    printProducts(prod, scan);
-                    break;
-                case "3":
-                    prod = findByCategory(scan);
-                    printProducts(prod, scan);
-                    break;
-                case "4":
-                    prod = findByPrice(scan);
-                    printProducts(prod, scan);
-                    break;
+        exit: {
+            while(true) {
+                clearScreen();
+                prod = new ArrayList<Product>();
+                switch(input) {
+                    case "1":
+                        prod = productService.allProducts();
+                        printProducts(prod, scan);
+                        break;
+                    case "2":
+                        prod = findByName(scan);
+                        if (prod == null)
+                            break exit;
+                        printProducts(prod, scan);
+                        break;
+                    case "3":
+                        prod = findByCategory(scan);
+                        if (prod == null)
+                            break exit;
+                        printProducts(prod, scan);
+                        break;
+                    case "4":
+                        prod = findByPrice(scan);
+                        if (prod == null)
+                            break exit;
+                        printProducts(prod, scan);
+                        break;
+                }
             }
         }
     }
 
     //Helper methods
     private List<Product> findByName(Scanner scan) {
-        System.out.print("Please enter product name: ");
-        return productService.byName(scan.nextLine());
+        while (true) {
+            System.out.print("Please enter product name (x to cancel): ");
+            String input = scan.nextLine();
+            if (input.equals("x")) {
+                break ;
+            }
+            // else if(input)
+            return productService.byName(scan.nextLine());
+        }
+        return null;
     }
 
     private List<Product> findByCategory(Scanner scan) {
         List<Category> category = new CategoryService(new CategoryDAO()).findAll();
-        System.out.println("Please choose a product Category:");
-        category.forEach(c -> System.out.println("[" + c.getId() + "] " + c.getName()));
-        return productService.byCategory(scan.nextInt());
+        clearScreen();
+        System.out.println("Please choose a product Category (x to cancel):");
+            category.forEach(c -> System.out.println("[" + c.getId() + "] " + c.getName()));
+            System.out.print("\nEnter: ");
+            String input = scan.nextLine();
+        if (isInt(input) && Integer.parseInt(input) < category.size())
+            return productService.byCategory(Integer.parseInt(input));
+
+        else if(scan.nextLine().equals("x"))
+            return null;
+        else {
+            clearScreen();
+            System.out.println("Invalid option!");
+            System.out.print("\nPress enter to continue...");
+            scan.nextLine();
+            findByCategory(scan);
+        }
+        return null;
     }
 
     private List<Product> findByPrice(Scanner scan) {
-        double minPrice, maxPrice = 0;
+        String input = "";
+        double minPrice = 0,  maxPrice = 0;
         int count = 0;
-        System.out.println("Please enter minimum price:");
-        minPrice = scan.nextDouble();
         do {
-            if (count > 0)
-            {
+            if (count == 0) {
+                System.out.print("Please enter minimum price: ");
+                input = scan.nextLine();
+                if (!isDouble(input)) {
+                    System.out.println("Invalid option!");
+                    System.out.print("\nPress enter to continue...");
+                    scan.nextLine();
+                    continue;
+                }
+            }
+            else {
+                minPrice = Double.parseDouble(input);
+                count++;
+            }
+            
+            System.out.println("Please enter maximum price: ");
+            input = scan.nextLine();
+            if (!isDouble(input)) {
                 System.out.println("Invalid option!");
                 System.out.print("\nPress enter to continue...");
                 scan.nextLine();
+                continue;
             }
-            System.out.println("Please enter maximum price:");
-            maxPrice = scan.nextDouble();
-            count++;
+            else maxPrice = Double.parseDouble(input);
+
         } while (maxPrice < minPrice);
         return productService.byPrice(minPrice, maxPrice);
     }
 
-    private void printProducts(List<Product> prod, Scanner scan)
-    {
-        
+    private void printProducts(List<Product> prod, Scanner scan) {
+        exit: {
+            while(true) {
+                clearScreen();
+                System.out.println("Please choose an item"); //(x to cancel):");
+                int index=0;
+                for (Product p : prod) {
+                    System.out.println("[" + (index+1) + "] " + p.getName());
+                    index++;
+                }
+                System.out.print("\nEnter: ");
+                String input = scan.nextLine();
+                if (isInt(input)) {
+                    if (Integer.parseInt(input) > 0 && Integer.parseInt(input) <= prod.size()) {
+                        Product product = prod.get(Integer.parseInt(input) - 1);
+                        router.setProduct(product);
+                        router.navigate("/detail", scan);
+                    } else {
+                        System.out.println("Invalid option!");
+                        System.out.print("\nPress enter to continue...");
+                        scan.nextLine();
+                        break exit;
+                    }
+                } 
+                else {
+                    System.out.println("Invalid option!");
+                    System.out.print("\nPress enter to continue...");
+                    scan.nextLine();
+                    break exit;
+                }
+            }
+        }
+    }
+
+    private boolean isInt(String input){
+        try {
+            Integer.parseInt(input);
+            return true;
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+    }
+
+    private boolean isDouble(String input) {
+        try {
+            Double.parseDouble(input);
+            return true;
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
     }
 
     private void clearScreen() {

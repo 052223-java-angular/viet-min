@@ -34,7 +34,7 @@ public class ProductDAO implements CrudDAO {
     }
 
     @Override
-    public Optional findById(String id) {
+    public Optional<Product> findById(String id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
@@ -51,8 +51,10 @@ public class ProductDAO implements CrudDAO {
                         Product product = new Product();
                         product.setId(rs.getString("id"));
                         product.setName(rs.getString("name"));
+                        product.setDescription(rs.getString("description"));
                         product.setPrice(rs.getDouble("price"));
                         product.setCategory(rs.getInt("category"));
+                        product.setStock(rs.getInt("stock"));
                         
                         products.add(product);
                     }
@@ -71,17 +73,20 @@ public class ProductDAO implements CrudDAO {
     public List<Product> findByCategory(int category) {
         // Displays products that fit a category
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = MessageFormat.format("SELECT * FROM products WHERE category = {0}", category);
+            String sql = "SELECT * FROM products WHERE category = ?";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
+                ps.setInt(1, category);
                 try(ResultSet rs = ps.executeQuery()){
                     List<Product> products = new ArrayList<>();
                     while(rs.next()){
                         Product product = new Product();
                         product.setId(rs.getString("id"));
                         product.setName(rs.getString("name"));
+                        product.setDescription(rs.getString("description"));
                         product.setPrice(rs.getDouble("price"));
                         product.setCategory(rs.getInt("category"));
+                        product.setStock(rs.getInt("stock"));
 
                         products.add(product);
                     }
@@ -100,16 +105,19 @@ public class ProductDAO implements CrudDAO {
     public Optional<Product> findByName(String prodName) {
         // Displays products that match name search
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = MessageFormat.format("SELECT * FROM products WHERE = {0}", prodName);
+            String sql = "SELECT * FROM products WHERE = ?";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
+                ps.setString(1, prodName);
                 try(ResultSet rs = ps.executeQuery()){
                     if(rs.next()){
                         Product product = new Product();
                         product.setId(rs.getString("id"));
                         product.setName(rs.getString("name"));
+                        product.setDescription(rs.getString("description"));
                         product.setPrice(rs.getDouble("price"));
                         product.setCategory(rs.getInt("category"));
+                        product.setStock(rs.getInt("stock"));
                         
                         return Optional.of(product);
                     }
@@ -128,17 +136,21 @@ public class ProductDAO implements CrudDAO {
     public List<Product> findByPriceRange(double minPrice, double maxPrice) {
         // Displays products that match name search
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = MessageFormat.format("SELECT * FROM products WHERE price > {0} AND price < {1}", minPrice, maxPrice);
+            String sql = "SELECT * FROM products WHERE price > ? AND price < ?";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
+                ps.setDouble(1, minPrice);
+                ps.setDouble(2, maxPrice);
                 try(ResultSet rs = ps.executeQuery()){
                     List<Product> products = new ArrayList<>();
                     while(rs.next()){
                         Product product = new Product();
                         product.setId(rs.getString("id"));
                         product.setName(rs.getString("name"));
+                        product.setDescription(rs.getString("description"));
                         product.setPrice(rs.getDouble("price"));
                         product.setCategory(rs.getInt("category"));
+                        product.setStock(rs.getInt("stock"));
 
                         products.add(product);
                     }
