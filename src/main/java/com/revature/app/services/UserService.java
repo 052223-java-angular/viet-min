@@ -7,6 +7,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import com.revature.app.daos.UserDAO;
 import com.revature.app.models.Role;
 import com.revature.app.models.User;
+import com.revature.app.utils.custom_exceptions.UserNotFoundException;
 
 import lombok.AllArgsConstructor;
 
@@ -48,7 +49,7 @@ public class UserService {
         return password.equals(confirmPassword);
     }
 
-    public Optional<User> login(String username, String password) {
+    public Optional<User> login(String username, String password){
         Optional<User> user = userDAO.findByUsername(username);
 
         if(user.isEmpty() || !BCrypt.checkpw(password, user.get().getPassword())){
@@ -58,12 +59,14 @@ public class UserService {
 
     }
 
-    public Optional<User> findByName(String username) {
-        return null;
+    public User findByName(String username) {
+        Optional<User> user = userDAO.findByUsername(username);
+        return user.orElseThrow(UserNotFoundException::new);
     }
 
-    public Optional<User> findById(String user_id) {
-        return null;
+    public User findById(String user_id) {
+        Optional<User> user = userDAO.findById(user_id);
+        return user.orElseThrow(UserNotFoundException::new);
     }
 
 }

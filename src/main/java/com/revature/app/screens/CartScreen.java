@@ -12,7 +12,6 @@ import com.revature.app.models.Cart;
 import com.revature.app.models.CartItem;
 import com.revature.app.services.CartService;
 import com.revature.app.services.PaymentService;
-import com.revature.app.services.ProductService;
 import com.revature.app.services.RouterServices;
 import com.revature.app.utils.SessionUtil;
 import java.text.DecimalFormat;
@@ -33,32 +32,19 @@ public class CartScreen implements IScreen{
         int amount = 0;
         
         String cardNumber = "";
-        String expirtionDate = "";
+        String expirationDate = "";
         String securityCode = "";
         exit:{
             while(true){
                 clearScreen();
                 
                 Optional<Cart> cartOpt = cart.getCartByUserId(session.getId());
-                Map<String, String> idMap = new HashMap<>();
+                Map<String, String> itemMap = new HashMap<>();
                 double total = 0;
-                if(cartOpt.isPresent()){
-                    List<CartItem> cartItemList = cartOpt.get().getItems();
-                    
-                    for(int i = 0; i < cartItemList.size(); i++){
-                        idMap.put("p" + i, cartItemList.get(i).getProduct_id());
-                        System.out.println(
-                            String.format("%-60s","[p" + i + "]: " + cartItemList.get(i).getName())  + 
-                            String.format("%-20s","(" + cartItemList.get(i).getQuantity() + ")*" + cartItemList.get(i).getPrice()) + 
-                            "[" + df.format(cartItemList.get(i).getPrice() * cartItemList.get(i).getQuantity()) + "]"
-                        );
-                        total += cartItemList.get(i).getPrice() * cartItemList.get(i).getQuantity();
-                    }
-                    System.out.println(String.format("%88s","total: " + df.format(total)));
-                }else{
-                    System.out.println("Cart is Empty");
-                }
 
+                displayItems(cartOpt, itemMap, total);
+
+                System.out.println("------------------------------------------------------------------------------------------------------");
                 System.out.println("[1] Continue shopping | [2] Remove item | [3] Modify item | [4] Checkout | [b] Back | [x] back to menu");
     
                 input = scan.nextLine();
@@ -68,48 +54,49 @@ public class CartScreen implements IScreen{
                         break;
                    
                     case "1":
-                        System.out.println("go shop some more");
-                        //router.navigate("/home", scan);
+                        session.getScreenHistory().push("/cart");
+                        router.navigate("/browse", scan);
                         break;
                     case "2":
-                        if(idMap.size() == 0){
+                        if(itemMap.size() == 0){
                             cartEmptyMessage(scan);
                             continue;
                         }else{
-                            item = getItem(idMap, scan);
-                            cart.remove(idMap.get(item));
+                            item = getItem(itemMap, scan);
+                            cart.remove(itemMap.get(item));
                             continue;
                         }
                     case "3":
-                        if(idMap.size() == 0){
+                        if(itemMap.size() == 0){
                             cartEmptyMessage(scan);
                             continue;
                         }else{
-                            item = getItem(idMap, scan);
+                            item = getItem(itemMap, scan);
                             System.out.println("change amount to:");
                             amount = Integer.parseInt(scan.nextLine());
-                            System.out.println(cart.modify(idMap.get(item), amount));
+                            System.out.println(cart.modify(itemMap.get(item), amount));
                             System.out.print("\nPress enter to continue...");
                             scan.nextLine();
                             continue;
                         }
                     case "4":
-                        if(idMap.size() == 0){
+                        if(itemMap.size() == 0){
                             cartEmptyMessage(scan);
                             continue;
                         }else{
                             System.out.println("Your total will be: " + total);
                             cardNumber = getCardNumber(scan);
-                            expirtionDate = getExpirationDate(scan);
+                            expirationDate = getExpirationDate(scan);
                             securityCode = getSecurityCode(scan);
-                            if(PaymentService.pay(cardNumber, expirtionDate, securityCode)){
-                                System.out.println("Thank you for your purchase!");
+                            if(PaymentService.pay(cardNumber, expirationDate, securityCode)){
+                                //add to order history
                                 //need order service to be implemented
                                 //orderService.add(cart);
                                 cart.clear(cartOpt.get().getId());
-                                //add to order history
+                                
+                                System.out.println("Thank you for your purchase!");
                             }else{
-                                System.out.println("Try again!");
+                                System.out.println("Payment failed!");
                             }
                         }
                         break;
@@ -244,6 +231,26 @@ securityCode = scan.nextLine();
             break;
         }
         return item;
+    }
+
+    private void displayItems(Optional<Cart> cartOpt, Map<String, String> itemMap, double total){
+
+        if(cartOpt.isPresent()){
+            List<CartItem> cartItemList = cartOpt.get().getItems();
+            
+            for(int i = 0; i < cartItemList.size(); i++){
+                itemMap.put("p" + i, cartItemList.get(i).getProduct_id());
+                System.out.println(
+                    String.format("%-60s","[p" + i + "]: " + cartItemList.get(i).getName())  + 
+                    String.format("%-20s","(" + cartItemList.get(i).getQuantity() + ")*" + cartItemList.get(i).getPrice()) + 
+                    "[" + df.format(cartItemList.get(i).getPrice() * cartItemList.get(i).getQuantity()) + "]"
+                );
+                total += cartItemList.get(i).getPrice() * cartItemList.get(i).getQuantity();
+            }
+            System.out.println(String.format("%88s","total: " + df.format(total)));
+        }else{
+            System.out.println("Cart is Empty");
+        }
     }
     
 }

@@ -17,12 +17,8 @@ public class CartService {
     private final UserService userService;
 
     public void createCart(String user_id) {
-        Optional<User> userOpt = userService.findById(user_id);
-        if (userOpt.isEmpty()) {
-            System.out.println("user not found!");
-            //create custom exception later
-        }
-        Cart cart = new Cart(userOpt.get().getId());
+        User user = userService.findById(user_id);
+        Cart cart = new Cart(user.getId());
         cartDAO.save(cart);
     }
     public String add(String user_id, String item_id, int count) {
