@@ -50,5 +50,10 @@ public class CartItemService {
     public List<CartItem> getCartItemByCartId(String cart_id) {
         return cartItemDAO.findByCartId(cart_id);
     }
+
+
+    public void clearByCartId(String id) {
+        cartItemDAO.deleteByCartId(id);
+    }
     
 }

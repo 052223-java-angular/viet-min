@@ -96,14 +96,13 @@ public class CartScreen implements IScreen{
                             continue;
                         }else{
                             System.out.println("Your total will be: " + total);
-                            System.out.println("Enter your card number");
-                            cardNumber = scan.nextLine();
-                            System.out.println("Enter the expiration date");
-                            expirtionDate = scan.nextLine();
-                            System.out.println("Enter the security code");
-                            securityCode = scan.nextLine();
+                            cardNumber = getCardNumber(scan);
+                            expirtionDate = getExpirationDate(scan);
+                            securityCode = getSecurityCode(scan);
                             if(PaymentService.pay(cardNumber, expirtionDate, securityCode)){
                                 System.out.println("Thank you for your purchase!");
+                                //orderService.add(cart);
+                                cart.clear(ct.get().getId());
                                 //add to order history
                             }else{
                                 System.out.println("Try again!");
@@ -134,6 +133,86 @@ public class CartScreen implements IScreen{
         System.out.println("Your cart is empty");
         System.out.print("\nPress enter to continue...");
         scan.nextLine();
+    }
+
+    private String getCardNumber(Scanner scan){
+        String cardNumber = "";
+        
+        while(true){
+            System.out.println("\nEnter your card number: ");
+            cardNumber = scan.nextLine();
+
+            if(cardNumber.equalsIgnoreCase("x")){
+                return "x";
+            }
+
+            if(cardNumber.equalsIgnoreCase("b")){
+                return "b";
+            }
+            
+            if(!PaymentService.isValidCardNumber(cardNumber)){
+                clearScreen();
+                System.out.println("Invalid card number!");
+                System.out.print("\nPress enter to continue...");
+                scan.nextLine();
+                continue;
+            }
+            break;
+        }
+        return cardNumber;
+    }
+    private String getExpirationDate(Scanner scan){
+        String expirationDate = "";
+        
+        while(true){
+            System.out.println("\nEnter the expiration date mm/yyyy: ");
+            expirationDate = scan.nextLine();
+
+            if(expirationDate.equalsIgnoreCase("x")){
+                return "x";
+            }
+
+            if(expirationDate.equalsIgnoreCase("b")){
+                return "b";
+            }
+
+            if(!PaymentService.isValidExpirationDate(expirationDate)){
+                clearScreen();
+                System.out.println("Invalid expiration date!");
+                System.out.print("\nPress enter to continue...");
+                scan.nextLine();
+                continue;
+            }
+            break;
+        }
+        return expirationDate;
+    }
+    private String getSecurityCode(Scanner scan){
+        String securityCode = "";
+        
+
+        while(true){
+            System.out.println("\nEnter the security code: ");
+securityCode = scan.nextLine();
+
+            if(securityCode.equalsIgnoreCase("x")){
+                return "x";
+            }
+
+            if(securityCode.equalsIgnoreCase("b")){
+                return "b";
+            }
+
+            if(!PaymentService.isValidSecurityCode(securityCode)){
+                clearScreen();
+                System.out.println("Invalid expiration security code!");
+                System.out.print("\nPress enter to continue...");
+                scan.nextLine();
+                continue;
+            }
+            break;
+        }
+        return securityCode;
     }
     
 }

@@ -176,5 +176,24 @@ public class CartItemDAO implements CrudDAO<CartItem> {
         }
         return cartItems;
     }
+
+    public void deleteByCartId(String id) {
+        try(Connection conn = ConnectionFactory.getInstance().getConnection()){
+            String sql = "delete from cart_items where cart_id = ?";
+
+            try(PreparedStatement ps = conn.prepareStatement(sql)){
+                ps.setString(1, id);
+                ps.executeUpdate();
+            }
+        }catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db \n" + e);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties \n" + e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc \n" + e);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
     
 }
