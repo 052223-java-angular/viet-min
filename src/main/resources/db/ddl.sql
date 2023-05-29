@@ -31,8 +31,10 @@ create table category(
 create table products(
     id varchar primary key,
     name varchar not null,
+    description varchar not null,
     price decimal not null,
     category int not null,
+    stock int not null,
     
     foreign key (category) REFERENCES category (id)
 );
