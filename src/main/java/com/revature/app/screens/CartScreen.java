@@ -11,6 +11,7 @@ import org.apache.logging.log4j.core.net.ssl.SslConfiguration;
 import com.revature.app.models.Cart;
 import com.revature.app.models.CartItem;
 import com.revature.app.services.CartService;
+import com.revature.app.services.PaymentService;
 import com.revature.app.services.ProductService;
 import com.revature.app.services.RouterServices;
 import com.revature.app.utils.SessionUtil;
@@ -29,6 +30,10 @@ public class CartScreen implements IScreen{
         String input = "";
         String item = "";
         int amount = 0;
+        double total = 0;
+        String cardNumber = "";
+        String expirtionDate = "";
+        String securityCode = "";
         exit:{
             while(true){
                 clearScreen();
@@ -40,13 +45,16 @@ public class CartScreen implements IScreen{
                 System.out.println("[x] back to menu");
                 Optional<Cart> ct = cart.getCartByUserId("38d853d5-8235-4d05-b285-d51f0b11ca6b");
                 Map<String, String> idMap = new HashMap<>();
+                
                 if(ct.isPresent()){
                     List<CartItem> ci = ct.get().getItems();
                     
                     for(int i = 0; i < ci.size(); i++){
                         idMap.put("p" + i, ci.get(i).getProduct_id());
-                        System.out.println("[p" + i + "]: " + ci.get(i).getName() + "----------[" + ci.get(i).getQuantity() + "]*" + ci.get(i).getPrice());
+                        System.out.println("[p" + i + "]: " + ci.get(i).getName() + "----------[" + ci.get(i).getQuantity() + "]*" + ci.get(i).getPrice() + "----------" + ci.get(i).getPrice() * ci.get(i).getQuantity());
+                        total += ci.get(i).getPrice() * ci.get(i).getQuantity();
                     }
+                    System.out.println(total);
                 }
                 
     
@@ -87,7 +95,19 @@ public class CartScreen implements IScreen{
                             cartEmptyMessage(scan);
                             continue;
                         }else{
-                            System.out.println("Your total will be: ");
+                            System.out.println("Your total will be: " + total);
+                            System.out.println("Enter your card number");
+                            cardNumber = scan.nextLine();
+                            System.out.println("Enter the expiration date");
+                            expirtionDate = scan.nextLine();
+                            System.out.println("Enter the security code");
+                            securityCode = scan.nextLine();
+                            if(PaymentService.pay(cardNumber, expirtionDate, securityCode)){
+                                System.out.println("Thank you for your purchase!");
+                                //add to order history
+                            }else{
+                                System.out.println("Try again!");
+                            }
                         }
                         break;
                     case "x":
