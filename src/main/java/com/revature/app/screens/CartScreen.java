@@ -23,6 +23,7 @@ public class CartScreen implements IScreen{
     private final RouterServices router;
     private final CartService cart;
     private SessionUtil session;
+    private final PaymentService paymentService;
     private final DecimalFormat df = new DecimalFormat("0.00");
 
     @Override
@@ -88,7 +89,7 @@ public class CartScreen implements IScreen{
                             cardNumber = getCardNumber(scan);
                             expirationDate = getExpirationDate(scan);
                             securityCode = getSecurityCode(scan);
-                            if(PaymentService.pay(cardNumber, expirationDate, securityCode)){
+                            if(paymentService.pay(cardNumber, expirationDate, securityCode, cartOpt)){
                                 //add to order history
                                 //need order service to be implemented
                                 //orderService.add(cart);
@@ -141,7 +142,7 @@ public class CartScreen implements IScreen{
                 return "b";
             }
             
-            if(!PaymentService.isValidCardNumber(cardNumber)){
+            if(!paymentService.isValidCardNumber(cardNumber)){
                 clearScreen();
                 System.out.println("Invalid card number!");
                 System.out.print("\nPress enter to continue...");
@@ -167,7 +168,7 @@ public class CartScreen implements IScreen{
                 return "b";
             }
 
-            if(!PaymentService.isValidExpirationDate(expirationDate)){
+            if(!paymentService.isValidExpirationDate(expirationDate)){
                 clearScreen();
                 System.out.println("Invalid expiration date!");
                 System.out.print("\nPress enter to continue...");
@@ -194,7 +195,7 @@ securityCode = scan.nextLine();
                 return "b";
             }
 
-            if(!PaymentService.isValidSecurityCode(securityCode)){
+            if(!paymentService.isValidSecurityCode(securityCode)){
                 clearScreen();
                 System.out.println("Invalid expiration security code!");
                 System.out.print("\nPress enter to continue...");

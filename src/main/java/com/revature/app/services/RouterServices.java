@@ -44,7 +44,7 @@ public class RouterServices {
                 new ReviewScreen(this, product, session, getReviewService(), getUserService()).start(scan);;
                 break;
             case "/cart":
-                new CartScreen(this, getCartService(), session).start(scan);;
+                new CartScreen(this, getCartService(), session, getPaymentService()).start(scan);;
                 //new 
                 break;
             case "/menu":
@@ -85,6 +85,9 @@ public class RouterServices {
         return new ReviewService(new ReviewDAO());
     }
 
+    private PaymentService getPaymentService(){
+        return new PaymentService(getProductService());
+    }
     public void setProduct(Product prod) {
         product = prod;
     }

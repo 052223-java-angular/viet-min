@@ -2,14 +2,10 @@ package com.revature.app.screens;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
 
-import javax.sound.midi.SysexMessage;
 
 import com.revature.app.daos.CategoryDAO;
-import com.revature.app.models.Cart;
-import com.revature.app.models.CartItem;
 import com.revature.app.models.Category;
 import com.revature.app.models.Product;
 import com.revature.app.services.CategoryService;
@@ -43,6 +39,7 @@ public class BrowseProductScreen implements IScreen{
     
                 if (input.equals("x")) {
                     System.out.println("Goodbye!");
+                    router.navigate("/home", scan);;
                     break;
                 }
     
@@ -52,12 +49,12 @@ public class BrowseProductScreen implements IScreen{
                 }
     
                 switch(input) {
-                    // case "x":
-                    //     System.out.println("Goodbye!");
-                    //     break;
-                    // case "b":
-                    //     router.navigate("/menu", scan);
-                    //     break;
+                    case "b":
+                        router.navigate(session.getScreenHistory().pop(), scan);
+                        break;
+                    case "x":
+                        router.navigate("/menu", scan);
+                        break;
                     case "1", "2", "3", "4":
                         searchProducts(input, scan);
                         break;
