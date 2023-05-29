@@ -22,7 +22,6 @@ import lombok.AllArgsConstructor;
 public class BrowseProductScreen implements IScreen{
     private final RouterServices router;
     private final ProductService productService;
-    private Cart cart;
 
     public void start(Scanner scan) {
         String input ="";
@@ -89,11 +88,13 @@ public class BrowseProductScreen implements IScreen{
                     case "3":
                         prod = findByCategory(scan);
                         if (prod == null)
-                        break exit;
+                            break exit;
                         printProducts(prod, scan);
                         break;
                     case "4":
                         prod = findByPrice(scan);
+                        if (prod == null)
+                            break exit;
                         printProducts(prod, scan);
                         break;
                 }
@@ -103,18 +104,16 @@ public class BrowseProductScreen implements IScreen{
 
     //Helper methods
     private List<Product> findByName(Scanner scan) {
+        while (true) {
+            System.out.print("Please enter product name (x to cancel): ");
+            String input = scan.nextLine();
+            if (input.equals("x")) {
+                break ;
+            }
+            // else if(input)
+            return productService.byName(scan.nextLine());
+        }
         return null;
-        // exit: {
-        //     while (true) {
-        //         System.out.print("Please enter product name (x to cancel): ");
-        //         String input = getInput(scan);
-        //         if (input.equals("x")) {
-        //             break exit;
-        //         }
-        //         // else if(input)
-        //         return productService.byName(scan.nextLine());
-        //     }
-        // }
     }
 
     private List<Product> findByCategory(Scanner scan) {
@@ -123,9 +122,9 @@ public class BrowseProductScreen implements IScreen{
         System.out.println("Please choose a product Category (x to cancel):");
             category.forEach(c -> System.out.println("[" + c.getId() + "] " + c.getName()));
             System.out.print("\nEnter: ");
-
-        if (scan.hasNextInt() && scan.nextInt() < category.size())
-            return productService.byCategory(scan.nextInt());
+            String input = scan.nextLine();
+        if (isInt(input) && Integer.parseInt(input) < category.size())
+            return productService.byCategory(Integer.parseInt(input));
 
         else if(scan.nextLine().equals("x"))
             return null;
@@ -143,22 +142,33 @@ public class BrowseProductScreen implements IScreen{
         String input = "";
         double minPrice = 0,  maxPrice = 0;
         int count = 0;
-        // do {
-        // System.out.print("Please enter minimum price(x to cancel): ");
-        // input = scan.nextLine();
-        // //if (!productService.isValidPrice();
+        do {
+            if (count == 0) {
+                System.out.print("Please enter minimum price: ");
+                input = scan.nextLine();
+                if (!isDouble(input)) {
+                    System.out.println("Invalid option!");
+                    System.out.print("\nPress enter to continue...");
+                    scan.nextLine();
+                    continue;
+                }
+            }
+            else {
+                minPrice = Double.parseDouble(input);
+                count++;
+            }
             
-            
-        //     if (count > 0)
-        //     {
-        //         System.out.println("Invalid option!");
-        //         System.out.print("\nPress enter to continue...");
-        //         scan.nextLine();
-        //     }
-        //     System.out.println("Please enter maximum price: ");
-        //     maxPrice = scan.nextDouble();
-        //     count++;
-        // } while (maxPrice < minPrice);
+            System.out.println("Please enter maximum price: ");
+            input = scan.nextLine();
+            if (!isDouble(input)) {
+                System.out.println("Invalid option!");
+                System.out.print("\nPress enter to continue...");
+                scan.nextLine();
+                continue;
+            }
+            else maxPrice = Double.parseDouble(input);
+
+        } while (maxPrice < minPrice);
         return productService.byPrice(minPrice, maxPrice);
     }
 
@@ -168,33 +178,25 @@ public class BrowseProductScreen implements IScreen{
                 clearScreen();
                 System.out.println("Please choose an item"); //(x to cancel):");
 
-                prod.forEach(p -> System.out.println("[" + p.getId() + "] " + p.getName() + "      Stock: " + p.getStock()));
+                prod.forEach(p -> System.out.println("[" + p.getId() + "] " + p.getName()));
                 System.out.print("\nEnter: ");
                 String input = scan.nextLine();
-                if (prod  //input = product id
-                    .stream()
-                    .filter(p -> p.getId().equals(input))
-                    .findFirst()
-                    .isPresent()) {
-                        Product product = prod.stream().filter(p -> p.getId().equals(input)).findFirst().get();
-                        System.out.println("Please choose an amount (max: " + product.getStock() + "): ");
-                        String quantity = scan.nextLine();
-                        if (isInt(quantity)) {
-                            if (Integer.parseInt(quantity) > 0 && Integer.parseInt(quantity) < product.getStock()) {
-                                CartItem cartItem = new CartItem();
-                                cartItem.add(product.getId(), quantity, cart);
-                            }
-                            else {
-                                System.out.println("Invalid option! Please enter between (1-" + product.getStock()+")");
-                                System.out.print("\nPress enter to continue...");
-                                scan.nextLine();
-                                break exit;
-                            }
-                        }
-                        else {
-
-                        }
+                if (isInt(input)) {
+                    if (prod  //input = product id
+                        .stream()
+                        .filter(p -> p.getId().equals(input))
+                        .findFirst()
+                        .isPresent()) {
+                            Product product = prod.stream().filter(p -> p.getId().equals(input)).findFirst().get();
+                            router.setProduct(product);
+                            router.navigate("/detail", scan);
+                    } else {
+                        System.out.println("Invalid option!");
+                        System.out.print("\nPress enter to continue...");
+                        scan.nextLine();
+                        break exit;
                     }
+                } 
                 else {
                     System.out.println("Invalid option!");
                     System.out.print("\nPress enter to continue...");
@@ -213,6 +215,16 @@ public class BrowseProductScreen implements IScreen{
             return false;
         }
     }
+
+    private boolean isDouble(String input) {
+        try {
+            Double.parseDouble(input);
+            return true;
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+    }
+
     private void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();

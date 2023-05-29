@@ -48,14 +48,22 @@ public class UserService {
         return password.equals(confirmPassword);
     }
 
-    public boolean login(String username, String password) {
+    public Optional<User> login(String username, String password) {
         Optional<User> user = userDAO.findByUsername(username);
-        if(user.isEmpty()){
-            return false;
-        }
-        System.out.println(user.get().getPassword());
-        return BCrypt.checkpw(password, user.get().getPassword());
 
+        if(user.isEmpty() || !BCrypt.checkpw(password, user.get().getPassword())){
+            return Optional.empty();
+        }
+        return user;
+
+    }
+
+    public Optional<User> findByName(String username) {
+        return null;
+    }
+
+    public Optional<User> findById(String user_id) {
+        return null;
     }
 
 }

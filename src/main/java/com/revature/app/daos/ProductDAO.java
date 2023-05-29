@@ -34,7 +34,7 @@ public class ProductDAO implements CrudDAO {
     }
 
     @Override
-    public Object findById(String id) {
+    public Optional<Product> findById(String id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
@@ -166,7 +166,7 @@ public class ProductDAO implements CrudDAO {
         }
     }
 
-    public Product getProduct(String id) {
+    public Optional<Product> getProduct(String id) {
         // gets product from id
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
             String sql = "SELECT * FROM products WHERE id = ?";
@@ -184,7 +184,7 @@ public class ProductDAO implements CrudDAO {
                         product.setStock(rs.getInt("stock"));
 
                     }
-                    return product;
+                    return Optional.of(product);
                 }
             }
         }catch (SQLException e) {

@@ -1,9 +1,11 @@
 package com.revature.app.screens;
 
+import java.util.Optional;
 import java.util.Scanner;
 
 import com.revature.app.services.RouterServices;
 import com.revature.app.services.UserService;
+import com.revature.app.utils.SessionUtil;
 import com.revature.app.models.User;
 
 
@@ -13,6 +15,7 @@ import lombok.AllArgsConstructor;
 public class RegisterScreen implements IScreen {
     private final RouterServices router;
     private final UserService userService;
+    private SessionUtil session;
 
     @Override
     public void start(Scanner scan) {
@@ -20,36 +23,41 @@ public class RegisterScreen implements IScreen {
         String password = "";
 
         while(true){
+            clearScreen();
             System.out.println("Register an account");
-            System.out.println("[b] Back to main menu");
-            System.out.println("[x] Exit");
+            System.out.println("[b] Back ");
+            System.out.println("[x] Back to main menu");
 
             username = getUsername(scan);
 
             if(username.equals("x")){
+                router.navigate("/home", scan);
                 break;
             }
 
             if(username.equals("b")){
-                router.navigate("/home", scan);
+                router.navigate(session.getScreenHistory().pop(), scan);
                 break;
             }
 
             password = getPassword(scan);
 
             if(password.equals("x")){
-                break;
-            }
-
-            if(password.equals("b")){
                 router.navigate("/home", scan);
                 break;
             }
 
-            userService.register(username, password);
+            if(password.equals("b")){
+                router.navigate(session.getScreenHistory().pop(), scan);
+                
+                break;
+            }
 
-            //to-do:
-            //go to screen thats available after log-in
+            userService.register(username, password);
+            Optional<User> user = userService.login(username, password);
+            session.setSession(user.get());
+            session.getScreenHistory().push("/register");
+            router.navigate("/browse", scan);
             break;
             
         }
@@ -58,6 +66,7 @@ public class RegisterScreen implements IScreen {
     public String getUsername(Scanner scan){
         String username = "";
         while(true){
+            clearScreen();
             System.out.println("\nEnter a username: ");
             username = scan.nextLine();
 
@@ -69,6 +78,7 @@ public class RegisterScreen implements IScreen {
                 return "b";
             }
             if (!userService.isValidUserName(username)) {
+                clearScreen();
                 System.out.println("Username needs to be 8-20 characters long.");
                 System.out.print("\nPress enter to continue...");
                 scan.nextLine();
@@ -76,6 +86,7 @@ public class RegisterScreen implements IScreen {
             }
 
             if (!userService.isUniqueUserName(username)) {
+                clearScreen();
                 System.out.println("Username already in use!");
                 System.out.print("\nPress enter to continue...");
                 scan.nextLine();
@@ -83,6 +94,7 @@ public class RegisterScreen implements IScreen {
             }
 
             break;
+            
         }
         return username;
     }
@@ -92,6 +104,7 @@ public class RegisterScreen implements IScreen {
         String confirmPassword = "";
         
         while(true){
+            clearScreen();
             System.out.println("\nEnter a password: ");
             password = scan.nextLine();
 
@@ -104,6 +117,7 @@ public class RegisterScreen implements IScreen {
             }
 
             if (!userService.isValidPassword(password)) {
+                clearScreen();
                 System.out.println("Password needs to be minimum 8 characters, at least 1 letter and 1 number");
                 System.out.print("\nPress enter to continue...");
                 scan.nextLine();
@@ -122,6 +136,7 @@ public class RegisterScreen implements IScreen {
             }
 
             if (!userService.isSamePassword(password, confirmPassword)) {
+                clearScreen();
                 System.out.println("Passwords do not match");
                 System.out.print("\nPress enter to continue...");
                 scan.nextLine();
@@ -132,6 +147,11 @@ public class RegisterScreen implements IScreen {
             break;
         }
         return password;
+    }
+
+    private void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
     
 }

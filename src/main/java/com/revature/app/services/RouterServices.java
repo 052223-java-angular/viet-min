@@ -2,40 +2,54 @@ package com.revature.app.services;
 
 import java.util.Scanner;
 
+import com.revature.app.daos.CartDAO;
+import com.revature.app.daos.CartItemDAO;
 import com.revature.app.daos.ProductDAO;
+import com.revature.app.daos.ReviewDAO;
 import com.revature.app.daos.RoleDAO;
 import com.revature.app.daos.UserDAO;
 import com.revature.app.models.Cart;
-import com.revature.app.models.Session;
+import com.revature.app.models.Product;
 import com.revature.app.screens.BrowseProductScreen;
+import com.revature.app.screens.CartScreen;
 import com.revature.app.screens.HomeScreen;
 import com.revature.app.screens.RegisterScreen;
+import com.revature.app.screens.ReviewScreen;
+import com.revature.app.utils.SessionUtil;
 import com.revature.app.screens.LogInScreen;
+import com.revature.app.screens.MainMenuScreen;
+import com.revature.app.screens.ProductDetailScreen;
 
 public class RouterServices {
-    private Session session;
-    private String productId;
+    private SessionUtil session;
+    private Product product;
+    private Cart cart;
     public void navigate(String path, Scanner scan) {
+        setSession();
         switch (path) {
             case "/home":
                 new HomeScreen(this).start(scan);
                 break;
             case "/login":
-            new LogInScreen(this, getUserService()).start(scan);
+                new LogInScreen(this, getUserService(), session).start(scan);
                 break;
             case "/register":
-                new RegisterScreen(this, getUserService()).start(scan);
-                break;
+                new RegisterScreen(this, getUserService(), session).start(scan);
             case "/review":
+                new ReviewScreen(product, session, getReviewService(), getUserService()).start(scan);;
+                break;
+            case "/cart":
+                new CartScreen(this, getCartService(), session).start(scan);;
                 //new 
                 break;
             case "/menu":
+                //new MainMenuScreen(this);
                 break;
             case "/browse":
-                new BrowseProductScreen(this, getProductService(), new Cart()).start(scan);
+                new BrowseProductScreen(this, getProductService()).start(scan);
                 break;
-            case "product":
-                //new ProductDetailScreen().start(scan);
+            case "/detail":
+                new ProductDetailScreen(session, this, product, cart).start(scan);
                 break;
             default:
                 break;
@@ -54,7 +68,23 @@ public class RouterServices {
         return new ProductService(new ProductDAO());
     }
 
-    public void setProdId(String id) {
-        productId = id;
+    private CartService getCartService(){
+        return new CartService(new CartDAO(), getCartItemService(), getUserService());
+    }
+
+    private CartItemService getCartItemService(){
+        return new CartItemService(new CartItemDAO() ,getProductService());
+    }
+
+    private ReviewService getReviewService(){
+        return new ReviewService(new ReviewDAO());
+    }
+
+    public void setProduct(Product prod) {
+        product = prod;
+    }
+
+    public void setSession() {
+        session = new SessionUtil("1", "tester", "1", null);
     }
 }

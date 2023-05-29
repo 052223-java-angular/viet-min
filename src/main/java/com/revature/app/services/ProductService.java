@@ -1,6 +1,5 @@
 package com.revature.app.services;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,12 +36,8 @@ public class ProductService {
         //return productDao.findByPriceRange(minPrice, maxPrice);
     }
 
-    public Product getProd(String id) {
+    public Optional<Product> getProd(String id) {
         return productDao.getProduct(id);
-    }
-
-    public boolean isValidPrice() {
-        return false;
     }
 
     public List<Product> pseudo() {

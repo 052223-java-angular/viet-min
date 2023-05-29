@@ -33,7 +33,7 @@ public class RoleDAO implements CrudDAO{
     }
 
     @Override
-    public Object findById(String id) {
+    public Optional<Role> findById(String id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }

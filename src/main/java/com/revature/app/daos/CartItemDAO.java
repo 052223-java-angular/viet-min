@@ -9,21 +9,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.revature.app.models.User;
+import com.revature.app.models.CartItem;
 import com.revature.app.utils.ConnectionFactory;
 
-public class UserDAO implements CrudDAO<User>{
+public class CartItemDAO implements CrudDAO<CartItem> {
 
     @Override
-    public void save(User Object) {
+    public void save(CartItem cartItem) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "insert into users (id, username, password, role_id) values (?, ?, ?, ?)";
+            String sql = "insert into cart_items (id, cart_id, product_id, quantity) values (?, ?, ?, ?)";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
-                ps.setString(1, Object.getId());
-                ps.setString(2, Object.getUsername());
-                ps.setString(3, Object.getPassword());
-                ps.setString(4, Object.getRoleId());
+                ps.setString(1, cartItem.getId());
+                ps.setString(2, cartItem.getCart_id());
+                ps.setString(3, cartItem.getProduct_id());
+                ps.setInt(5, cartItem.getQuantity());
+
                 ps.executeUpdate();
             }
 
@@ -40,12 +41,17 @@ public class UserDAO implements CrudDAO<User>{
 
     @Override
     public void update(String id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'update'");
+    }
+
+    public void update(String id, int quantity) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "update users set password='?' where id = '?'";
+            String sql = "update cart_items set quantity = ? where id = ?";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
-                ps.setString(1, sql);
-                ps.setString(2, sql);
+                ps.setInt(1, quantity);
+                ps.setString(2, id);
                 ps.executeUpdate();
             }
         }catch (SQLException e) {
@@ -62,7 +68,7 @@ public class UserDAO implements CrudDAO<User>{
     @Override
     public void delete(String id) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "delete from users where id = ?";
+            String sql = "delete from cart_items where id = ?";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
                 ps.setString(1, id);
@@ -80,20 +86,20 @@ public class UserDAO implements CrudDAO<User>{
     }
 
     @Override
-    public Optional<User> findById(String id) {
+    public Optional<CartItem> findById(String id) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "select * from users where id = ?";
+            String sql = "select * from cart_items where id = ?";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
                 ps.setString(1, id);
                 try(ResultSet rs = ps.executeQuery()){
                     if(rs.next()){
-                        User user = new User();
-                        user.setId(rs.getString("id"));
-                        user.setUsername(rs.getString("username"));
-                        user.setPassword(rs.getString("password"));
-                        user.setRoleId(rs.getString("role_id"));
-                        return Optional.of(user);
+                        CartItem cartItem = new CartItem();
+                        cartItem.setId(rs.getString("id"));
+                        cartItem.setCart_id(rs.getString("cart_id"));
+                        cartItem.setProduct_id(rs.getString("product_id"));
+                        cartItem.setQuantity(rs.getInt("quantity"));
+                        return Optional.of(cartItem);
                     }
                 }
             }
@@ -110,19 +116,21 @@ public class UserDAO implements CrudDAO<User>{
     }
 
     @Override
-    public List<User> findAll() {
-        List<User> users = new ArrayList<>();
+    public List<CartItem> findAll() {
+        List<CartItem> cartItems = new ArrayList<>();
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "select * from users";
+            String sql = "SELECT c.id, c.quantity, c.cart_id, c.product_id, p.name, p.price FROM cart_items c INNER JOIN products p ON c.product_id = p.id";
             try(PreparedStatement ps = conn.prepareStatement(sql)){
                 try(ResultSet rs = ps.executeQuery()){
                     while(rs.next()){
-                        User user = new User();
-                        user.setId("id");
-                        user.setUsername("username");
-                        user.setPassword("password");
-                        user.setRoleId("role_id");
-                        users.add(user);
+                        CartItem cartItem = new CartItem();
+                        cartItem.setId(rs.getString("id"));
+                        cartItem.setName(rs.getString("name"));
+                        cartItem.setCart_id(rs.getString("cart_id"));
+                        cartItem.setProduct_id(rs.getString("product_id"));
+                        cartItem.setQuantity(rs.getInt("quantity"));
+                        cartItem.setPrice(rs.getDouble("price"));
+                        cartItems.add(cartItem);
                     }
                 }
             }
@@ -135,22 +143,25 @@ public class UserDAO implements CrudDAO<User>{
         } catch (Exception e){
             throw new RuntimeException(e);
         }
-        return users;
+        return cartItems;
     }
 
-    public Optional<User> findByUsername(String username) {
+    public List<CartItem> findByCartId(String cart_id) {
+        List<CartItem> cartItems = new ArrayList<>();
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "select * from users where username = ?";
+            String sql = "SELECT c.id, c.quantity, c.cart_id, c.product_id, p.name, p.price FROM cart_items c INNER JOIN products p ON c.product_id = p.id AND c.cart_id = ?";
             try(PreparedStatement ps = conn.prepareStatement(sql)){
-                ps.setString(1, username);
+                ps.setString(1, cart_id);
                 try(ResultSet rs = ps.executeQuery()){
-                    if(rs.next()){
-                        User user = new User();
-                        user.setId(rs.getString("id"));
-                        user.setUsername(rs.getString("username"));
-                        user.setPassword(rs.getString("password"));
-                        user.setRoleId(rs.getString("role_id"));
-                        return Optional.of(user);
+                    while(rs.next()){
+                        CartItem cartItem = new CartItem();
+                        cartItem.setId(rs.getString("id"));
+                        cartItem.setName(rs.getString("name"));
+                        cartItem.setCart_id(rs.getString("cart_id"));
+                        cartItem.setProduct_id(rs.getString("product_id"));
+                        cartItem.setQuantity(rs.getInt("quantity"));
+                        cartItem.setPrice(rs.getDouble("price"));
+                        cartItems.add(cartItem);
                     }
                 }
             }
@@ -163,7 +174,7 @@ public class UserDAO implements CrudDAO<User>{
         } catch (Exception e){
             throw new RuntimeException(e);
         }
-        return  Optional.empty();
+        return cartItems;
     }
     
 }
