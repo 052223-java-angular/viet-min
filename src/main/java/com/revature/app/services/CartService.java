@@ -17,14 +17,14 @@ public class CartService {
     private final UserService userService;
 
     public void createCart(String user_id) {
-        User user = userService.findById(user_id);
-        Cart cart = new Cart(user.getId());
+        Cart cart = new Cart(user_id);
         cartDAO.save(cart);
     }
     public String add(String user_id, String item_id, int count) {
         Optional<Cart> cartOpt = cartDAO.findByUserId(user_id);
         if(cartOpt.isEmpty()){
             createCart(user_id);
+            cartOpt = cartDAO.findByUserId(user_id);
         }
         return cartItemService.add(item_id, count, cartOpt.get());
     }
