@@ -11,7 +11,7 @@ public class eShop {
   public static void main(String args[]) throws ClassNotFoundException, IOException, SQLException {
     Scanner scan = new Scanner(System.in);
 
-    RouterServices route = new RouterServices(new SessionUtil());
+    RouterServices route = new RouterServices(new SessionUtil(), null);
     route.navigate("/home", scan);
     scan.close();
   }

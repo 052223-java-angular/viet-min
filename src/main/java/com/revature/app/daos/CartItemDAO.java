@@ -23,7 +23,7 @@ public class CartItemDAO implements CrudDAO<CartItem> {
                 ps.setString(1, cartItem.getId());
                 ps.setString(2, cartItem.getCart_id());
                 ps.setString(3, cartItem.getProduct_id());
-                ps.setInt(5, cartItem.getQuantity());
+                ps.setInt(4, cartItem.getQuantity());
 
                 ps.executeUpdate();
             }

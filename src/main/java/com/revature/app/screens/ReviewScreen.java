@@ -31,7 +31,7 @@ public class ReviewScreen implements IScreen {
                 clearScreen();
                 printReviewByUser(reviewService.reviewByUser(session.getId()));
                 System.out.println("Any key to return to main menu...");
-                new RouterServices().navigate("/menu", scan);
+                router.navigate("/menu", scan);
             }
             else {
                 clearScreen();
@@ -57,8 +57,8 @@ public class ReviewScreen implements IScreen {
         }
         for (Review review : reviews) {
             System.out.println("=====================================================");
-            Optional<User> user = userService.findById(review.getUser_id());
-            user.ifPresent(u -> System.out.println("Review by: " + u.getUsername()));
+            User user = userService.findById(review.getUser_id());
+            System.out.println("Review by: " + session.getUsername());
             System.out.println("Rating: " + review.getRating() + "/5");
             System.out.println("Comment: " + review.getComment());
             }

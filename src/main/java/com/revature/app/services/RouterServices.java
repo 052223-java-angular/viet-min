@@ -28,7 +28,7 @@ import com.revature.app.screens.ProductDetailScreen;
 public class RouterServices {
     private SessionUtil session;
     private Product product;
-    private Cart cart;
+
     public void navigate(String path, Scanner scan) {
         switch (path) {
             case "/home":
@@ -54,7 +54,7 @@ public class RouterServices {
                 new BrowseProductScreen(this, getProductService(),session).start(scan);
                 break;
             case "/detail":
-                new ProductDetailScreen(session, this, product, cart).start(scan);
+                new ProductDetailScreen(this, getCartService(), session, product).start(scan);
                 break;
             default:
                 break;

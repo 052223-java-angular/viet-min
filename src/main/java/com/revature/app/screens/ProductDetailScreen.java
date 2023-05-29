@@ -8,6 +8,7 @@ import com.revature.app.daos.ProductDAO;
 import com.revature.app.models.Cart;
 import com.revature.app.models.Product;
 import com.revature.app.services.CartItemService;
+import com.revature.app.services.CartService;
 import com.revature.app.services.ProductService;
 import com.revature.app.services.RouterServices;
 import com.revature.app.utils.SessionUtil;
@@ -16,10 +17,12 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class ProductDetailScreen implements IScreen{
+    private final RouterServices router;
+    private final CartService cart;
     private SessionUtil session;
-    private RouterServices router;
     private Product product;
-    private Cart cart;
+
+
 
     @Override
     public void start(Scanner scan) {
@@ -54,8 +57,7 @@ public class ProductDetailScreen implements IScreen{
             String quantity = scan.nextLine();
             if (isInt(quantity)) { //checks if valid numeric int
                 if (Integer.parseInt(quantity) > 0 && Integer.parseInt(quantity) < product.getStock()) { //checks if between 1 and max stock
-                    CartItemService cartItemService = new CartItemService(new CartItemDAO(), new ProductService(new ProductDAO()));
-                    cartItemService.add(product.getId(), Integer.parseInt(quantity), cart);
+                    cart.add(session.getId(), product.getId(), Integer.parseInt(quantity));
                 }
                 else {
                     System.out.println("Invalid option! Please enter between (1-" + product.getStock()+")");
