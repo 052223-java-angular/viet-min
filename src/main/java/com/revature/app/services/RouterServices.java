@@ -36,7 +36,7 @@ public class RouterServices {
             case "/register":
                 new RegisterScreen(this, getUserService(), session).start(scan);
             case "/review":
-                new ReviewScreen(product, session, getReviewService(), getUserService()).start(scan);;
+                new ReviewScreen(this, product, session, getReviewService(), getUserService()).start(scan);;
                 break;
             case "/cart":
                 new CartScreen(this, getCartService(), session).start(scan);;

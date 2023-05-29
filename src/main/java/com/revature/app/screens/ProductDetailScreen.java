@@ -26,16 +26,20 @@ public class ProductDetailScreen implements IScreen{
         while(true) {
             clearScreen();
             System.out.println(product.getName() + "                             Stock: " + product.getStock());
-            System.out.println(product.getDescription());
+            System.out.println("\n" + product.getDescription());
             System.out.println(formatPrice());
             System.out.println("\n[1] Add " + product.getName() + " to cart?");
             System.out.println("[2] View Reviews");
+            System.out.println("[x] to return to product browsing");
             System.out.print("\nEnter: ");
             String input = scan.nextLine();
             if (input.equals("1"))
                     addToCart(product, scan);
             else if (input.equals("2"))
                 router.navigate("/review", scan);
+            else if (input.equals("x")) {
+                router.navigate("/browse", scan);
+            }
             else {
                 System.out.println("\nInvalid option!");
                 System.out.print("Press enter to continue...");

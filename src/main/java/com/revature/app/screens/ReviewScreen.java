@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class ReviewScreen implements IScreen {
+    private RouterServices router;
     private Product product;
     private SessionUtil session;
     private final ReviewService reviewService;
@@ -37,21 +38,21 @@ public class ReviewScreen implements IScreen {
                 printReviewByProd(reviewService.reviewByProduct(product.getId()));
                 System.out.println("[1] Add a review");
                 System.out.println("Any key to return to product detail...");
-                System.out.println("\nEnter: ");
+                System.out.print("\nEnter: ");
 
                 if (scan.nextLine().equals("1"))
                 {
 
                 }
                 else {
-                    new RouterServices().navigate("/detail", scan);
+                    router.navigate("/detail", scan);
                 }
             }
         }
     }
 
     private void printReviewByProd (List<Review> reviews) {
-        if (reviews == null) {
+        if (reviews.isEmpty()) {
             System.out.println("There are no reviews for" + product.getName());
         }
         for (Review review : reviews) {
