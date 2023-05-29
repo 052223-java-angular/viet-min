@@ -197,7 +197,7 @@ public class ProductDAO implements CrudDAO {
         return Optional.empty();
     }
 
-    private void setStock(String id, int quantity) {
+    public void setStock(String id, int quantity) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
             String sql = "UPDATE products (stock) VALUES (?) WHERE id = ?";
 

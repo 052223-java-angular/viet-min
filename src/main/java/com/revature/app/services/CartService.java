@@ -18,21 +18,15 @@ public class CartService {
 
     public void createCart(String user_id) {
         Cart cart = new Cart(user_id);
-        Cart cart = new Cart(user_id);
         cartDAO.save(cart);
     }
-
-    public String add(String user_id, String product_id, int count) {
 
     public String add(String user_id, String product_id, int count) {
         Optional<Cart> cartOpt = cartDAO.findByUserId(user_id);
         if(cartOpt.isEmpty()){
             createCart(user_id);
             cartOpt = cartDAO.findByUserId(user_id);
-            cartOpt = cartDAO.findByUserId(user_id);
         }
-        cartOpt.get().setItems(cartItemService.getCartItemByCartId(cartOpt.get().getId()));
-        return cartItemService.add(product_id, count, cartOpt.get());
         cartOpt.get().setItems(cartItemService.getCartItemByCartId(cartOpt.get().getId()));
         return cartItemService.add(product_id, count, cartOpt.get());
     }
@@ -40,8 +34,6 @@ public class CartService {
         cartItemService.remove(item_id);
     }
 
-    public String modify(String product_id, String cartItem_id, int amount) {
-        return cartItemService.modify(product_id, cartItem_id, amount);
     public String modify(String product_id, String cartItem_id, int amount) {
         return cartItemService.modify(product_id, cartItem_id, amount);
     }    
@@ -52,9 +44,6 @@ public class CartService {
             cart.get().setItems(cartItemService.getCartItemByCartId(cart.get().getId())); 
         }
         return cart;
-    }
-    public void clear(String id) {
-        cartItemService.clearByCartId(id);
     }
     public void clear(String id) {
         cartItemService.clearByCartId(id);
