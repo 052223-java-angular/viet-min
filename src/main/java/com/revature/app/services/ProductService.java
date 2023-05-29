@@ -40,12 +40,7 @@ public class ProductService {
         return productDao.getProduct(id);
     }
 
-    // public List<Product> pseudo() {
-    //     Product a = new Product("1", "game a", "a game", 22.1, 1, 10);
-    //     Product b = new Product("2", "game b", "b game", 22.1, 2, 10);
-    //     Product c = new Product("3", "game c", "c game", 22.1, 3, 10);
-    //     Product d = new Product("4", "game d", "d game", 22.1, 3, 10);
-    //     List<Product> w = new ArrayList<>(Arrays.asList(a, b, c, d));
-    //     return w;
-    // }
+    public void setStock(String id, int quantity) {
+        productDao.setStock(id, quantity);
+    }
 }

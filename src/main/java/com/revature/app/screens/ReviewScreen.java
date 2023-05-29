@@ -29,19 +29,42 @@ public class ReviewScreen implements IScreen {
             {
                 clearScreen();
                 printReviewByUser(reviewService.reviewByUser(session.getId()));
-                System.out.println("Any key to return to main menu...");
+                System.out.println("Press any key to return to main menu...");
+                scan.nextLine();
                 router.navigate("/menu", scan);
             }
             else {
                 clearScreen();
                 printReviewByProd(reviewService.reviewByProduct(product.getId()));
                 System.out.println("[1] Add a review");
-                System.out.println("Any key to return to product detail...");
+                System.out.println("Press any key to return to product detail...");
                 System.out.print("\nEnter: ");
 
                 if (scan.nextLine().equals("1"))
                 {
+                    Review review = reviewService.findReview(session.getId(), product.getId()).orElseGet(null);
+                    if(review.getId() != null) {
+                        System.out.println("You have already made a review for " + product.getName());
+                        System.out.println("Would you like to update your review? (y/n)");
 
+                        if (scan.nextLine().equals("y")) {
+                            updateReview(review, scan);
+                            reviewService.update(review);
+                            router.navigate("/detail", scan);
+                        }
+                        else {
+                            System.out.println("Press any key to return to product detail...");
+                            System.out.print("\nEnter: ");
+                            scan.nextLine();
+                            router.navigate("/detail", scan);
+                        }
+                    }
+                    else {
+                        review = new Review(session.getId(), product.getId());
+                        updateReview(review, scan);
+                        reviewService.save(review);
+                        router.navigate("/detail", scan);
+                    }
                 }
                 else {
                     router.navigate("/detail", scan);
@@ -73,6 +96,33 @@ public class ReviewScreen implements IScreen {
             System.out.println("Rating: " + review.getRating() + "/5");
             System.out.println("Comment: " + review.getComment());
             }
+    }
+
+    private void updateReview(Review review, Scanner scan) {
+        while(true) {
+            System.out.println("Please enter a rating (1-5): ");
+            String input = scan.nextLine();
+            if (isInt(input))
+                review.setRating(Integer.parseInt(input));
+            else {
+                System.out.println("Invalid option! Please enter between (1-" + product.getStock()+")");
+                    System.out.print("\nPress enter to continue...");
+                    scan.nextLine();
+                    break;
+            }
+            System.out.println("Please add your thoughts on product: ");
+            review.setComment(scan.nextLine());
+            break;
+        }
+    }
+
+    private boolean isInt(String input){
+        try {
+            Integer.parseInt(input);
+            return true;
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
     }
 
     private void clearScreen() {
