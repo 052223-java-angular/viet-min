@@ -24,7 +24,6 @@ public class ReviewScreen implements IScreen {
 
     @Override
     public void start(Scanner scan) {
-        setSession();
         while(true) {
             if (product.getId() == null)
             {
@@ -79,8 +78,5 @@ public class ReviewScreen implements IScreen {
     private void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
-    }
-    public void setSession() {
-        session = new SessionUtil("1", "tester", "1", null);
     }
 }

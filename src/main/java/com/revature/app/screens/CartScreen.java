@@ -74,7 +74,7 @@ public class CartScreen implements IScreen{
                             item = getItem(itemMap, scan);
                             System.out.println("change amount to:");
                             amount = Integer.parseInt(scan.nextLine());
-                            System.out.println(cart.modify(itemMap.get(item), amount));
+                            System.out.println(cart.modify(itemMap.get(item), cartOpt.get().getId(), amount));
                             System.out.print("\nPress enter to continue...");
                             scan.nextLine();
                             continue;
