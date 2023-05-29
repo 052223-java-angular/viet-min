@@ -76,8 +76,7 @@ public class CartScreen implements IScreen{
                             cartEmptyMessage(scan);
                             continue;
                         }else{
-                            System.out.println("chose the item you want to delete");
-                            item = scan.nextLine();
+                            item = getItem(idMap, scan);
                             cart.remove(idMap.get(item));
                             continue;
                         }
@@ -86,11 +85,12 @@ public class CartScreen implements IScreen{
                             cartEmptyMessage(scan);
                             continue;
                         }else{
-                            System.out.println("choose item you want to modify");
-                            item = scan.nextLine();
+                            item = getItem(idMap, scan);
                             System.out.println("change amount to:");
                             amount = Integer.parseInt(scan.nextLine());
-                            cart.modify(idMap.get(item), amount);
+                            System.out.println(cart.modify(idMap.get(item), amount));
+                            System.out.print("\nPress enter to continue...");
+                            scan.nextLine();
                             continue;
                         }
                     case "4":
@@ -217,6 +217,33 @@ securityCode = scan.nextLine();
             break;
         }
         return securityCode;
+    }
+
+    private String getItem(Map map, Scanner scan){
+        String item = "";
+        
+
+        while(true){
+            System.out.println("\nChoose the item: ");
+            item = scan.nextLine();
+
+            if(item.equalsIgnoreCase("x")){
+                return "x";
+            }
+
+            if(item.equalsIgnoreCase("b")){
+                return "b";
+            }
+
+            if(!map.containsKey(item)){
+                System.out.println("Invalid input! The choices are:" + map.keySet());
+                System.out.print("\nPress enter to continue...");
+                scan.nextLine();
+                continue;
+            }
+            break;
+        }
+        return item;
     }
     
 }

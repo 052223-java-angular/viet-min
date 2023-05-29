@@ -25,19 +25,19 @@ public class CartService {
         Cart cart = new Cart(userOpt.get().getId());
         cartDAO.save(cart);
     }
-    public void add(String user_id, String item_id, int count) {
+    public String add(String user_id, String item_id, int count) {
         Optional<Cart> cartOpt = cartDAO.findByUserId(user_id);
         if(cartOpt.isEmpty()){
             createCart(user_id);
         }
-        cartItemService.add(item_id, count, cartOpt.get());
+        return cartItemService.add(item_id, count, cartOpt.get());
     }
     public void remove(String item_id) {
         cartItemService.remove(item_id);
     }
 
-    public void modify(String item, int amount) {
-        cartItemService.modify(item, amount);
+    public String modify(String item, int amount) {
+        return cartItemService.modify(item, amount);
     }    
     
     public Optional<Cart> getCartByUserId(String user_id) {

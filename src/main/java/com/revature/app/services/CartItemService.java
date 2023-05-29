@@ -16,41 +16,46 @@ public class CartItemService {
     private final CartItemDAO cartItemDAO;
     private final ProductService productService;
 
-    public void add(String product_id, int count, Cart cart) {
+    public String add(String product_id, int count, Cart cart) {
         Optional<Product> productOpt = productService.getProd(product_id);
         if (productOpt.isEmpty()) {
             System.out.println("Product not found");
+            //product not found exception
+            
         }
         
         for(CartItem cartItem : cart.getItems()){
             if(cartItem.getProduct_id() == product_id){
-                cartItemDAO.update(product_id, cartItem.getQuantity() + count);
-                return;
+                return modify(product_id, cartItem.getQuantity() + count);
             }
         }
         if(productOpt.get().getStock() < count){
-            System.out.println("not enough in stock");
-            return;
+            return "not enough in stock, only " + productOpt.get().getStock() + " copies left!";
+        }else if(count < 0){
+            return "cannot be negative, please enter a number between 0 and " + productOpt.get().getStock();
         }
         CartItem cartItem = new CartItem(productOpt.get().getName(), cart.getId(), product_id, count, productOpt.get().getPrice());
         cartItemDAO.save(cartItem);
+        return "successfully added to cart";
     }
     
 
-    public void modify(String product_id, int count) {
+    public String modify(String product_id, int count) {
         Optional<Product> productOpt = productService.getProd(product_id);
         if (productOpt.isEmpty()) {
             System.out.println("Product not found");
         }
         if(productOpt.get().getStock() < count){
-            System.out.println("not enough in stock");
-            return;
+            return "not enough in stock, only " + productOpt.get().getStock() + " copies left!";
+        }else if(count < 0){
+            return "cannot be negative, please enter a number between 0 and " + productOpt.get().getStock();
         }
         cartItemDAO.update(product_id, count);
+        return "quantity updated";
     }
 
-    public void remove(String item) {
-        cartItemDAO.delete(item);
+    public void remove(String id) {
+        cartItemDAO.delete(id);
     }
 
     public List<CartItem> getCartItemByCartId(String cart_id) {
