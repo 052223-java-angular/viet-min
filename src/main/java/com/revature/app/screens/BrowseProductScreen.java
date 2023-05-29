@@ -37,13 +37,13 @@ public class BrowseProductScreen implements IScreen{
     
                 input = scan.nextLine().toLowerCase();
     
-                if (input.equals("x")) {
+                if (input.equalsIgnoreCase("x")) {
                     System.out.println("Goodbye!");
                     router.navigate("/home", scan);;
                     break;
                 }
     
-                if (input.equals("b")) {
+                if (input.equalsIgnoreCase("b")) {
                     router.navigate(session.getScreenHistory().pop(), scan);
                     break;
                 }
@@ -113,7 +113,7 @@ public class BrowseProductScreen implements IScreen{
         while (true) {
             System.out.print("Please enter product name (x to cancel): ");
             String input = scan.nextLine();
-            if (input.equals("x")) {
+            if (input.equalsIgnoreCase("x")) {
                 break ;
             }
             // else if(input)
@@ -132,7 +132,7 @@ public class BrowseProductScreen implements IScreen{
         if (isInt(input) && Integer.parseInt(input) < category.size())
             return productService.byCategory(Integer.parseInt(input));
 
-        else if(scan.nextLine().equals("x"))
+        else if(scan.nextLine().equalsIgnoreCase("x"))
             return null;
         else {
             clearScreen();

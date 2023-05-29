@@ -29,24 +29,24 @@ public class LogInScreen implements IScreen{
 
             username = getUsername(scan);
 
-            if(username.equals("x")){
+            if(username.equalsIgnoreCase("x")){
                 router.navigate("/home", scan);
                 break;
             }
 
-            if(username.equals("b")){
+            if(username.equalsIgnoreCase("b")){
                 router.navigate(session.getScreenHistory().pop(), scan);
                 break;
             }
 
             password = getPassword(scan);
 
-            if(password.equals("x")){
+            if(password.equalsIgnoreCase("x")){
                 router.navigate("/home", scan);
                 break;
             }
 
-            if(password.equals("b")){
+            if(password.equalsIgnoreCase("b")){
                 router.navigate(session.getScreenHistory().pop(), scan);
                 break;
             }
