@@ -26,7 +26,6 @@ public class CartService {
         if(cartOpt.isEmpty()){
             createCart(user_id);
             cartOpt = cartDAO.findByUserId(user_id);
-            cartOpt = cartDAO.findByUserId(user_id);
         }
         cartOpt.get().setItems(cartItemService.getCartItemByCartId(cartOpt.get().getId()));
         return cartItemService.add(product_id, count, cartOpt.get());
