@@ -138,7 +138,7 @@ public class BrowseProductScreen implements IScreen{
             }
             // else if(input)
             log.info("database returning product by name");
-            return productService.byName(scan.nextLine()); //ignore case in sql?
+            return productService.byName(input); //ignore case in sql?
         }
         return null;
     }

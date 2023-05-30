@@ -102,7 +102,7 @@ public class CartScreen implements IScreen{
                             cartEmptyMessage(scan);
                             continue;
                         }else{
-                            System.out.println("Your total will be: " + total);
+                            System.out.println("Your total will be: " + df.format(total));
                             cardNumber = getCardNumber(scan);
                             if(cardNumber == "x" || cardNumber == "b") continue; 
                             expirationDate = getExpirationDate(scan);
@@ -275,7 +275,7 @@ securityCode = scan.nextLine();
                 itemMap.put("p" + i, cartItemList.get(i));
                 System.out.println(
                     String.format("%-60s","[p" + i + "]: " + cartItemList.get(i).getName())  + 
-                    String.format("%-20s","(" + cartItemList.get(i).getQuantity() + ")*" + cartItemList.get(i).getPrice()) + 
+                    String.format("%-20s","(" + cartItemList.get(i).getQuantity() + ")*" + df.format(cartItemList.get(i).getPrice())) + 
                     "[" + df.format(cartItemList.get(i).getPrice() * cartItemList.get(i).getQuantity()) + "]"
                 );
                 total += cartItemList.get(i).getPrice() * cartItemList.get(i).getQuantity();
