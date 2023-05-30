@@ -7,10 +7,12 @@ import static org.mockito.Mock.*;
 import java.util.Scanner;
 
 import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.revature.app.models.Product;
+import com.revature.app.screens.HomeScreen;
 import com.revature.app.services.CartItemService;
 import com.revature.app.services.CartService;
 import com.revature.app.services.OrderItemService;
@@ -57,5 +59,12 @@ public class RouterServicesTest {
         MockitoAnnotations.openMocks(this);
 
         routerServices = new RouterServices(session, product);
+    }
+
+    @Test
+    public void test_navigate_home() {
+        String expected = HomeScreen.class.toString();
+
+        routerServices.navigate("/home", scan);
     }
 }
