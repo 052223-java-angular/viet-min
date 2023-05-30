@@ -58,6 +58,8 @@ public class ProductDetailScreen implements IScreen{
             if (isInt(quantity)) { //checks if valid numeric int
                 if (Integer.parseInt(quantity) > 0 && Integer.parseInt(quantity) < product.getStock()) { //checks if between 1 and max stock
                     cart.add(session.getId(), product.getId(), Integer.parseInt(quantity));
+                    System.out.print("Successfully added to cart. Press any key to continue...");
+                    scan.nextLine();
                     router.navigate("/detail", scan);
                 }
                 else {
