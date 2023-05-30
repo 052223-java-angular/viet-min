@@ -1,3 +1,7 @@
+/**
+ * A class that represents a payment method for an online store.
+ * It has an id and a payment number that corresponds to the credit card information.
+ */
 package com.revature.app.models;
 
 import lombok.AllArgsConstructor;
@@ -13,6 +17,12 @@ import lombok.ToString;
 @ToString
 
 public class Payment {
+    /**
+     * The id of the payment method.
+     */
     private String id;
+    /**
+     * The payment number that corresponds to the credit card information.
+     */
     private int payment_num; //cc info
 }
