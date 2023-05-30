@@ -35,6 +35,7 @@ public class ReviewScreen implements IScreen {
                 System.out.println("\nPress any key to return to main menu...");
                 scan.nextLine();
                 router.navigate("/menu", scan);
+                break;
             }
             else {
                 clearScreen();
@@ -73,6 +74,7 @@ public class ReviewScreen implements IScreen {
                     router.navigate("/detail", scan);
                 }
             }
+            break;
         }
     }
 

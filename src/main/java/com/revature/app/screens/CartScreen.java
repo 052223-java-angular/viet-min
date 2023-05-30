@@ -55,7 +55,7 @@ public class CartScreen implements IScreen{
                 displayItems(cartOpt, itemMap, 0);
 
                 System.out.println("------------------------------------------------------------------------------------------------------");
-                System.out.println("[1] Continue shopping | [2] Remove item | [3] Modify item | [4] Checkout | [b] Back | [x] back to menu");
+                System.out.println("[1] Continue shopping | [2] Remove item | [3] Modify item | [4] Checkout | [b] Back | [x] Exit");
     
                 input = scan.nextLine();
                 switch(input){
@@ -113,12 +113,13 @@ public class CartScreen implements IScreen{
                                 cart.clear(cartOpt.get().getId());
                                 
                                 System.out.println(message);
+                                scan.nextLine();
                             }else{
                                 System.out.println(message);
                                 scan.nextLine();
                             }
                         }
-                        break;
+                        continue;
                     case "x":
                         router.navigate("/home", scan);
                         break;

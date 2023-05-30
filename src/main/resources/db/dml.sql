@@ -22,8 +22,8 @@ INSERT INTO users (id, username, password, role_id) VALUES('bcbc968f-d38e-41e2-a
 
 INSERT INTO cart (id, user_id) values ('1a353098a-fb53-11ed-be56-0242ac120002', 'bcbc968f-d38e-41e2-a98b-4e04d7ad0114');
 
-INSERT INTO cart_items (id, cart_id, product_id, quantity) values ('a353098a-fb53-11ed-be56-0242ac120002', '1a353098a-fb53-11ed-be56-0242ac120002', 'a353098a-fb53-11ed-be56-0242ac120002', 56);
 INSERT INTO cart_items (id, cart_id, product_id, quantity) values ('a3531022-fb53-11ed-be56-0242ac120002', '1a353098a-fb53-11ed-be56-0242ac120002', 'a3531022-fb53-11ed-be56-0242ac120002', 12);
+INSERT INTO cart_items (id, cart_id, product_id, quantity) values ('a353098a-fb53-11ed-be56-0242ac120002', '1a353098a-fb53-11ed-be56-0242ac120002', 'a353098a-fb53-11ed-be56-0242ac120002', 56);
 INSERT INTO cart_items (id, cart_id, product_id, quantity) values ('a3531182-fb53-11ed-be56-0242ac120002', '1a353098a-fb53-11ed-be56-0242ac120002', 'a3531182-fb53-11ed-be56-0242ac120002', 34);
 INSERT INTO cart_items (id, cart_id, product_id, quantity) values ('1aff46ce-fb54-11ed-be56-0242ac120002', '1a353098a-fb53-11ed-be56-0242ac120002', '1aff46ce-fb54-11ed-be56-0242ac120002', 34);
 INSERT INTO cart_items (id, cart_id, product_id, quantity) values ('1aff4e1c-fb54-11ed-be56-0242ac120002', '1a353098a-fb53-11ed-be56-0242ac120002', '1aff4e1c-fb54-11ed-be56-0242ac120002', 34);

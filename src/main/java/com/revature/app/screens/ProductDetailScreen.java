@@ -39,9 +39,10 @@ public class ProductDetailScreen implements IScreen{
             String input = scan.nextLine();
             if (input.equals("1"))
                     addToCart(product, scan);
-            else if (input.equals("2"))
+            else if (input.equals("2")){
                 router.navigate("/review", scan);
-            else if (input.equalsIgnoreCase("x")) {
+                break;
+            }else if (input.equalsIgnoreCase("x")) {
                 router.navigate(session.getScreenHistory().pop(), scan);
             }
             else {

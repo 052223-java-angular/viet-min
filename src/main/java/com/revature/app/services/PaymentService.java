@@ -29,7 +29,7 @@ public class PaymentService {
             
             if(product.get().getStock() < cartItem.getQuantity()){
                 for(Pair pair : purchased){
-                    productService.setStock(pair.getId(), product.get().getStock() - pair.getCount());
+                    productService.setStock(pair.getId(), productService.getProd(pair.getId()).get().getStock() + pair.getCount());
                 }
                 return "We do not have enough [" + product.get().getName() + "] in stock! Change quantity to " + product.get().getStock() + " or lower.";
             }else{

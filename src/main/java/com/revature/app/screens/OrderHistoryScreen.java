@@ -36,15 +36,15 @@ public class OrderHistoryScreen implements IScreen {
             System.out.println("Please select the order you wish to view: ");
             int counter = 1;
             for (Order order : orders) {
-                System.out.println("["+ counter + "] " + orderService.formatPrice(order.getTotal()));
+                System.out.println("["+ counter++ + "] " + orderService.formatPrice(order.getTotal()));
             }
-            System.out.println("\n[x] to return to main menu");
+            System.out.println("\n[b] to return to main menu");
 
             String input = scan.nextLine();
-            if (input.equalsIgnoreCase("x"))
-                router.navigate("menu", scan);
-
-            if (isInt(input)) {
+            if (input.equalsIgnoreCase("b")){
+                router.navigate(session.getScreenHistory().pop(), scan);
+                break;
+            }else if (isInt(input)) {
                 if (Integer.parseInt(input) > 0 && Integer.parseInt(input) <= orders.size()) {
                     Order order = orders.get(Integer.parseInt(input) - 1);
                     List<OrderItems> orderItems = orderItemService.getOrderItems(order.getId());

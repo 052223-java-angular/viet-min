@@ -47,12 +47,12 @@ public class ReviewDAO implements CrudDAO<Review>{
 
     public void update(Review obj) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "UPDATE review (rating, comment) VALUES (?, ?) WHERE id = ?";
+            String sql = "UPDATE reviews set rating = ?, comment = ? WHERE id = ?";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
-                ps.setInt(2, obj.getRating());
-                ps.setString(3, obj.getComment());
-                ps.setString(1, obj.getId());
+                ps.setInt(1, obj.getRating());
+                ps.setString(2, obj.getComment());
+                ps.setString(3, obj.getId());
                 ps.executeUpdate();
             }
 

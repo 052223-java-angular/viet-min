@@ -25,6 +25,7 @@ public class BrowseProductScreen implements IScreen{
         String input ="";
         exit:{
             while(true){
+                router.setProduct(null);
                 clearScreen();
                 System.out.println("Welcome to Paimon's Bargains! What would you like to do?");
                 System.out.println("\n[1] Browse all products");
@@ -40,26 +41,27 @@ public class BrowseProductScreen implements IScreen{
                 if (input.equalsIgnoreCase("x")) {
                     System.out.println("Goodbye!");
                     router.navigate("/home", scan);;
-                    break;
+                    break exit;
                 }
     
                 if (input.equalsIgnoreCase("b")) {
                     router.navigate(session.getScreenHistory().pop(), scan);
-                    break;
+                    break exit;
                 }
     
                 switch(input) {
                     case "b":
                         router.navigate(session.getScreenHistory().pop(), scan);
-                        break;
+                        break exit;
                     case "x":
+                        session.getScreenHistory().push("/browse");
                         router.navigate("/menu", scan);
-                        break;
+                        break exit;
                     case "1", "2", "3", "4":
                         searchProducts(input, scan);
-                        break;
+                        break exit;
                     case "5":
-                        session.getScreenHistory().push("/menu");
+                        session.getScreenHistory().push("/browse");
                         router.navigate("/cart", scan);
                         break exit;
                     default:
