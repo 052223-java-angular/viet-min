@@ -22,4 +22,8 @@ public class OrderService {
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
         return currencyFormatter.format(price);
     }
+
+    public void save(Order order) {
+        orderDAO.save(order);
+    }
 }

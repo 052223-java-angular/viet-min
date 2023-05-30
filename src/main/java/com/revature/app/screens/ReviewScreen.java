@@ -51,7 +51,7 @@ public class ReviewScreen implements IScreen {
                         System.out.println("You have already made a review for " + product.getName());
                         System.out.println("Would you like to update your review? (y/n)");
 
-                        if (scan.nextLine().equals("y")) {
+                        if (scan.nextLine().equalsIgnoreCase("y")) {
                             updateReview(review, scan);
                             reviewService.update(review);
                             router.navigate("/detail", scan);

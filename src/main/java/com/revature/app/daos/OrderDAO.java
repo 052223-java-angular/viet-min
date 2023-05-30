@@ -17,12 +17,11 @@ public class OrderDAO implements CrudDAO<Order>{
     @Override
     public void save(Order obj) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "insert into orders (id, user_id, payment_id, total) values (?, ?, ?, ?)";
+            String sql = "insert into orders (id, user_id, total) values (?, ?, ?)";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
                 ps.setString(1, obj.getId());
                 ps.setString(2, obj.getUser_id());
-                ps.setString(3, obj.getPayment_id());
                 ps.setDouble(4, obj.getTotal());
 
                 ps.executeUpdate();
@@ -76,7 +75,6 @@ public class OrderDAO implements CrudDAO<Order>{
                         Order order = new Order();
                         order.setId(rs.getString("id"));
                         order.setUser_id(rs.getString("user_id"));
-                        order.setPayment_id(rs.getString("payment_id"));
                         order.setTotal(rs.getDouble("total"));
                         
                         orders.add(order);
