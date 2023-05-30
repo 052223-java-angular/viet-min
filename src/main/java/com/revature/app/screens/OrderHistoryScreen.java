@@ -28,6 +28,11 @@ public class OrderHistoryScreen implements IScreen {
 
         while(true) {
             clearScreen();
+            if (orders.isEmpty()) {
+                System.out.print("You have no previous orders. Please press any key to return to main menu...");
+                scan.nextLine();
+                router.navigate("/menu", scan);
+            }
             System.out.println("Please select the order you wish to view: ");
             int counter = 1;
             for (Order order : orders) {

@@ -44,14 +44,14 @@ public class RouterServices {
                 new RegisterScreen(this, getUserService(), session).start(scan);
                 break;
             case "/review":
-                new ReviewScreen(this, product, session, getReviewService(), getUserService()).start(scan);
+                new ReviewScreen(this, product, session, getReviewService(), getProductService(), getUserService()).start(scan);
                 break;
             case "/cart":
                 new CartScreen(this, getCartService(), session, getPaymentService(), 0).start(scan);;
                 //new 
                 break;
             case "/menu":
-                new MainMenuScreen(this, session);
+                new MainMenuScreen(this, session).start(scan);
                 break;
             case "/browse":
                 new BrowseProductScreen(this, getProductService(), session).start(scan);
@@ -60,7 +60,7 @@ public class RouterServices {
                 new ProductDetailScreen(this, getCartService(), session, product).start(scan);
                 break;
             case "/history":
-                new OrderHistoryScreen(this, session, getOrderService(), getOrderItemService());
+                new OrderHistoryScreen(this, session, getOrderService(), getOrderItemService()).start(scan);
             default:
                 break;
         }

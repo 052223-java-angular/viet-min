@@ -61,7 +61,7 @@ public class LogInScreen implements IScreen{
                 session.setSession(user.get());
                 System.out.println("success!");
                 session.getScreenHistory().push("/login");
-                router.navigate("/browse", scan);
+                router.navigate("/menu", scan);
                 break;
             }
             
