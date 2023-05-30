@@ -6,6 +6,7 @@ import java.util.Scanner;
 import com.revature.app.daos.CartItemDAO;
 import com.revature.app.daos.ProductDAO;
 import com.revature.app.models.Cart;
+import com.revature.app.models.CartItem;
 import com.revature.app.models.Product;
 import com.revature.app.services.CartItemService;
 import com.revature.app.services.CartService;
@@ -58,6 +59,7 @@ public class ProductDetailScreen implements IScreen{
             if (isInt(quantity)) { //checks if valid numeric int
                 if (Integer.parseInt(quantity) > 0 && Integer.parseInt(quantity) < product.getStock()) { //checks if between 1 and max stock
                     cart.add(session.getId(), product.getId(), Integer.parseInt(quantity));
+                    //need to add error check message for quantity > stock
                     System.out.print("Successfully added to cart. Press any key to continue...");
                     scan.nextLine();
                     router.navigate("/detail", scan);

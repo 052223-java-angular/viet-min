@@ -22,7 +22,7 @@ public class OrderDAO implements CrudDAO<Order>{
             try(PreparedStatement ps = conn.prepareStatement(sql)){
                 ps.setString(1, obj.getId());
                 ps.setString(2, obj.getUser_id());
-                ps.setDouble(4, obj.getTotal());
+                ps.setDouble(3, obj.getTotal());
 
                 ps.executeUpdate();
             }

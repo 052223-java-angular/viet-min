@@ -36,7 +36,7 @@ public class OrderHistoryScreen implements IScreen {
             System.out.println("Please select the order you wish to view: ");
             int counter = 1;
             for (Order order : orders) {
-                System.out.println("["+ counter + "]" + orderService.formatPrice(order.getTotal()));
+                System.out.println("["+ counter + "] " + orderService.formatPrice(order.getTotal()));
             }
             System.out.println("\n[x] to return to main menu");
 
@@ -51,8 +51,8 @@ public class OrderHistoryScreen implements IScreen {
                     clearScreen();
                     printOrderItems(orderItems);
                     System.out.println("Press any key to return to Order History...");
-                    router.navigate("/history", scan);
                     scan.nextLine();
+                    router.navigate("/history", scan);
                 } else {
                     System.out.println("Invalid option!");
                     System.out.print("\nPress enter to continue...");
@@ -70,9 +70,11 @@ public class OrderHistoryScreen implements IScreen {
     }
 
     public void printOrderItems(List<OrderItems> orderItems) {
+        System.out.format("%-20s %12s\n", "Product", "Quantity");
         for (OrderItems orderItem : orderItems) {
             Optional<Product> product = new ProductService(new ProductDAO()).getProd(orderItem.getProduct_id());
-            System.out.println(product.get().getName() + "            Quantity: " + orderItem.getQuantity());
+            
+            System.out.format("%-20s %12s\n", product.get().getName(), orderItem.getQuantity());
         }
     }
 
