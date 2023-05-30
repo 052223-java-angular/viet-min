@@ -44,6 +44,7 @@ public class MainMenuScreen implements IScreen{
                     break;
                 default:
                     System.out.print("Invalid option. Press any key to continue... ");
+                    scan.nextLine();
                     break;
             }
         }
