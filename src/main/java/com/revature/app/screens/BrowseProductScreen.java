@@ -62,7 +62,7 @@ public class BrowseProductScreen implements IScreen{
                         searchProducts(input, scan);
                         break;
                     case "5":
-                        session.getScreenHistory().push("/browse");
+                        session.getScreenHistory().push("/menu");
                         router.navigate("/cart", scan);
                         break exit;
                     default:
@@ -197,6 +197,7 @@ public class BrowseProductScreen implements IScreen{
                     if (Integer.parseInt(input) > 0 && Integer.parseInt(input) <= prod.size()) {
                         Product product = prod.get(Integer.parseInt(input) - 1);
                         router.setProduct(product);
+                        session.getScreenHistory().push("/browse");
                         router.navigate("/detail", scan);
                     } else {
                         System.out.println("Invalid option!");

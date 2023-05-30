@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+import com.revature.app.daos.ProductDAO;
 import com.revature.app.models.Product;
 import com.revature.app.models.Review;
 import com.revature.app.models.User;
+import com.revature.app.services.ProductService;
 import com.revature.app.services.ReviewService;
 import com.revature.app.services.RouterServices;
 import com.revature.app.services.UserService;
@@ -20,23 +22,24 @@ public class ReviewScreen implements IScreen {
     private Product product;
     private SessionUtil session;
     private final ReviewService reviewService;
+    private final ProductService productService;
     private UserService userService;
 
     @Override
     public void start(Scanner scan) {
         while(true) {
-            if (product.getId() == null)
+            if (product == null)
             {
                 clearScreen();
                 printReviewByUser(reviewService.reviewByUser(session.getId()));
-                System.out.println("Press any key to return to main menu...");
+                System.out.println("\nPress any key to return to main menu...");
                 scan.nextLine();
                 router.navigate("/menu", scan);
             }
             else {
                 clearScreen();
                 printReviewByProd(reviewService.reviewByProduct(product.getId()));
-                System.out.println("[1] Add a review");
+                System.out.println("\n[1] Add a review");
                 System.out.println("Press any key to return to product detail...");
                 System.out.print("\nEnter: ");
 
@@ -44,6 +47,7 @@ public class ReviewScreen implements IScreen {
                 {
                     Review review = reviewService.findReview(session.getId(), product.getId()).orElseGet(null);
                     if(review.getId() != null) {
+                        clearScreen();
                         System.out.println("You have already made a review for " + product.getName());
                         System.out.println("Would you like to update your review? (y/n)");
 
@@ -53,8 +57,7 @@ public class ReviewScreen implements IScreen {
                             router.navigate("/detail", scan);
                         }
                         else {
-                            System.out.println("Press any key to return to product detail...");
-                            System.out.print("\nEnter: ");
+                            System.out.print("Press any key to return to product detail...");
                             scan.nextLine();
                             router.navigate("/detail", scan);
                         }
@@ -80,7 +83,7 @@ public class ReviewScreen implements IScreen {
         for (Review review : reviews) {
             System.out.println("=====================================================");
             User user = userService.findById(review.getUser_id());
-            System.out.println("Review by: " + session.getUsername());
+            System.out.println("Review by: " + user.getUsername());
             System.out.println("Rating: " + review.getRating() + "/5");
             System.out.println("Comment: " + review.getComment());
             }
@@ -91,6 +94,7 @@ public class ReviewScreen implements IScreen {
             System.out.println("You have not reviewed any products");
         }
         for (Review review : reviews) {
+            product = productService.getProd(review.getProduct_id()).get();
             System.out.println("=====================================================");
             System.out.println("Review for : " + product.getName());
             System.out.println("Rating: " + review.getRating() + "/5");

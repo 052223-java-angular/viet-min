@@ -1,5 +1,6 @@
 package com.revature.app.screens;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,9 +9,15 @@ import java.util.Scanner;
 
 import org.apache.logging.log4j.core.net.ssl.SslConfiguration;
 
+import com.revature.app.daos.OrderDAO;
+import com.revature.app.daos.OrderItemsDAO;
 import com.revature.app.models.Cart;
 import com.revature.app.models.CartItem;
+import com.revature.app.models.Order;
+import com.revature.app.models.OrderItems;
 import com.revature.app.services.CartService;
+import com.revature.app.services.OrderItemService;
+import com.revature.app.services.OrderService;
 import com.revature.app.services.PaymentService;
 import com.revature.app.services.RouterServices;
 import com.revature.app.utils.SessionUtil;
@@ -89,9 +96,13 @@ public class CartScreen implements IScreen{
                             expirationDate = getExpirationDate(scan);
                             securityCode = getSecurityCode(scan);
                             if(PaymentService.pay(cardNumber, expirationDate, securityCode)){
-                                //add to order history
-                                //need order service to be implemented
-                                //orderService.add(cart);
+                                Order newOrder = new Order(session.getId(),total);
+                                List<OrderItems> orderItems = new ArrayList<>();
+                                itemMap.forEach((k, v) -> {
+                                    OrderItems orderitem = new OrderItems(newOrder.getId(), v.getProduct_id(), v.getQuantity());
+                                    orderItems.add(orderitem);
+                                });
+                                saveOrder(newOrder, orderItems);
                                 cart.clear(cartOpt.get().getId());
                                 
                                 System.out.println("Thank you for your purchase!");
@@ -250,6 +261,14 @@ securityCode = scan.nextLine();
             System.out.println(String.format("%88s","total: " + df.format(total)));
         }else{
             System.out.println("Cart is Empty");
+        }
+    }
+
+    private void saveOrder(Order order, List<OrderItems> orderItems) {
+        new OrderService(new OrderDAO()).save(order);
+        final OrderItemService orderItemService = new OrderItemService(new OrderItemsDAO());
+        for (OrderItems o : orderItems) {
+            orderItemService.save(o);
         }
     }
 }
