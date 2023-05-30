@@ -50,7 +50,9 @@ public class ProductDetailScreen implements IScreen{
                 System.out.print("Press enter to continue...");
                 scan.nextLine();
             }
+            break;
         }
+        
     }
 
     private void addToCart(Product product, Scanner scan) {

@@ -133,8 +133,7 @@ public class BrowseProductScreen implements IScreen{
             String input = scan.nextLine();
         if (isInt(input) && Integer.parseInt(input) < category.size())
             return productService.byCategory(Integer.parseInt(input));
-
-        else if(scan.nextLine().equalsIgnoreCase("x"))
+        else if(input.equalsIgnoreCase("x"))
             return null;
         else {
             clearScreen();
