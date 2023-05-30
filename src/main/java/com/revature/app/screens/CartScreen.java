@@ -115,6 +115,7 @@ public class CartScreen implements IScreen{
                                 System.out.println(message);
                             }else{
                                 System.out.println(message);
+                                scan.nextLine();
                             }
                         }
                         break;

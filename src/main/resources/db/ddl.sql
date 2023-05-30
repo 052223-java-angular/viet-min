@@ -56,7 +56,7 @@ create table orders(
     user_id varchar not null,
     total decimal NOT NULL,
 
-    foreign key (user_id) references users (id),
+    foreign key (user_id) references users (id)
 );
 
 create table order_items(
