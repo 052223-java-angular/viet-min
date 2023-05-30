@@ -41,7 +41,7 @@ public class OrderHistoryScreen implements IScreen {
             System.out.println("\n[x] to return to main menu");
 
             String input = scan.nextLine();
-            if (input.equals("x"))
+            if (input.equalsIgnoreCase("x"))
                 router.navigate("menu", scan);
 
             if (isInt(input)) {

@@ -30,6 +30,7 @@ public class CartScreen implements IScreen{
     private final RouterServices router;
     private final CartService cart;
     private SessionUtil session;
+    private final PaymentService paymentService;
     private final DecimalFormat df = new DecimalFormat("0.00");
 
     @Override
@@ -95,7 +96,8 @@ public class CartScreen implements IScreen{
                             cardNumber = getCardNumber(scan);
                             expirationDate = getExpirationDate(scan);
                             securityCode = getSecurityCode(scan);
-                            if(PaymentService.pay(cardNumber, expirationDate, securityCode)){
+                            String message = paymentService.pay(cardNumber, expirationDate, securityCode, cartOpt);
+                            if(message.equals("Thank you for your purchase!")){
                                 Order newOrder = new Order(session.getId(),total);
                                 List<OrderItems> orderItems = new ArrayList<>();
                                 itemMap.forEach((k, v) -> {
@@ -105,9 +107,9 @@ public class CartScreen implements IScreen{
                                 saveOrder(newOrder, orderItems);
                                 cart.clear(cartOpt.get().getId());
                                 
-                                System.out.println("Thank you for your purchase!");
+                                System.out.println(message);
                             }else{
-                                System.out.println("Payment failed!");
+                                System.out.println(message);
                             }
                         }
                         break;
@@ -152,7 +154,7 @@ public class CartScreen implements IScreen{
                 return "b";
             }
             
-            if(!PaymentService.isValidCardNumber(cardNumber)){
+            if(!paymentService.isValidCardNumber(cardNumber)){
                 clearScreen();
                 System.out.println("Invalid card number!");
                 System.out.print("\nPress enter to continue...");
@@ -178,7 +180,7 @@ public class CartScreen implements IScreen{
                 return "b";
             }
 
-            if(!PaymentService.isValidExpirationDate(expirationDate)){
+            if(!paymentService.isValidExpirationDate(expirationDate)){
                 clearScreen();
                 System.out.println("Invalid expiration date!");
                 System.out.print("\nPress enter to continue...");
@@ -205,7 +207,7 @@ securityCode = scan.nextLine();
                 return "b";
             }
 
-            if(!PaymentService.isValidSecurityCode(securityCode)){
+            if(!paymentService.isValidSecurityCode(securityCode)){
                 clearScreen();
                 System.out.println("Invalid expiration security code!");
                 System.out.print("\nPress enter to continue...");

@@ -2,14 +2,10 @@ package com.revature.app.screens;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
 
-import javax.sound.midi.SysexMessage;
 
 import com.revature.app.daos.CategoryDAO;
-import com.revature.app.models.Cart;
-import com.revature.app.models.CartItem;
 import com.revature.app.models.Category;
 import com.revature.app.models.Product;
 import com.revature.app.services.CategoryService;
@@ -41,23 +37,24 @@ public class BrowseProductScreen implements IScreen{
     
                 input = scan.nextLine().toLowerCase();
     
-                if (input.equals("x")) {
+                if (input.equalsIgnoreCase("x")) {
                     System.out.println("Goodbye!");
+                    router.navigate("/home", scan);;
                     break;
                 }
     
-                if (input.equals("b")) {
+                if (input.equalsIgnoreCase("b")) {
                     router.navigate(session.getScreenHistory().pop(), scan);
                     break;
                 }
     
                 switch(input) {
-                    // case "x":
-                    //     System.out.println("Goodbye!");
-                    //     break;
-                    // case "b":
-                    //     router.navigate("/menu", scan);
-                    //     break;
+                    case "b":
+                        router.navigate(session.getScreenHistory().pop(), scan);
+                        break;
+                    case "x":
+                        router.navigate("/menu", scan);
+                        break;
                     case "1", "2", "3", "4":
                         searchProducts(input, scan);
                         break;
@@ -116,7 +113,7 @@ public class BrowseProductScreen implements IScreen{
         while (true) {
             System.out.print("Please enter product name (x to cancel): ");
             String input = scan.nextLine();
-            if (input.equals("x")) {
+            if (input.equalsIgnoreCase("x")) {
                 break ;
             }
             // else if(input)
@@ -135,7 +132,7 @@ public class BrowseProductScreen implements IScreen{
         if (isInt(input) && Integer.parseInt(input) < category.size())
             return productService.byCategory(Integer.parseInt(input));
 
-        else if(scan.nextLine().equals("x"))
+        else if(scan.nextLine().equalsIgnoreCase("x"))
             return null;
         else {
             clearScreen();

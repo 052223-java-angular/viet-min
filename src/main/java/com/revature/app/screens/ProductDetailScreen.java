@@ -40,7 +40,7 @@ public class ProductDetailScreen implements IScreen{
                     addToCart(product, scan);
             else if (input.equals("2"))
                 router.navigate("/review", scan);
-            else if (input.equals("x")) {
+            else if (input.equalsIgnoreCase("x")) {
                 router.navigate("/browse", scan);
             }
             else {
@@ -58,7 +58,6 @@ public class ProductDetailScreen implements IScreen{
             if (isInt(quantity)) { //checks if valid numeric int
                 if (Integer.parseInt(quantity) > 0 && Integer.parseInt(quantity) < product.getStock()) { //checks if between 1 and max stock
                     cart.add(session.getId(), product.getId(), Integer.parseInt(quantity));
-                    router.navigate("/detail", scan);
                 }
                 else {
                     System.out.println("Invalid option! Please enter between (1-" + product.getStock()+")");

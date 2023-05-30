@@ -45,6 +45,7 @@ public class CartService {
         }
         return cart;
     }
+
     public void clear(String id) {
         cartItemService.clearByCartId(id);
     }
