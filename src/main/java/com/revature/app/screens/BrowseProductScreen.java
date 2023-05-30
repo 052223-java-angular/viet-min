@@ -86,25 +86,27 @@ public class BrowseProductScreen implements IScreen{
                     case "1":
                         prod = productService.allProducts();
                         printProducts(prod, scan);
-                        break;
+                        break exit;
                     case "2":
                         prod = findByName(scan);
                         if (prod == null)
                             break exit;
                         printProducts(prod, scan);
-                        break;
+                        break exit;
                     case "3":
                         prod = findByCategory(scan);
                         if (prod == null)
                             break exit;
                         printProducts(prod, scan);
-                        break;
+                        break exit;
                     case "4":
                         prod = findByPrice(scan);
                         if (prod == null)
                             break exit;
                         printProducts(prod, scan);
-                        break;
+                        break exit;
+                    default:
+                        break exit;
                 }
             }
         }
@@ -180,38 +182,39 @@ public class BrowseProductScreen implements IScreen{
     }
 
     private void printProducts(List<Product> prod, Scanner scan) {
-        exit: {
-            while(true) {
-                clearScreen();
-                System.out.println("Please choose an item"); //(x to cancel):");
-                int index=0;
-                for (Product p : prod) {
-                    System.out.println("[" + (index+1) + "] " + p.getName());
-                    index++;
-                }
-                System.out.print("\nEnter: ");
-                String input = scan.nextLine();
-                if (isInt(input)) {
-                    if (Integer.parseInt(input) > 0 && Integer.parseInt(input) <= prod.size()) {
-                        Product product = prod.get(Integer.parseInt(input) - 1);
-                        router.setProduct(product);
-                        session.getScreenHistory().push("/browse");
-                        router.navigate("/detail", scan);
-                    } else {
-                        System.out.println("Invalid option!");
-                        System.out.print("\nPress enter to continue...");
-                        scan.nextLine();
-                        break exit;
-                    }
-                } 
-                else {
+
+        while(true) {
+            clearScreen();
+            System.out.println("Please choose an item"); //(x to cancel):");
+            int index=0;
+            for (Product p : prod) {
+                System.out.println("[" + (index+1) + "] " + p.getName());
+                index++;
+            }
+            System.out.print("\nEnter: ");
+            String input = scan.nextLine();
+            if (isInt(input)) {
+                if (Integer.parseInt(input) > 0 && Integer.parseInt(input) <= prod.size()) {
+                    Product product = prod.get(Integer.parseInt(input) - 1);
+                    router.setProduct(product);
+                    session.getScreenHistory().push("/browse");
+                    router.navigate("/detail", scan);
+                    break;
+                } else {
                     System.out.println("Invalid option!");
                     System.out.print("\nPress enter to continue...");
                     scan.nextLine();
-                    break exit;
+                    break;
                 }
+            } 
+            else {
+                System.out.println("Invalid option!");
+                System.out.print("\nPress enter to continue...");
+                scan.nextLine();
+                break;
             }
         }
+
     }
 
     private boolean isInt(String input){

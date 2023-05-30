@@ -43,7 +43,7 @@ public class ProductDetailScreen implements IScreen{
                 router.navigate("/review", scan);
                 break;
             }else if (input.equalsIgnoreCase("x")) {
-                router.navigate(session.getScreenHistory().pop(), scan);
+                router.navigate(session.getScreenHistory().pop(), scan);;
             }
             else {
                 System.out.println("\nInvalid option!");
