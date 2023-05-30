@@ -105,7 +105,7 @@ public class ProductDAO implements CrudDAO {
     public Optional<Product> findByName(String prodName) {
         // Displays products that match name search
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-            String sql = "SELECT * FROM products WHERE name = ?";
+            String sql = "SELECT * FROM products WHERE LOWER(name) = LOWER(?)";
 
             try(PreparedStatement ps = conn.prepareStatement(sql)){
                 ps.setString(1, prodName);
