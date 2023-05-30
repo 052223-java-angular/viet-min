@@ -34,7 +34,7 @@ public class CartScreen implements IScreen{
     private SessionUtil session;
     private final PaymentService paymentService;
     private final DecimalFormat df = new DecimalFormat("0.00");
-    private static final Logger log = LogManager.getLogger(BrowseProductScreen.class);
+    private static final Logger log = LogManager.getLogger(CartScreen.class);
     
 
     double total = 0;

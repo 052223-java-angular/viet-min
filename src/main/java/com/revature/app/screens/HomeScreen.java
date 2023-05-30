@@ -13,11 +13,11 @@ import lombok.AllArgsConstructor;
 public class HomeScreen implements IScreen {
     private final RouterServices router;
     private SessionUtil session;
-    private static final Logger log = LogManager.getLogger(BrowseProductScreen.class);
+    private static final Logger log = LogManager.getLogger(HomeScreen.class);
 
     @Override
     public void start(Scanner scan) {
-        log.info("Navigating to home screen");
+        log.info("Navigated to home screen");
         String input = "";
 
         exit: {
