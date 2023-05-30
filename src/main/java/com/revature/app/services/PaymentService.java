@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.logging.log4j.core.config.yaml.YamlConfiguration;
+
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+
 import com.revature.app.models.Cart;
 import com.revature.app.models.CartItem;
 import com.revature.app.models.Product;
@@ -45,12 +51,20 @@ public class PaymentService {
 
     public boolean isValidExpirationDate(String expirationDate) {
         String exp = "^(0[1-9]|1[0-2])/?([0-9]{4}|[0-9]{2})$";
-        return expirationDate.matches(exp);
+        
+        return expirationDate.matches(exp) && !isExpired(expirationDate);
     }
 
     public boolean isValidSecurityCode(String securityCode) {
         String sec = "^[0-9]{3,4}$";
         return securityCode.matches(sec);
+    }
+
+    public boolean isExpired(String expirationDate){
+        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("MM/yyyy");
+        YearMonth ym = YearMonth.parse(expirationDate, pattern);
+        LocalDate curDate = LocalDate.now();
+        return ym.isBefore(YearMonth.from(curDate));
     }
     
 }

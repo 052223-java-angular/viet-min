@@ -47,7 +47,7 @@ public class RouterServices {
                 new ReviewScreen(this, product, session, getReviewService(), getUserService()).start(scan);
                 break;
             case "/cart":
-                new CartScreen(this, getCartService(), session, getPaymentService()).start(scan);;
+                new CartScreen(this, getCartService(), session, getPaymentService(), 0).start(scan);;
                 //new 
                 break;
             case "/menu":

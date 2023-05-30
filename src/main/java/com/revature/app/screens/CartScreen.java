@@ -26,6 +26,8 @@ public class CartScreen implements IScreen{
     private final PaymentService paymentService;
     private final DecimalFormat df = new DecimalFormat("0.00");
 
+    double total = 0;
+
     @Override
     public void start(Scanner scan) {
         String input = "";
@@ -41,9 +43,9 @@ public class CartScreen implements IScreen{
                 
                 Optional<Cart> cartOpt = cart.getCartByUserId(session.getId());
                 Map<String, CartItem> itemMap = new HashMap<>();
-                double total = 0;
-
-                displayItems(cartOpt, itemMap, total);
+                
+                
+                displayItems(cartOpt, itemMap, 0);
 
                 System.out.println("------------------------------------------------------------------------------------------------------");
                 System.out.println("[1] Continue shopping | [2] Remove item | [3] Modify item | [4] Checkout | [b] Back | [x] back to menu");
@@ -87,8 +89,11 @@ public class CartScreen implements IScreen{
                         }else{
                             System.out.println("Your total will be: " + total);
                             cardNumber = getCardNumber(scan);
+                            if(cardNumber == "x" || cardNumber == "b") continue; 
                             expirationDate = getExpirationDate(scan);
+                            if(expirationDate == "x" || expirationDate == "b") continue; 
                             securityCode = getSecurityCode(scan);
+                            if(securityCode == "x" || securityCode == "b") continue; 
                             String message = paymentService.pay(cardNumber, expirationDate, securityCode, cartOpt);
                             if(message.equals("Thank you for your purchase!")){
                                 //add to order history
@@ -248,6 +253,7 @@ securityCode = scan.nextLine();
                     "[" + df.format(cartItemList.get(i).getPrice() * cartItemList.get(i).getQuantity()) + "]"
                 );
                 total += cartItemList.get(i).getPrice() * cartItemList.get(i).getQuantity();
+                this.total = total;
             }
             System.out.println(String.format("%88s","total: " + df.format(total)));
         }else{
