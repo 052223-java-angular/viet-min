@@ -119,7 +119,7 @@ public class BrowseProductScreen implements IScreen{
                 break ;
             }
             // else if(input)
-            return productService.byName(scan.nextLine());
+            return productService.byName(input);
         }
         return null;
     }

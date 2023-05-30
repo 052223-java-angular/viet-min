@@ -102,7 +102,7 @@ public class ProductDAO implements CrudDAO {
         }
     }
 
-    public Optional<Product> findByName(String prodName) {
+    public Optional<List<Product>> findByName(String prodName) {
         // Displays products that match name search
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
             String sql = "SELECT * FROM products WHERE name = ?";
@@ -110,7 +110,8 @@ public class ProductDAO implements CrudDAO {
             try(PreparedStatement ps = conn.prepareStatement(sql)){
                 ps.setString(1, prodName);
                 try(ResultSet rs = ps.executeQuery()){
-                    if(rs.next()){
+                    List<Product> products = new ArrayList<>();
+                    while(rs.next()){
                         Product product = new Product();
                         product.setId(rs.getString("id"));
                         product.setName(rs.getString("name"));
@@ -119,8 +120,10 @@ public class ProductDAO implements CrudDAO {
                         product.setCategory(rs.getInt("category"));
                         product.setStock(rs.getInt("stock"));
                         
-                        return Optional.of(product);
+                        products.add(product);
+                        
                     }
+                    return Optional.of(products);
                 }
             }
         }catch (SQLException e) {
@@ -130,7 +133,6 @@ public class ProductDAO implements CrudDAO {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Unable to load jdbc \n" + e);
         }
-        return Optional.empty();
     }
 
     public List<Product> findByPriceRange(double minPrice, double maxPrice) {
