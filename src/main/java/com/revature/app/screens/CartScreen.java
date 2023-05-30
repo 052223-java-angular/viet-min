@@ -22,6 +22,8 @@ import com.revature.app.services.PaymentService;
 import com.revature.app.services.RouterServices;
 import com.revature.app.utils.SessionUtil;
 import java.text.DecimalFormat;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import lombok.AllArgsConstructor;
 
@@ -32,11 +34,14 @@ public class CartScreen implements IScreen{
     private SessionUtil session;
     private final PaymentService paymentService;
     private final DecimalFormat df = new DecimalFormat("0.00");
+    private static final Logger log = LogManager.getLogger(CartScreen.class);
+    
 
     double total = 0;
 
     @Override
     public void start(Scanner scan) {
+        log.info("Navigated to Cart Screen");
         String input = "";
         String item = "";
         int amount = 0;
@@ -47,7 +52,7 @@ public class CartScreen implements IScreen{
         exit:{
             while(true){
                 clearScreen();
-                
+                log.info("Displaying items in current cart with total price");
                 Optional<Cart> cartOpt = cart.getCartByUserId(session.getId());
                 Map<String, CartItem> itemMap = new HashMap<>();
                 
@@ -60,14 +65,17 @@ public class CartScreen implements IScreen{
                 input = scan.nextLine();
                 switch(input){
                     case "b":
+                        log.info("Returning to previous screen" + session.getScreenHistory());
                         router.navigate(session.getScreenHistory().pop(), scan);
                         break;
                    
                     case "1":
+                        log.info("navigating to browse product screen");
                         session.getScreenHistory().push("/cart");
                         router.navigate("/browse", scan);
                         break;
                     case "2":
+                        log.warn("No items in cart, cannot remove");
                         if(itemMap.size() == 0){
                             cartEmptyMessage(scan);
                             continue;
@@ -235,14 +243,17 @@ securityCode = scan.nextLine();
             item = scan.nextLine();
 
             if(item.equalsIgnoreCase("x")){
+                log.info("returning to cart");
                 return "x";
             }
 
             if(item.equalsIgnoreCase("b")){
+                log.info("returning to cart");
                 return "b";
             }
 
             if(!map.containsKey(item)){
+                log.warn("invalid input");
                 System.out.println("Invalid input! The choices are:" + map.keySet());
                 System.out.print("\nPress enter to continue...");
                 scan.nextLine();
@@ -250,6 +261,7 @@ securityCode = scan.nextLine();
             }
             break;
         }
+        log.info("removing item " + item + " from cart");
         return item;
     }
 
@@ -258,6 +270,7 @@ securityCode = scan.nextLine();
         if(cartOpt.isPresent()){
             List<CartItem> cartItemList = cartOpt.get().getItems();
             
+            log.info("printing cart items to screen");
             for(int i = 0; i < cartItemList.size(); i++){
                 itemMap.put("p" + i, cartItemList.get(i));
                 System.out.println(
@@ -275,6 +288,7 @@ securityCode = scan.nextLine();
     }
 
     private void saveOrder(Order order, List<OrderItems> orderItems) {
+        log.info("saving cart as a new order");
         new OrderService(new OrderDAO()).save(order);
         final OrderItemService orderItemService = new OrderItemService(new OrderItemsDAO());
         for (OrderItems o : orderItems) {

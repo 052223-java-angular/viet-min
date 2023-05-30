@@ -13,6 +13,8 @@ import com.revature.app.services.ReviewService;
 import com.revature.app.services.RouterServices;
 import com.revature.app.services.UserService;
 import com.revature.app.utils.SessionUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import lombok.AllArgsConstructor;
 
@@ -24,13 +26,16 @@ public class ReviewScreen implements IScreen {
     private final ReviewService reviewService;
     private final ProductService productService;
     private UserService userService;
+    private static final Logger log = LogManager.getLogger(ReviewScreen.class);
 
     @Override
     public void start(Scanner scan) {
+        log.info("navigated to review screen");
         while(true) {
             if (product == null)
             {
                 clearScreen();
+                log.info("retrieving user review data");
                 printReviewByUser(reviewService.reviewByUser(session.getId()));
                 System.out.println("\nPress any key to return to main menu...");
                 scan.nextLine();
@@ -53,20 +58,27 @@ public class ReviewScreen implements IScreen {
                         System.out.println("Would you like to update your review? (y/n)");
 
                         if (scan.nextLine().equalsIgnoreCase("y")) {
+                            log.info("user inputing new review");
                             updateReview(review, scan);
+                            log.info("updating database with new user review");
                             reviewService.update(review);
+                            log.info("navigating to product detail screen");
                             router.navigate("/detail", scan);
                         }
                         else {
                             System.out.print("Press any key to return to product detail...");
                             scan.nextLine();
+                            log.info("navigating to product detail screen");
                             router.navigate("/detail", scan);
                         }
                     }
                     else {
+                        log.info("creating new review");
                         review = new Review(session.getId(), product.getId());
                         updateReview(review, scan);
+                        log.info("saving review data");
                         reviewService.save(review);
+                        log.info("navigating to product detail screen");
                         router.navigate("/detail", scan);
                     }
                 }
@@ -82,6 +94,7 @@ public class ReviewScreen implements IScreen {
         if (reviews.isEmpty()) {
             System.out.println("There are no reviews for" + product.getName());
         }
+        log.info("printing product review data");
         for (Review review : reviews) {
             System.out.println("=====================================================");
             User user = userService.findById(review.getUser_id());
@@ -95,6 +108,7 @@ public class ReviewScreen implements IScreen {
         if (reviews == null) {
             System.out.println("You have not reviewed any products");
         }
+        log.info("printing user review data");
         for (Review review : reviews) {
             product = productService.getProd(review.getProduct_id()).get();
             System.out.println("=====================================================");
@@ -108,9 +122,12 @@ public class ReviewScreen implements IScreen {
         while(true) {
             System.out.println("Please enter a rating (1-5): ");
             String input = scan.nextLine();
-            if (isInt(input))
+            if (isInt(input)) {
+                log.info("user input for new product rating " + input);
                 review.setRating(Integer.parseInt(input));
+            }
             else {
+                log.warn("invalid input");
                 System.out.println("Invalid option! Please enter between (1-" + product.getStock()+")");
                     System.out.print("\nPress enter to continue...");
                     scan.nextLine();
@@ -118,6 +135,7 @@ public class ReviewScreen implements IScreen {
             }
             System.out.println("Please add your thoughts on product: ");
             review.setComment(scan.nextLine());
+            log.info("user input for new product comment");
             break;
         }
     }

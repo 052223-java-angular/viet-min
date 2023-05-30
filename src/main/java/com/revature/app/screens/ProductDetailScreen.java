@@ -13,6 +13,8 @@ import com.revature.app.services.CartService;
 import com.revature.app.services.ProductService;
 import com.revature.app.services.RouterServices;
 import com.revature.app.utils.SessionUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import lombok.AllArgsConstructor;
 
@@ -22,13 +24,14 @@ public class ProductDetailScreen implements IScreen{
     private final CartService cart;
     private SessionUtil session;
     private Product product;
-
-
+    private static final Logger log = LogManager.getLogger(ProductDetailScreen.class);
 
     @Override
     public void start(Scanner scan) {
+        log.info("navigated to product detail screen for: " + product.getName());
         while(true) {
             clearScreen();
+            log.info("displaying product details");
             System.out.println(product.getName() + "                             Stock: " + product.getStock());
             System.out.println("\n" + product.getDescription());
             System.out.println(formatPrice());
@@ -37,15 +40,20 @@ public class ProductDetailScreen implements IScreen{
             System.out.println("[x] to return to product browsing");
             System.out.print("\nEnter: ");
             String input = scan.nextLine();
-            if (input.equals("1"))
-                    addToCart(product, scan);
-            else if (input.equals("2")){
+            if (input.equals("1")) {
+                log.info("adding product to cart");
+                addToCart(product, scan);
+            }
+            else if (input.equals("2")) {
+                log.info("navigating to review screen");
                 router.navigate("/review", scan);
-                break;
-            }else if (input.equalsIgnoreCase("x")) {
-                router.navigate(session.getScreenHistory().pop(), scan);;
+            }
+            else if (input.equalsIgnoreCase("x")) {
+                log.info("navigating to " + session.getScreenHistory() + " screen");
+                router.navigate(session.getScreenHistory().pop(), scan);
             }
             else {
+                log.warn("invalid input");
                 System.out.println("\nInvalid option!");
                 System.out.print("Press enter to continue...");
                 scan.nextLine();
@@ -60,14 +68,17 @@ public class ProductDetailScreen implements IScreen{
             System.out.println("Please choose an amount (max: " + product.getStock() + "): ");
             String quantity = scan.nextLine();
             if (isInt(quantity)) { //checks if valid numeric int
+                log.info("checking if quantity is valid");
                 if (Integer.parseInt(quantity) > 0 && Integer.parseInt(quantity) < product.getStock()) { //checks if between 1 and max stock
                     cart.add(session.getId(), product.getId(), Integer.parseInt(quantity));
                     //need to add error check message for quantity > stock
+                    log.info("added product to cart, navigating to product detail screen");
                     System.out.print("Successfully added to cart. Press any key to continue...");
                     scan.nextLine();
                     router.navigate("/detail", scan);
                 }
                 else {
+                    log.warn("invalid input");
                     System.out.println("Invalid option! Please enter between (1-" + product.getStock()+")");
                     System.out.print("\nPress enter to continue...");
                     scan.nextLine();
@@ -75,6 +86,7 @@ public class ProductDetailScreen implements IScreen{
                 }
             }
             else {
+                log.warn("invalid input");
                 System.out.println("Invalid option! Please enter between (1-" + product.getStock()+")");
                 System.out.print("\nPress enter to continue...");
                 scan.nextLine();
