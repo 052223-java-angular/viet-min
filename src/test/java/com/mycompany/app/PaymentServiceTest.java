@@ -48,4 +48,24 @@ public class PaymentServiceTest {
         assertFalse(paymentService.isValidExpirationDate(invalidDate));
         assertTrue(paymentService.isValidExpirationDate(validDate));
     }
+
+    //checks if security code is valid
+    @Test
+    public void testIsValidSecurityCode() {
+        String invalidCode = "11111";
+        String validCode = "333";
+        String validCode2 = "4444";
+        assertFalse(paymentService.isValidSecurityCode(invalidCode));
+        assertTrue(paymentService.isValidSecurityCode(validCode2));
+        assertTrue(paymentService.isValidSecurityCode(validCode));
+    }
+
+    //checks if expiration date is before current date
+    @Test
+    public void testIsExpired() {
+        String invalidDate = "10/2022";
+        String validDate = "05/2023";
+        assertTrue(paymentService.isExpired(invalidDate));
+        assertFalse(paymentService.isExpired(validDate));
+    }
 }

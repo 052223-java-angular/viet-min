@@ -19,7 +19,6 @@ import org.mockito.MockitoAnnotations;
 
 import com.revature.app.daos.ReviewDAO;
 import com.revature.app.models.Review;
-import com.revature.app.models.User;
 import com.revature.app.services.ReviewService;
 import com.revature.app.services.UserService;
 
