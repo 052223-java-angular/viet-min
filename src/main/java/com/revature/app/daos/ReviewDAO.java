@@ -1,3 +1,7 @@
+/**
+ * A data access object (DAO) that implements the CrudDAO interface for the Review model.
+ * It provides methods to perform CRUD (create, read, update, delete) operations on the reviews table in the database.
+ */
 package com.revature.app.daos;
 
 import java.io.IOException;
@@ -14,6 +18,11 @@ import com.revature.app.utils.ConnectionFactory;
 
 public class ReviewDAO implements CrudDAO<Review>{
 
+    /**
+     * Saves a new review object to the database.
+     * @param obj the review object to be saved
+     * @throws RuntimeException if any exception occurs while connecting to the database or executing the SQL statement
+     */
     @Override
     public void save(Review obj) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
@@ -39,12 +48,22 @@ public class ReviewDAO implements CrudDAO<Review>{
         }
     }
 
+    /**
+     * Updates an existing review object in the database by its id.
+     * @param id the id of the review object to be updated
+     * @throws UnsupportedOperationException if this method is not implemented
+     */
     @Override
     public void update(String id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 
+    /**
+     * Updates an existing review object in the database by its rating and comment.
+     * @param obj the review object to be updated
+     * @throws RuntimeException if any exception occurs while connecting to the database or executing the SQL statement
+     */
     public void update(Review obj) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
             String sql = "UPDATE reviews set rating = ?, comment = ? WHERE id = ?";
@@ -67,24 +86,47 @@ public class ReviewDAO implements CrudDAO<Review>{
         }
     }
 
+    /**
+     * Deletes an existing review object from the database by its id.
+     * @param id the id of the review object to be deleted
+     * @throws UnsupportedOperationException if this method is not implemented
+     */
     @Override
     public void delete(String id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'delete'");
     }
 
+    /**
+     * Finds a review object by its id in the database.
+     * @param id the id of the review object to be found
+     * @return an optional containing the review object if found, or empty otherwise
+     * @throws UnsupportedOperationException if this method is not implemented
+     */
     @Override
     public Optional<Review> findById(String id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
 
+    /**
+     * Finds all review objects in the database.
+     * @return a list of all review objects in the database
+     * @throws UnsupportedOperationException if this method is not implemented
+     */
     @Override
     public List findAll() {
         // not used
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
 
+    /**
+     * Finds a review object by its user id and product id in the database.
+     * @param userId the user id of the review object to be found
+     * @param productId the product id of the review object to be found
+     * @return an optional containing the review object if found, or empty otherwise
+     * @throws RuntimeException if any exception occurs while connecting to the database or executing the SQL statement
+     */
     public Optional<Review> findById(String userId, String productId) {
         // Displays a specific review for updating
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
@@ -114,6 +156,12 @@ public class ReviewDAO implements CrudDAO<Review>{
         }
     }
 
+    /**
+     * Finds all review objects by their product id in the database.
+     * @param prodId the product id of the review objects to be found
+     * @return a list of all review objects with the given product id in the database
+     * @throws RuntimeException if any exception occurs while connecting to the database or executing the SQL statement
+     */
     public List<Review> findAllByProduct(String prodId)
     {
         // Displays all reviews for a product by product
@@ -146,6 +194,12 @@ public class ReviewDAO implements CrudDAO<Review>{
         }
     }
 
+    /**
+     * Finds all review objects by their user id in the database.
+     * @param userId the user id of the review objects to be found
+     * @return a list of all review objects with the given user id in the database
+     * @throws RuntimeException if any exception occurs while connecting to the database or executing the SQL statement
+     */
     public List<Review> findAllByUser(String userId)
     {
         // Displays all reviews for a product by user
