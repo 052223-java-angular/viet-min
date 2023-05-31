@@ -65,11 +65,13 @@ public class ProductServiceTest {
     //return product by name
     @Test
     public void testbyName() {
-        Product expected = new Product("a353098a-fb53-11ed-be56-0242ac120002", "The Elder Scrolls", "Fus ro Dah", 9.99, 1, 42);
+        List<Product> expected = new ArrayList<>();
+        Product a = new Product("a353098a-fb53-11ed-be56-0242ac120002", "The Elder Scrolls", "Fus ro Dah", 9.99, 1, 42);
+        expected.add(a);
 
-        when(productDAO.findByName(expected.getName())).thenReturn(Optional.of(expected));
+        when(productDAO.findByName(expected.get(0).getName())).thenReturn(Optional.of(expected));
 
-        Product actual = productService.byName(expected.getName());
+        List<Product> actual = productService.byName(expected.get(0).getName());
 
         assertEquals(expected, actual);
     }

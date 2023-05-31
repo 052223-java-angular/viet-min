@@ -113,7 +113,7 @@ public class BrowseProductScreen implements IScreen{
                         break exit;
                     case "2":
                         log.info("Searching products by specific name ignoring case");
-                        prod.add(findByName(scan));
+                        prod = findByName(scan);
                         if (prod == null)
                             break exit;
                         printProducts(prod, scan);
@@ -146,7 +146,7 @@ public class BrowseProductScreen implements IScreen{
      * @param scan The scanner object for user input.
      * @return A list of products that match the name, or null if the user cancels the search.
      */
-    private Product findByName(Scanner scan) {
+    private List<Product> findByName(Scanner scan) {
         while (true) {
             System.out.print("Please enter product name (x to cancel): ");
             String input = scan.nextLine();
