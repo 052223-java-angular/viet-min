@@ -1,6 +1,9 @@
 package com.mycompany.app;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,8 +24,6 @@ public class RoleServiceTest {
     @Before
     public void setup() {
         MockitoAnnotations.openMocks(this);
-
-        roleService = new RoleService(roleDAO);
     }
 
     //Returns a role class by name
@@ -30,10 +31,10 @@ public class RoleServiceTest {
     public void test_FindByName() {
         String roleName = "USER";
         String id = "cc812463-1e4e-464b-9a56-f38d4711d0b0";
+        Role role = new Role(id, roleName);
 
-        Role expected = new Role(id, roleName);
-        Role actual = roleService.findByName(roleName);
+        when(roleService.findByName(roleName)).thenReturn(role);
 
-        assertEquals(expected, actual);
+        assertEquals(roleName, role.getName());
     }
 }

@@ -20,10 +20,10 @@ public class ProductService {
         return productDao.findAll();
     }
 
-    public List<Product> byName(String name) throws ProductNotFoundException {
+    public Product byName(String name) throws ProductNotFoundException {
         Optional<Product> prodOpt = productDao.findByName(name);
         //return pseudo();
-        return (List<Product>)prodOpt.orElseThrow(ProductNotFoundException::new);
+        return prodOpt.orElseThrow(ProductNotFoundException::new);
     }
 
     public List<Product> byCategory(int category) {
