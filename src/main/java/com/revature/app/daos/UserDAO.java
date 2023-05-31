@@ -1,3 +1,7 @@
+/**
+ * A data access object (DAO) that implements the CrudDAO interface for the User model.
+ * It provides methods to perform CRUD (create, read, update, delete) operations on the users table in the database.
+ */
 package com.revature.app.daos;
 
 import java.io.IOException;
@@ -14,6 +18,11 @@ import com.revature.app.utils.ConnectionFactory;
 
 public class UserDAO implements CrudDAO<User>{
 
+    /**
+     * Saves a new user object to the database.
+     * @param Object the user object to be saved
+     * @throws RuntimeException if any exception occurs while connecting to the database or executing the SQL statement
+     */
     @Override
     public void save(User Object) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
@@ -38,6 +47,11 @@ public class UserDAO implements CrudDAO<User>{
         }
     }
 
+    /**
+     * Updates an existing user object in the database by its id and password.
+     * @param id the id of the user object to be updated
+     * @throws RuntimeException if any exception occurs while connecting to the database or executing the SQL statement
+     */
     @Override
     public void update(String id) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
@@ -59,6 +73,11 @@ public class UserDAO implements CrudDAO<User>{
         }
     }
 
+    /**
+     * Deletes an existing user object from the database by its id.
+     * @param id the id of the user object to be deleted
+     * @throws RuntimeException if any exception occurs while connecting to the database or executing the SQL statement
+     */
     @Override
     public void delete(String id) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
@@ -79,8 +98,14 @@ public class UserDAO implements CrudDAO<User>{
         }
     }
 
+    /**
+     * Finds a user object by its id in the database.
+     * @param id the id of the user object to be found
+     * @return an optional containing the user object if found, or empty otherwise
+     * @throws RuntimeException if any exception occurs while connecting to the database or executing the SQL statement
+     */
     @Override
-    public User findById(String id) {
+    public Optional<User> findById(String id) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
             String sql = "select * from users where id = ?";
 
@@ -89,11 +114,11 @@ public class UserDAO implements CrudDAO<User>{
                 try(ResultSet rs = ps.executeQuery()){
                     if(rs.next()){
                         User user = new User();
-                        user.setId("id");
-                        user.setUsername("username");
-                        user.setPassword("password");
-                        user.setRoleId("role_id");
-                        return user;
+                        user.setId(rs.getString("id"));
+                        user.setUsername(rs.getString("username"));
+                        user.setPassword(rs.getString("password"));
+                        user.setRoleId(rs.getString("role_id"));
+                        return Optional.of(user);
                     }
                 }
             }
@@ -106,9 +131,14 @@ public class UserDAO implements CrudDAO<User>{
         } catch (Exception e){
             throw new RuntimeException(e);
         }
-        return new User();
+        return Optional.empty();
     }
 
+    /**
+     * Finds all user objects in the database.
+     * @return a list of all user objects in the database
+     * @throws RuntimeException if any exception occurs while connecting to the database or executing the SQL statement
+     */
     @Override
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
@@ -122,7 +152,7 @@ public class UserDAO implements CrudDAO<User>{
                         user.setUsername("username");
                         user.setPassword("password");
                         user.setRoleId("role_id");
-                        users.add(0, user);
+                        users.add(user);
                     }
                 }
             }
@@ -138,6 +168,12 @@ public class UserDAO implements CrudDAO<User>{
         return users;
     }
 
+    /**
+     * Finds a user object by its username in the database.
+     * @param username the username of the user object to be found
+     * @return an optional containing the user object if found, or empty otherwise
+     * @throws RuntimeException if any exception occurs while connecting to the database or executing the SQL statement
+     */
     public Optional<User> findByUsername(String username) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
             String sql = "select * from users where username = ?";
@@ -163,7 +199,7 @@ public class UserDAO implements CrudDAO<User>{
         } catch (Exception e){
             throw new RuntimeException(e);
         }
-        return  Optional.empty();
+        return Optional.empty();
     }
     
 }
