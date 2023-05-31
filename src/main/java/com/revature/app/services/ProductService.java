@@ -37,8 +37,8 @@ public class ProductService {
      * @return A list of Product objects that have the given name. 
      * @throws ProductNotFoundException If no products are found with the given name. 
      */
-    public List<Product> byName(String name) throws ProductNotFoundException {
-        Optional<List<Product>> prodOpt = productDao.findByName(name);
+    public Product byName(String name) throws ProductNotFoundException {
+        Optional<Product> prodOpt = productDao.findByName(name);
         //return pseudo();
         return prodOpt.orElseThrow(ProductNotFoundException::new);
     }

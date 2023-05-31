@@ -7,7 +7,6 @@ drop table if exists category cascade;
 drop table if exists order_items cascade;
 drop table if exists cart cascade;
 drop table if exists cart_items cascade;
-drop table if exists payment cascade;
 
 create table roles(
     id varchar primary key,
