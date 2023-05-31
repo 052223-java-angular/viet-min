@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "eShop",
+            "request": "launch",
+            "mainClass": "com.revature.app.eShop",
+            "projectName": "eShop"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"
