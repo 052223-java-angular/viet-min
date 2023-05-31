@@ -1,3 +1,7 @@
+/**
+ * A data access object (DAO) that implements the CrudDAO interface for the OrderItems model.
+ * It provides methods to perform CRUD (create, read, update, delete) operations on the order_items table in the database.
+ */
 package com.revature.app.daos;
 
 import java.io.IOException;
@@ -14,6 +18,11 @@ import com.revature.app.utils.ConnectionFactory;
 
 public class OrderItemsDAO implements CrudDAO<OrderItems>{
 
+    /**
+     * Saves a new order item object to the database.
+     * @param obj the order item object to be saved
+     * @throws RuntimeException if any exception occurs while connecting to the database or executing the SQL statement
+     */
     @Override
     public void save(OrderItems obj) {
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){
@@ -40,30 +49,57 @@ public class OrderItemsDAO implements CrudDAO<OrderItems>{
     }
     
 
+    /**
+     * Updates an existing order item object in the database by its id.
+     * @param id the id of the order item object to be updated
+     * @throws UnsupportedOperationException if this method is not implemented
+     */
     @Override
     public void update(String id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 
+    /**
+     * Deletes an existing order item object from the database by its id.
+     * @param id the id of the order item object to be deleted
+     * @throws UnsupportedOperationException if this method is not implemented
+     */
     @Override
     public void delete(String id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'delete'");
     }
 
+    /**
+     * Finds an order item object by its id in the database.
+     * @param id the id of the order item object to be found
+     * @return an optional containing the order item object if found, or empty otherwise
+     * @throws UnsupportedOperationException if this method is not implemented
+     */
     @Override
     public Optional findById(String id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
 
+    /**
+     * Finds all order item objects in the database.
+     * @return a list of all order item objects in the database
+     * @throws UnsupportedOperationException if this method is not implemented
+     */
     @Override
     public List findAll() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
     
+    /**
+     * Finds all order item objects by their order_id in the database.
+     * @param id the order_id of the order item objects to be found
+     * @return a list of all order item objects with the given order_id in the database
+     * @throws RuntimeException if any exception occurs while connecting to the database or executing the SQL statement
+     */
     public List<OrderItems> findbyOrderId(String id) {
         // Displays all order items on an order
         try(Connection conn = ConnectionFactory.getInstance().getConnection()){

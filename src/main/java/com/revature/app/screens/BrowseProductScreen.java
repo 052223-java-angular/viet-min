@@ -1,3 +1,6 @@
+/**
+ * A screen that allows the user to browse and search for products.
+ */
 package com.revature.app.screens;
 
 import java.util.ArrayList;
@@ -17,6 +20,7 @@ import org.apache.logging.log4j.Logger;
 
 import lombok.AllArgsConstructor;
 
+
 @AllArgsConstructor
 public class BrowseProductScreen implements IScreen{
     private static final Logger log = LogManager.getLogger(BrowseProductScreen.class);
@@ -24,11 +28,16 @@ public class BrowseProductScreen implements IScreen{
     private final ProductService productService;
     private SessionUtil session;
 
+    /**
+     * Starts the screen and displays the options for browsing and searching products.
+     * @param scan The scanner object for user input.
+     */
     public void start(Scanner scan) {
         log.info("Browse Product Screen started");
         String input ="";
         exit:{
             while(true){
+                router.setProduct(null);
                 clearScreen();
                 System.out.println("Welcome to Paimon's Bargains! What would you like to do?");
                 System.out.println("\n[1] Browse all products");
@@ -45,20 +54,27 @@ public class BrowseProductScreen implements IScreen{
                     log.info("User entered " + input + "moving to home screen");
                     System.out.println("Goodbye!");
                     router.navigate("/home", scan);;
-                    break;
+                    break exit;
                 }
     
                 if (input.equalsIgnoreCase("b")) {
                     log.info("User entered " + input + "moving to previous screen, " + session.getScreenHistory());
                     router.navigate(session.getScreenHistory().pop(), scan);
-                    break;
+                    break exit;
                 }
     
                 switch(input) {
+                    case "b":
+                        router.navigate(session.getScreenHistory().pop(), scan);
+                        break exit;
+                    case "x":
+                        session.getScreenHistory().push("/browse");
+                        router.navigate("/menu", scan);
+                        break exit;
                     case "1", "2", "3", "4":
                         log.info("User entered" + input);
                         searchProducts(input, scan);
-                        break;
+                        break exit;
                     case "5":
                         log.info("User entered" + input);
                         session.getScreenHistory().push("/menu");
@@ -77,6 +93,11 @@ public class BrowseProductScreen implements IScreen{
         
     }
 
+    /**
+     * Searches for products based on the user's input and displays the results.
+     * @param input The user's choice of search criteria.
+     * @param scan The scanner object for user input.
+     */
     public void searchProducts(String input, Scanner scan) {
         List<Product> prod;
         exit: {
@@ -89,34 +110,42 @@ public class BrowseProductScreen implements IScreen{
                         log.info("Searching all products");
                         prod = productService.allProducts();
                         printProducts(prod, scan);
-                        break;
+                        break exit;
                     case "2":
                         log.info("Searching products by specific name ignoring case");
                         prod.add(findByName(scan));
                         if (prod == null)
                             break exit;
                         printProducts(prod, scan);
-                        break;
+                        break exit;
                     case "3":
                         log.info("Searching products by category");
                         prod = findByCategory(scan);
                         if (prod == null)
                             break exit;
                         printProducts(prod, scan);
-                        break;
+                        break exit;
                     case "4":
                         log.info("Searching products by price");
                         prod = findByPrice(scan);
                         if (prod == null)
                             break exit;
                         printProducts(prod, scan);
-                        break;
+                        break exit;
+                    default:
+                        break exit;
                 }
             }
         }
     }
 
     //Helper methods
+  
+    /**
+     * Finds products by name and returns a list of matching results.
+     * @param scan The scanner object for user input.
+     * @return A list of products that match the name, or null if the user cancels the search.
+     */
     private Product findByName(Scanner scan) {
         while (true) {
             System.out.print("Please enter product name (x to cancel): ");
@@ -128,11 +157,16 @@ public class BrowseProductScreen implements IScreen{
             }
             // else if(input)
             log.info("database returning product by name");
-            return productService.byName(scan.nextLine()); //ignore case in sql?
+            return productService.byName(input); //ignore case in sql?
         }
         return null;
     }
 
+    /**
+     * Finds products by category and returns a list of matching results.
+     * @param scan The scanner object for user input.
+     * @return A list of products that belong to the category, or null if the user cancels the search.
+     */
     private List<Product> findByCategory(Scanner scan) {
         List<Category> category = new CategoryService(new CategoryDAO()).findAll();
         clearScreen();
@@ -162,6 +196,11 @@ public class BrowseProductScreen implements IScreen{
         return null;
     }
 
+    /**
+     * Finds products by price range and returns a list of matching results.
+     * @param scan The scanner object for user input.
+     * @return A list of products that fall within the price range, or null if the user cancels the search.
+     */
     private List<Product> findByPrice(Scanner scan) {
         String input = "";
         double minPrice = 0,  maxPrice = 0;
@@ -204,46 +243,57 @@ public class BrowseProductScreen implements IScreen{
         return productService.byPrice(minPrice, maxPrice);
     }
 
+    /**
+     * Prints the products in a list and allows the user to choose one for more details.
+     * @param prod The list of products to be printed.
+     * @param scan The scanner object for user input.
+     */
     private void printProducts(List<Product> prod, Scanner scan) {
-        exit: {
-            while(true) {
-                log.info("clear screen");
-                clearScreen();
-                System.out.println("Please choose an item"); //(x to cancel):");
-                int index=0;
-                log.info("displaying all products matching criteria");
-                for (Product p : prod) {
-                    System.out.println("[" + (index+1) + "] " + p.getName());
-                    index++;
-                }
-                System.out.print("\nEnter: ");
-                String input = scan.nextLine();
-                if (isInt(input)) {
-                    if (Integer.parseInt(input) > 0 && Integer.parseInt(input) <= prod.size()) {
-                        Product product = prod.get(Integer.parseInt(input) - 1);
-                        log.info("moving to product detail screen");
-                        router.setProduct(product);
-                        session.getScreenHistory().push("/browse");
-                        router.navigate("/detail", scan);
-                    } else {
-                        log.warn("invalid input");
-                        System.out.println("Invalid option!");
-                        System.out.print("\nPress enter to continue...");
-                        scan.nextLine();
-                        break exit;
-                    }
-                } 
-                else {
+
+        while(true) {
+            log.info("clear screen");
+            clearScreen();
+            System.out.println("Please choose an item"); //(x to cancel):");
+            int index=0;
+            log.info("displaying all products matching criteria");
+            for (Product p : prod) {
+                System.out.println("[" + (index+1) + "] " + p.getName());
+                index++;
+            }
+            System.out.print("\nEnter: ");
+            String input = scan.nextLine();
+            if (isInt(input)) {
+                if (Integer.parseInt(input) > 0 && Integer.parseInt(input) <= prod.size()) {
+                    Product product = prod.get(Integer.parseInt(input) - 1);
+                    log.info("moving to product detail screen");
+                    router.setProduct(product);
+                    session.getScreenHistory().push("/browse");
+                    router.navigate("/detail", scan);
+                    break;
+                } else {
                     log.warn("invalid input");
                     System.out.println("Invalid option!");
                     System.out.print("\nPress enter to continue...");
                     scan.nextLine();
-                    break exit;
+                    break;
                 }
+            } 
+            else {
+                log.warn("invalid input");
+                System.out.println("Invalid option!");
+                System.out.print("\nPress enter to continue...");
+                scan.nextLine();
+                break;
             }
         }
+
     }
 
+    /**
+     * Checks if a string can be parsed as an integer.
+     * @param input The string to be checked.
+     * @return True if the string can be parsed as an integer, false otherwise.
+     */
     private boolean isInt(String input){
         try {
             log.info("checking if " + input + " is an int");
@@ -254,6 +304,11 @@ public class BrowseProductScreen implements IScreen{
         }
     }
 
+    /**
+     * Checks if a string can be parsed as a double.
+     * @param input The string to be checked.
+     * @return True if the string can be parsed as a double, false otherwise.
+     */
     private boolean isDouble(String input) {
         try {
             log.info("checking if " + input + " is a double");
@@ -264,6 +319,9 @@ public class BrowseProductScreen implements IScreen{
         }
     }
 
+    /**
+     * Clears the screen by printing escape characters.
+     */
     private void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();

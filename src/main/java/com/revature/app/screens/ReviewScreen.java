@@ -1,3 +1,6 @@
+/**
+ * A screen that displays and manages reviews for products and users.
+ */
 package com.revature.app.screens;
 
 import java.util.List;
@@ -20,14 +23,18 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class ReviewScreen implements IScreen {
-    private RouterServices router;
-    private Product product;
-    private SessionUtil session;
-    private final ReviewService reviewService;
-    private final ProductService productService;
-    private UserService userService;
-    private static final Logger log = LogManager.getLogger(ReviewScreen.class);
+    private RouterServices router; // A service that handles navigation between screens
+    private Product product; // The product that is being reviewed or null if reviewing by user
+    private SessionUtil session; // A utility class that stores the current user's information
+    private final ReviewService reviewService; // A service that handles review-related operations
+    private final ProductService productService; // A service that handles product-related operations
+    private UserService userService; // A service that handles user-related operations
+    private static final Logger log = LogManager.getLogger(ReviewScreen.class); // A logger for logging messages
 
+    /**
+     * Starts the review screen and displays the appropriate options based on the product and user.
+     * @param scan The scanner object for getting user input
+     */
     @Override
     public void start(Scanner scan) {
         log.info("navigated to review screen");
@@ -40,6 +47,7 @@ public class ReviewScreen implements IScreen {
                 System.out.println("\nPress any key to return to main menu...");
                 scan.nextLine();
                 router.navigate("/menu", scan);
+                break;
             }
             else {
                 clearScreen();
@@ -85,9 +93,14 @@ public class ReviewScreen implements IScreen {
                     router.navigate("/detail", scan);
                 }
             }
+            break;
         }
     }
 
+    /**
+     * Prints the reviews for a given product in a formatted way.
+     * @param reviews The list of reviews for the product
+     */
     private void printReviewByProd (List<Review> reviews) {
         if (reviews.isEmpty()) {
             System.out.println("There are no reviews for" + product.getName());
@@ -102,6 +115,10 @@ public class ReviewScreen implements IScreen {
             }
     }
 
+    /**
+     * Prints the reviews made by the current user in a formatted way.
+     * @param reviews The list of reviews made by the user
+     */
     private void printReviewByUser (List<Review> reviews) {
         if (reviews == null) {
             System.out.println("You have not reviewed any products");
@@ -116,6 +133,11 @@ public class ReviewScreen implements IScreen {
             }
     }
 
+    /**
+     * Updates the review object with the user input for rating and comment.
+     * @param review The review object to be updated
+     * @param scan The scanner object for getting user input
+     */
     private void updateReview(Review review, Scanner scan) {
         while(true) {
             System.out.println("Please enter a rating (1-5): ");
@@ -138,6 +160,11 @@ public class ReviewScreen implements IScreen {
         }
     }
 
+    /**
+     * Checks if a given string is an integer or not.
+     * @param input The string to be checked
+     * @return true if the string is an integer, false otherwise
+     */
     private boolean isInt(String input){
         try {
             Integer.parseInt(input);
@@ -147,6 +174,9 @@ public class ReviewScreen implements IScreen {
         }
     }
 
+    /**
+     * Clears the screen by printing escape characters.
+     */
     private void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();

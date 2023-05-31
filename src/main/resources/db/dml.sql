@@ -16,4 +16,20 @@ INSERT INTO products (id, name, description, price, category, stock) values ('94
 INSERT INTO products (id, name, description, price, category, stock) values ('946533ab-fb54-11ed-be56-0242ac120002', 'Civilization', 'Touch grass', '104.99', '3', '42');
 INSERT INTO products (id, name, description, price, category, stock) values ('f3d77236-fb54-11ed-be56-0242ac120002', 'Stardew Valley', 'Mine craft... but with dating', '2.99', '4', '42');
 INSERT INTO products (id, name, description, price, category, stock) values ('f3d78df8-fb54-11ed-be56-0242ac120002', 'MineCraft', 'Everyone else has a redstone computer... you have a rock', '25.99', '4', '42');
+
 INSERT INTO products (id, name, description, price, category, stock) values ('f3d78dgg-fb54-11ed-be56-0242ac120002', 'The Sims', 'Check price', '9999.99', '4', '42');
+
+INSERT INTO users (id, username, password, role_id) VALUES('bcbc968f-d38e-41e2-a98b-4e04d7ad0114', 'register1', '$2a$10$rumobNxwjx73CDNwqDdgEuHmGGsSifOxs.4BJ24RM2xPNF1yEXDhi', 'cc812463-1e4e-464b-9a56-f38d4711d0b0');
+
+INSERT INTO cart (id, user_id) values ('1a353098a-fb53-11ed-be56-0242ac120002', 'bcbc968f-d38e-41e2-a98b-4e04d7ad0114');
+
+INSERT INTO cart_items (id, cart_id, product_id, quantity) values ('a3531022-fb53-11ed-be56-0242ac120002', '1a353098a-fb53-11ed-be56-0242ac120002', 'a3531022-fb53-11ed-be56-0242ac120002', 12);
+INSERT INTO cart_items (id, cart_id, product_id, quantity) values ('a353098a-fb53-11ed-be56-0242ac120002', '1a353098a-fb53-11ed-be56-0242ac120002', 'a353098a-fb53-11ed-be56-0242ac120002', 56);
+INSERT INTO cart_items (id, cart_id, product_id, quantity) values ('a3531182-fb53-11ed-be56-0242ac120002', '1a353098a-fb53-11ed-be56-0242ac120002', 'a3531182-fb53-11ed-be56-0242ac120002', 34);
+INSERT INTO cart_items (id, cart_id, product_id, quantity) values ('1aff46ce-fb54-11ed-be56-0242ac120002', '1a353098a-fb53-11ed-be56-0242ac120002', '1aff46ce-fb54-11ed-be56-0242ac120002', 34);
+INSERT INTO cart_items (id, cart_id, product_id, quantity) values ('1aff4e1c-fb54-11ed-be56-0242ac120002', '1a353098a-fb53-11ed-be56-0242ac120002', '1aff4e1c-fb54-11ed-be56-0242ac120002', 34);
+INSERT INTO cart_items (id, cart_id, product_id, quantity) values ('1aff4666-fb54-11ed-be56-0242ac120002', '1a353098a-fb53-11ed-be56-0242ac120002', '1aff4666-fb54-11ed-be56-0242ac120002', 34);
+INSERT INTO cart_items (id, cart_id, product_id, quantity) values ('94653ee2-fb54-11ed-be56-0242ac120002', '1a353098a-fb53-11ed-be56-0242ac120002', '94653ee2-fb54-11ed-be56-0242ac120002', 34);
+INSERT INTO cart_items (id, cart_id, product_id, quantity) values ('946533ab-fb54-11ed-be56-0242ac120002', '1a353098a-fb53-11ed-be56-0242ac120002', '946533ab-fb54-11ed-be56-0242ac120002', 34);
+INSERT INTO cart_items (id, cart_id, product_id, quantity) values ('f3d77236-fb54-11ed-be56-0242ac120002', '1a353098a-fb53-11ed-be56-0242ac120002', 'f3d77236-fb54-11ed-be56-0242ac120002', 34);
+INSERT INTO cart_items (id, cart_id, product_id, quantity) values ('f3d78df8-fb54-11ed-be56-0242ac120002', '1a353098a-fb53-11ed-be56-0242ac120002', 'f3d78df8-fb54-11ed-be56-0242ac120002', 34);

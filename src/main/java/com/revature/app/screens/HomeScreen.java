@@ -1,3 +1,8 @@
+/**
+ * A class that represents the home screen for the application.
+ * It allows the user to choose between logging in or registering a new account.
+ * It also handles the navigation to other screens using the router service and the session utility.
+ */
 package com.revature.app.screens;
 
 import java.util.Scanner;
@@ -11,10 +16,15 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class HomeScreen implements IScreen {
-    private final RouterServices router;
-    private SessionUtil session;
-    private static final Logger log = LogManager.getLogger(HomeScreen.class);
+    private final RouterServices router; // a service that handles navigation between screens
+    private SessionUtil session; // a utility class that stores the user's session information
+    private static final Logger log = LogManager.getLogger(HomeScreen.class); // a logger for logging messages
 
+    /**
+     * The method that starts the screen and displays the user interface.
+     * It takes a Scanner object as a parameter to get the user input.
+     * @param scan a Scanner object for getting user input
+     */
     @Override
     public void start(Scanner scan) {
         log.info("Navigated to home screen");
@@ -60,6 +70,9 @@ public class HomeScreen implements IScreen {
     }
 
     //Helper Method
+    /**
+     * A helper method that clears the screen by printing escape characters.
+     */
     private void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();

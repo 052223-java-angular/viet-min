@@ -1,3 +1,8 @@
+/**
+ * A custom data structure class that represents a pair of a string and an integer.
+ * It uses lombok annotations to generate constructors, getters, setters and toString methods.
+ * It has fields for the string id and the integer count.
+ */
 package com.revature.app.utils.custom_datastucture;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-# P0 - Pair Programming eCommerce Project
+# eShop Project
 
 ## Introduction
 
@@ -18,22 +18,48 @@ This is a Java-based command-line interface (CLI) eCommerce application. The app
 - **As a user**, I want to view ratings and reviews from other users so that I can make informed buying decisions.
 
 
-## MVP (Minimum Viable Product)
+## Features
 
-- User registration and login
+- Registration
+    - Username:
+      - 8-20 alphanumeric characters or underscores or dots but not starting or ending with an underscore or dot or having consecutive underscores or dots. 
+      - must not be already in use.
+    - Password:
+      - at least 8 alphanumeric characters with at least one letter and one number.
+      - salted and hashed.
+- Log in
+  - Must use correct combination of username and password.
 - Browsing and searching for products
+  - Must be logged in to use.
+  - Search using:
+    - product name.
+    - product price.
+    - product category.
 - Adding products to a shopping cart
+    - product must be in stock.
+    - quantity to add must not be negative or greater than stock.
 - Modifying the shopping cart
+  - delete unwanted product
+  - change quantity of product
 - Secure payment process
+  - Payment method verifcation:
+    - must have a valid Visa, MasterCard, American Express or Discover card number.
+    - expiration date in MM/yyyy format and not be before current date.
+    - sercurity code must be numbers of 3 or 4 digits.
+  - Product stock verification:
+    - must have enough in stock at time of checkout.
+    - product stock temporily reduced during check to prevent multiple users from buying at the same time cause stock to fall below 0.
+    - restock if any item quantity exceeds stock and payment fails.
 - Order history
+  - add orders to order history after a sucessful payment.
+  - user can view their order history and items ordered.
+
 - Product rating and reviewing
+  - One user one review per product.
+  - Review can only be modified by user who left the review.
+  - View all reviews for a product.
 
-## Stretch Goals
 
-- Implementing a recommendation system based on user's previous purchases
-- Adding an admin role that can add, remove, or modify products
-- Implementing promotional codes and discounts
-- Adding a wish list feature
 
 ## Tech Stacks
 
@@ -46,22 +72,17 @@ This is a Java-based command-line interface (CLI) eCommerce application. The app
 - **BCrypt**: A Java library for hashing and checking passwords for security.
 - **JUnit, Mockito, and PowerMock**: Used for unit and integration testing.
 - **Git and GitHub**: Used for version control.
+- **Project Lombok**: Automatic Resource Management, automatic generation of getters, setters, equals, hashCode and toString, and more!
 
-## Requirements
 
-- **Clean Codebase**: All code should be clean and well-documented. The repository should not include any unnecessary files or folders such as the `target/`, `.DS_Store`, etc. All files and directories should be appropriately named and organized.
-
-- **Database Design**: The database should be designed following the principles of the 3rd Normal Form (3NF) to ensure data integrity and efficiency. An Entity Relationship Diagram (ERD) should be included in the documentation.
-
-- **Secure**: All sensitive user data such as passwords must be securely hashed before storing it in the database. The application should not display any sensitive information in error messages.
-
-- **Error Handling**: The application should handle potential errors gracefully and provide clear and helpful error messages to the users.
-
-- **Testing**: The application should have a high test coverage. Unit tests and integration tests should be implemented using JUnit, Mockito, and PowerMock.
-
-- **Version Control**: The application should be developed using a version control system, preferably Git, with regular commits denoting progress.
-
-- **Documentation**: The repository should include a README file with clear instructions on how to run the application. Code should be well-commented to allow for easy understanding and maintenance.
-
-- **Scalable**: The design of the application should be scalable, allowing for easy addition of new features or modifications in the future.
-
+## Project setup
+  - Environment setup: https://github.com/052223-java-angular/wikis/blob/main/onboarding.md
+  
+## Project depencies:
+  - junit: https://mvnrepository.com/artifact/junit/junit
+  - mockito-junit-jupiter: https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter 
+  - mockito-core: https://mvnrepository.com/artifact/org.mockito/mockito-core
+  - postgresql: https://mvnrepository.com/artifact/org.postgresql/postgresql
+  - lombok: https://mvnrepository.com/artifact/org.projectlombok/lombok
+  - log4j-core: https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
+  - jbcrypt: https://mvnrepository.com/artifact/org.mindrot/jbcrypt
