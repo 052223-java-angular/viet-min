@@ -29,5 +29,4 @@ public class RoleService {
 
         return roleOpt.orElseThrow(RoleNotFoundException::new);
     }
-
 }
