@@ -1,3 +1,6 @@
+/**
+ * A screen that allows the user to browse and search for products.
+ */
 package com.revature.app.screens;
 
 import java.util.ArrayList;
@@ -17,6 +20,7 @@ import org.apache.logging.log4j.Logger;
 
 import lombok.AllArgsConstructor;
 
+
 @AllArgsConstructor
 public class BrowseProductScreen implements IScreen{
     private static final Logger log = LogManager.getLogger(BrowseProductScreen.class);
@@ -24,6 +28,10 @@ public class BrowseProductScreen implements IScreen{
     private final ProductService productService;
     private SessionUtil session;
 
+    /**
+     * Starts the screen and displays the options for browsing and searching products.
+     * @param scan The scanner object for user input.
+     */
     public void start(Scanner scan) {
         log.info("Browse Product Screen started");
         String input ="";
@@ -85,6 +93,11 @@ public class BrowseProductScreen implements IScreen{
         
     }
 
+    /**
+     * Searches for products based on the user's input and displays the results.
+     * @param input The user's choice of search criteria.
+     * @param scan The scanner object for user input.
+     */
     public void searchProducts(String input, Scanner scan) {
         List<Product> prod;
         exit: {
@@ -127,6 +140,11 @@ public class BrowseProductScreen implements IScreen{
     }
 
     //Helper methods
+    /**
+     * Finds products by name and returns a list of matching results.
+     * @param scan The scanner object for user input.
+     * @return A list of products that match the name, or null if the user cancels the search.
+     */
     private List<Product> findByName(Scanner scan) {
         while (true) {
             System.out.print("Please enter product name (x to cancel): ");
@@ -143,6 +161,11 @@ public class BrowseProductScreen implements IScreen{
         return null;
     }
 
+    /**
+     * Finds products by category and returns a list of matching results.
+     * @param scan The scanner object for user input.
+     * @return A list of products that belong to the category, or null if the user cancels the search.
+     */
     private List<Product> findByCategory(Scanner scan) {
         List<Category> category = new CategoryService(new CategoryDAO()).findAll();
         clearScreen();
@@ -172,6 +195,11 @@ public class BrowseProductScreen implements IScreen{
         return null;
     }
 
+    /**
+     * Finds products by price range and returns a list of matching results.
+     * @param scan The scanner object for user input.
+     * @return A list of products that fall within the price range, or null if the user cancels the search.
+     */
     private List<Product> findByPrice(Scanner scan) {
         String input = "";
         double minPrice = 0,  maxPrice = 0;
@@ -214,6 +242,11 @@ public class BrowseProductScreen implements IScreen{
         return productService.byPrice(minPrice, maxPrice);
     }
 
+    /**
+     * Prints the products in a list and allows the user to choose one for more details.
+     * @param prod The list of products to be printed.
+     * @param scan The scanner object for user input.
+     */
     private void printProducts(List<Product> prod, Scanner scan) {
 
         while(true) {
@@ -255,6 +288,11 @@ public class BrowseProductScreen implements IScreen{
 
     }
 
+    /**
+     * Checks if a string can be parsed as an integer.
+     * @param input The string to be checked.
+     * @return True if the string can be parsed as an integer, false otherwise.
+     */
     private boolean isInt(String input){
         try {
             log.info("checking if " + input + " is an int");
@@ -265,6 +303,11 @@ public class BrowseProductScreen implements IScreen{
         }
     }
 
+    /**
+     * Checks if a string can be parsed as a double.
+     * @param input The string to be checked.
+     * @return True if the string can be parsed as a double, false otherwise.
+     */
     private boolean isDouble(String input) {
         try {
             log.info("checking if " + input + " is a double");
@@ -275,6 +318,9 @@ public class BrowseProductScreen implements IScreen{
         }
     }
 
+    /**
+     * Clears the screen by printing escape characters.
+     */
     private void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();

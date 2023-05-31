@@ -1,3 +1,9 @@
+/**
+ * A class that represents the screen for viewing the details of a product.
+ * It allows the user to see the product name, description, price, and stock.
+ * It also allows the user to add the product to their cart or view its reviews.
+ * It also handles the navigation to other screens using the router service and the session utility.
+ */
 package com.revature.app.screens;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -18,14 +24,20 @@ import org.apache.logging.log4j.Logger;
 
 import lombok.AllArgsConstructor;
 
+
 @AllArgsConstructor
 public class ProductDetailScreen implements IScreen{
-    private final RouterServices router;
-    private final CartService cart;
-    private SessionUtil session;
-    private Product product;
-    private static final Logger log = LogManager.getLogger(ProductDetailScreen.class);
+    private final RouterServices router; // a service that handles navigation between screens
+    private final CartService cart; // a service that handles cart operations
+    private SessionUtil session; // a utility class that stores the user's session information
+    private Product product; // a Product object that represents the product to be displayed
+    private static final Logger log = LogManager.getLogger(ProductDetailScreen.class); // a logger for logging messages
 
+    /**
+     * The method that starts the screen and displays the user interface.
+     * It takes a Scanner object as a parameter to get the user input.
+     * @param scan a Scanner object for getting user input
+     */
     @Override
     public void start(Scanner scan) {
         log.info("navigated to product detail screen for: " + product.getName());
@@ -62,7 +74,12 @@ public class ProductDetailScreen implements IScreen{
         }
         
     }
-
+/**
+     * A helper method that adds the product to the user's cart using the cart service.
+     * It asks the user for the quantity of the product they want to add and validates it.
+     * @param product a Product object that represents the product to be added
+     * @param scan a Scanner object for getting user input
+     */
     private void addToCart(Product product, Scanner scan) {
         while(true) {
             System.out.println("Please choose an amount (max: " + product.getStock() + "): ");
@@ -95,6 +112,11 @@ public class ProductDetailScreen implements IScreen{
         }
     }
 
+    /**
+     * A helper method that checks if a String input can be parsed as an integer.
+     * @param input a String input from the user
+     * @return true if the input can be parsed as an integer, false otherwise
+     */
     private boolean isInt(String input){
         try {
             Integer.parseInt(input);
@@ -104,12 +126,19 @@ public class ProductDetailScreen implements IScreen{
         }
     }
 
+    /**
+     * A helper method that formats the product price using the locale and currency of the user.
+     * @return a String representing the formatted price
+     */
     private String formatPrice() {
         Locale locale = new Locale("en", "US");      
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
         return currencyFormatter.format(product.getPrice());
     }
 
+    /**
+     * A helper method that clears the screen by printing escape characters.
+     */
     private void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();

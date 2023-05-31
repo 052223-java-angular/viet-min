@@ -3,6 +3,11 @@ package com.revature.app.screens;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+/**
+ * A class that represents the screen for displaying and managing the user's cart.
+ * It allows the user to view the items in their cart, remove or modify them, and proceed to checkout.
+ * It also handles the payment process and saves the order to the database.
+ */
 import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
@@ -29,16 +34,21 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class CartScreen implements IScreen{
-    private final RouterServices router;
-    private final CartService cart;
-    private SessionUtil session;
-    private final PaymentService paymentService;
-    private final DecimalFormat df = new DecimalFormat("0.00");
-    private static final Logger log = LogManager.getLogger(CartScreen.class);
+    private final RouterServices router; // a service that handles navigation between screens
+    private final CartService cart; // a service that handles cart operations
+    private SessionUtil session; // a utility class that stores the user's session information
+    private final PaymentService paymentService; // a service that handles payment operations
+    private final DecimalFormat df = new DecimalFormat("0.00"); // a formatter for displaying prices
+    private static final Logger log = LogManager.getLogger(CartScreen.class); // a logger for logging messages
     
 
-    double total = 0;
+    double total = 0; // a variable to store the total price of the cart
 
+    /**
+     * The method that starts the screen and displays the user interface.
+     * It takes a Scanner object as a parameter to get the user input.
+     * @param scan a Scanner object for getting user input
+     */
     @Override
     public void start(Scanner scan) {
         log.info("Navigated to Cart Screen");
@@ -142,11 +152,18 @@ public class CartScreen implements IScreen{
         
     }
 
+    /**
+     * A helper method that clears the screen by printing escape characters.
+     */
     private void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 
+    /**
+     * A helper method that displays a message when the cart is empty and waits for the user to press enter.
+     * @param scan a Scanner object for getting user input
+     */
     private void cartEmptyMessage(Scanner scan){
         clearScreen();
         System.out.println("Your cart is empty");
@@ -154,6 +171,12 @@ public class CartScreen implements IScreen{
         scan.nextLine();
     }
 
+    /**
+     * A helper method that gets the card number from the user and validates it using the payment service.
+     * It returns the card number if it is valid, or "x" or "b" if the user wants to exit or go back.
+     * @param scan a Scanner object for getting user input
+     * @return a String representing the card number or the user's choice
+     */
     private String getCardNumber(Scanner scan){
         String cardNumber = "";
         
@@ -180,6 +203,13 @@ public class CartScreen implements IScreen{
         }
         return cardNumber;
     }
+
+    /**
+     * A helper method that gets the expiration date from the user and validates it using the payment service.
+     * It returns the expiration date if it is valid, or "x" or "b" if the user wants to exit or go back.
+     * @param scan a Scanner object for getting user input
+     * @return a String representing the expiration date or the user's choice
+     */
     private String getExpirationDate(Scanner scan){
         String expirationDate = "";
         
@@ -206,6 +236,13 @@ public class CartScreen implements IScreen{
         }
         return expirationDate;
     }
+
+    /**
+     * A helper method that gets the security code from the user and validates it using the payment service.
+     * It returns the security code if it is valid, or "x" or "b" if the user wants to exit or go back.
+     * @param scan a Scanner object for getting user input
+     * @return a String representing the security code or the user's choice
+     */
     private String getSecurityCode(Scanner scan){
         String securityCode = "";
         
@@ -234,6 +271,13 @@ securityCode = scan.nextLine();
         return securityCode;
     }
 
+    /**
+     * A helper method that gets the item name from the user and validates it using the item map.
+     * It returns the item name if it is valid, or "x" or "b" if the user wants to exit or go back.
+     * @param map a Map object that maps the item names to the cart items
+     * @param scan a Scanner object for getting user input
+     * @return a String representing the item name or the user's choice
+     */
     private String getItem(Map map, Scanner scan){
         String item = "";
         
@@ -265,6 +309,13 @@ securityCode = scan.nextLine();
         return item;
     }
 
+    /**
+     * A helper method that displays the items in the cart along with their prices and quantities.
+     * It also calculates and displays the total price of the cart.
+     * @param cartOpt an Optional object that contains the cart
+     * @param itemMap a Map object that maps the item names to the cart items
+     * @param total a double variable that stores the total price of the cart
+     */
     private void displayItems(Optional<Cart> cartOpt, Map<String, CartItem> itemMap, double total){
 
         if(cartOpt.isPresent()){
@@ -287,6 +338,11 @@ securityCode = scan.nextLine();
         }
     }
 
+    /**
+     * A helper method that saves the order and its items to the database using order and order item services.
+     * @param order an Order object that represents the order
+     * @param orderItems a List of OrderItems objects that represents the items in the order
+     */
     private void saveOrder(Order order, List<OrderItems> orderItems) {
         log.info("saving cart as a new order");
         new OrderService(new OrderDAO()).save(order);

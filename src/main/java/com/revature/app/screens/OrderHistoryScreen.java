@@ -1,3 +1,8 @@
+/**
+ * A class that represents the screen for viewing the user's order history.
+ * It allows the user to select an order and see its details, such as the products and quantities.
+ * It also handles the navigation to other screens using the router service and the session utility.
+ */
 package com.revature.app.screens;
 import java.util.List;
 import java.util.Optional;
@@ -19,12 +24,17 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class OrderHistoryScreen implements IScreen {
-    private RouterServices router;
-    private SessionUtil session;
-    private OrderService orderService;
-    private OrderItemService orderItemService;
-    private static final Logger log = LogManager.getLogger(OrderHistoryScreen.class);
+    private RouterServices router; // a service that handles navigation between screens
+    private SessionUtil session; // a utility class that stores the user's session information
+    private OrderService orderService; // a service that handles order operations
+    private OrderItemService orderItemService; // a service that handles order item operations
+    private static final Logger log = LogManager.getLogger(OrderHistoryScreen.class); // a logger for logging messages
 
+    /**
+     * The method that starts the screen and displays the user interface.
+     * It takes a Scanner object as a parameter to get the user input.
+     * @param scan a Scanner object for getting user input
+     */
     @Override
     public void start(Scanner scan) {
         log.info("navigated to Order history screen");
@@ -82,6 +92,10 @@ public class OrderHistoryScreen implements IScreen {
         }
     }
 
+    /**
+     * A helper method that prints the order items and their quantities in a formatted way.
+     * @param orderItems a List of OrderItems objects that represents the items in an order
+     */
     public void printOrderItems(List<OrderItems> orderItems) {
         log.info("printing order details");
         System.out.format("%-20s %12s\n", "Product", "Quantity");
@@ -92,6 +106,11 @@ public class OrderHistoryScreen implements IScreen {
         }
     }
 
+    /**
+     * A helper method that checks if a String input can be parsed as an integer.
+     * @param input a String input from the user
+     * @return true if the input can be parsed as an integer, false otherwise
+     */
     private boolean isInt(String input) {
         try {
             Integer.parseInt(input);
@@ -100,7 +119,10 @@ public class OrderHistoryScreen implements IScreen {
             return false;
         }
     }
-
+    
+    /**
+     * A helper method that clears the screen by printing escape characters.
+     */
     private void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();

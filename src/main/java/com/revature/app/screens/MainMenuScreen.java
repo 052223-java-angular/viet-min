@@ -1,3 +1,8 @@
+/**
+ * A class that represents the main menu screen for the application.
+ * It allows the user to choose from different options such as viewing their cart, purchase history, inventory, or reviews.
+ * It also handles the navigation to other screens using the router service and the session utility.
+ */
 package com.revature.app.screens;
 import java.util.Scanner;
 
@@ -10,10 +15,15 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class MainMenuScreen implements IScreen{
-    private RouterServices router;
-    private SessionUtil session;
-    private static final Logger log = LogManager.getLogger(MainMenuScreen.class);
+    private RouterServices router; // a service that handles navigation between screens
+    private SessionUtil session; // a utility class that stores the user's session information
+    private static final Logger log = LogManager.getLogger(MainMenuScreen.class); // a logger for logging messages
 
+    /**
+     * The method that starts the screen and displays the user interface.
+     * It takes a Scanner object as a parameter to get the user input.
+     * @param scan a Scanner object for getting user input
+     */
     @Override
     public void start(Scanner scan) {
         log.info("navigated to main menu screen");
@@ -60,6 +70,9 @@ public class MainMenuScreen implements IScreen{
         }
     }
 
+    /**
+     * A helper method that clears the screen by printing escape characters.
+     */
     private void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
